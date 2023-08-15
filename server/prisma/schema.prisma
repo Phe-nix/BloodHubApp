@@ -8,7 +8,52 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        Int        @id @default(autoincrement())
+  titleName titleName?
+  firstName String?
+  lastName  String?
+  cid       String?    @unique
+  password  String?
+  phone     String?
+  dob       String?
+  address   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  role      Role       @default(user)
+
+}
+
+enum titleName {
+  Mr
+  Mrs
+  Miss
+  Ms
+}
+
+enum Role {
+  admin
+  user
+  hospital
+}
+
+model Post {
+  id            String     @id @default(cuid())
+  title         String
+  detail        String
+  userId        String
+  tagId         Int
+  exchangeEnded Boolean?   @default(false) // New field to indicate if item exchange has ended
+
+  Tag  Tag?  @relation(fields: [tagId], references: [id])
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String
+  Post Post[]
 }
