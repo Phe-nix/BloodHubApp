@@ -1,5 +1,10 @@
 import { RouteProp } from "@react-navigation/core";
 
+export type GetStartedParamList = {
+  Signin: undefined
+  Signup: undefined
+}
+
 export type RootParamsList = {
     GetStarted: undefined
     SignUp: undefined
