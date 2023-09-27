@@ -17,7 +17,7 @@ const Panigation: React.FC<PanigationProps> = ({data, scrollX}: any) => {
 
         const dotColor = scrollX.interpolate({
           inputRange,
-          outputRange: ['#ccc','#ED8085','#ccc'],
+          outputRange: ['#fff','#ED8085','#fff'],
           extrapolate: 'clamp',
         });
         return <Animated.View key={idx.toString()} style={[styles.dot, {backgroundColor: dotColor}]}/>

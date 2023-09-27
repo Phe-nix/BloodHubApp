@@ -1,10 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { GetStarted, SignInScreen, SignUpScreen } from '../screens';
-import { RootParamsList } from '../types/navigation';
+import { GetStarted } from '../screens';
+import { AuthNaivgation } from './AuthNavigation';
 
-const Root = createStackNavigator<RootParamsList>();
+const Root = createNativeStackNavigator();
 
 export const RootNavigator: React.FC = () => {
   return (
@@ -16,8 +16,7 @@ export const RootNavigator: React.FC = () => {
         }}
       >
           <Root.Screen name="GetStarted" component={GetStarted}/>
-          <Root.Screen name="SignUp" component={SignUpScreen}/>
-          <Root.Screen name="SignIn" component={SignInScreen}/>
+          <Root.Screen name="Auth" component={AuthNaivgation} />
       </Root.Navigator>
     </NavigationContainer>
   );
