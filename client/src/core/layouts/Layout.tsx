@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 
 interface Props {
   children: React.ReactNode
@@ -7,12 +7,9 @@ interface Props {
 
 const Layer = ({children} : Props) => {
   return(
-    <>
-      <LinearGradient colors={['#F08286','#FAC8CA']} style={styles.linearGradient}>
-        <Text>test</Text>
-        {children}
-      </LinearGradient>
-    </>
+    <LinearGradient colors={['#F08286','#FAC8CA']} style={styles.linearGradient}>
+      {children}
+    </LinearGradient>
   );
 }
 

@@ -4,7 +4,8 @@ let buttonWidth = 100;
 
 interface buttonProps {
   title: string
-  buttonWith: number
+  buttonWidth: number
+  buttonHeight: number
   navigation: any
   to: string
 }
@@ -15,7 +16,7 @@ export const Button = (props: buttonProps) => {
 
   return (
       <TouchableOpacity onPress={()=>{props.navigation.navigate(props.to)}}>
-        <View style={styles.button}>
+        <View style={[styles.button, {paddingVertical: props.buttonHeight, paddingHorizontal: props.buttonWidth}]}>
           <Text style={styles.text}>{text}</Text>
         </View>
       </TouchableOpacity>
@@ -24,8 +25,6 @@ export const Button = (props: buttonProps) => {
 
 const styles = StyleSheet.create({
   button:{
-    paddingVertical: 15,
-    paddingHorizontal: buttonWidth,
     borderRadius: 100,
     backgroundColor: '#ED8085',
     margin: 5
@@ -33,6 +32,9 @@ const styles = StyleSheet.create({
   text:{
     color: 'white',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
   }
 })
