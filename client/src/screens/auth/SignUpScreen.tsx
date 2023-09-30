@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import AppHeader from '../../core/components/AppHeader';
 import { Button } from '../../core/components/Button';
 import Layer from '../../core/layouts/Layout';
-import { styles } from './auth.styles';
+import { styles } from './Auth.styles';
 
 export const SignUpScreen = ({navigation} : any) => {
   const header = 'สมัครสมาชิก'
