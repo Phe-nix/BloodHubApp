@@ -3,7 +3,7 @@ import { SafeAreaView, Text, View } from "react-native";
 import AppHeader from "../../core/components/AppHeader";
 import OTPInputField from "../../core/components/OTPInputField";
 import Layer from "../../core/layouts/Layout";
-import { styles } from "./Auth.styles";
+import { styles } from "./auth.styles";
 
 const VerificationScreen = ({navigation} : any) => {
   const [code, setCode] = useState(['', '', '', '', '', '']);
