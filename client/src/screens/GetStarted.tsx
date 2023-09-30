@@ -46,7 +46,7 @@ export const GetStarted = ({navigation} : any) => {
           <Panigation data={item} scrollX={scrollX}/>
           
           <View style={styles.buttons}>
-            <Button title="Get Started" buttonWidth={100} buttonHeight={15} to="Auth" navigation={navigation} />
+            <Button title="Get Started" buttonWidth={100} buttonHeight={15} to="SignUp" navigation={navigation} />
             <TouchableOpacity onPress={()=>{navigation.navigate('SignIn')}}>
               <Text style={{color: 'grey', margin: 10}}>Existing user? Sign in</Text>
             </TouchableOpacity>
