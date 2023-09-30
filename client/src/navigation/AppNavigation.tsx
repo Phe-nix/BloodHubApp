@@ -38,7 +38,7 @@ const AppNavigation = ({ route }: any) => {
         },
         tabBarActiveTintColor: 'orange',
         tabBarLabelStyle: {
-          fontWeight: 'bold', // ปรับ fontWeight ตรงนี้
+          fontWeight: 'bold',
         },
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
