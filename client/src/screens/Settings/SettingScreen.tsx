@@ -1,14 +1,24 @@
 import React from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; // Assuming you're using Expo for FontAwesome
+import { Feather, FontAwesome } from "@expo/vector-icons"; // Assuming you're using Expo for FontAwesome
+import { AntDesign } from "@expo/vector-icons";
 
 type SectionHeaderProps = {
   title: string;
 };
 
+type AntDesignIcon =
+  | "user"
+  | "home"
+  | "bell"
+  | "history"
+  | "bookmark"
+  | "question-circle"
+  | "info-circle";
+
 type SettingOptionProps = {
   title: string;
-  icon: string;
+  icon: AntDesignIcon;
 };
 
 const SettingScreen: React.FC = () => {
@@ -16,19 +26,25 @@ const SettingScreen: React.FC = () => {
     <ScrollView style={styles.container}>
       <SectionHeader title="General Settings" />
       <View style={styles.settingGroup}>
-        <SettingOption title="My Profile" icon="user" />
-        <SettingOption title="My Address" icon="home" />
-        <SettingOption title="Notifications" icon="bell" />
+        <View style={styles.groupContainer}>
+          <SettingOption title="My Profile" icon="user" />
+          <SettingOption title="My Address" icon="home" />
+          <SettingOption title="Notifications" icon="bell" />
+        </View>
       </View>
       <SectionHeader title="Information" />
       <View style={styles.settingGroup}>
-        <SettingOption title="History" icon="history" />
-        <SettingOption title="Bookmarks" icon="bookmark" />
+        <View style={styles.groupContainer}>
+          <SettingOption title="History" icon="history" />
+          <SettingOption title="Bookmarks" icon="bookmark" />
+        </View>
       </View>
-      <SectionHeader title="Help & About" />
+      <SectionHeader title="Support" />
       <View style={styles.settingGroup}>
-        <SettingOption title="Help Center" icon="question-circle" />
-        <SettingOption title="About" icon="info-circle" />
+        <View style={styles.groupContainer}>
+          <SettingOption title="Help Center" icon="question-circle" />
+          <SettingOption title="About" icon="info-circle" />
+        </View>
       </View>
     </ScrollView>
   );
@@ -43,12 +59,33 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title }) => (
 const SettingOption: React.FC<SettingOptionProps> = ({ title, icon }) => (
   <TouchableOpacity style={styles.settingOption}>
     <View style={styles.settingTextContainer}>
-      <FontAwesome name={icon} style={styles.settingIcon} />
+      {renderIcon(icon)}
       <Text style={styles.settingOptionText}>{title}</Text>
     </View>
-    <FontAwesome name="angle-right" style={styles.rightIcon} />
+    <AntDesign name="rightcircleo" style={[styles.rightIcon, { marginRight: 5 }]} />
   </TouchableOpacity>
 );
+
+const renderIcon = (icon: AntDesignIcon) => {
+  switch (icon) {
+    case "user":
+      return <AntDesign name="user" style={styles.settingIcon} />;
+    case "home":
+      return <AntDesign name="enviromento" style={styles.settingIcon} />;
+    case "bell":
+      return <AntDesign name="bells" style={styles.settingIcon} />;
+    case "history":
+      return <Feather name="archive" style={styles.settingIcon} />;
+    case "bookmark":
+      return <Feather name="bookmark" style={styles.settingIcon} />;
+    case "question-circle":
+      return <AntDesign name="questioncircleo" style={styles.settingIcon} />;
+    case "info-circle":
+      return <AntDesign name="infocirlceo" style={styles.settingIcon} />;
+    default:
+      return null;
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -65,7 +102,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   sectionHeaderText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
   },
   redText: {
@@ -75,6 +112,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#E2E2E2",
     borderRadius: 20,
     marginBottom: 10,
+  },
+  groupContainer: {
     paddingHorizontal: 10,
   },
   settingOption: {
@@ -100,6 +139,7 @@ const styles = StyleSheet.create({
   settingIcon: {
     fontSize: 20,
     marginRight: 10,
+    marginLeft: 5,
     color: "black", // Change the color to your preference
   },
 });
