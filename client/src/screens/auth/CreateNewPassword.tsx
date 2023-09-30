@@ -4,9 +4,9 @@ import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 
-const ForgetPassword = ({navigation} : any) => {
-  const header = 'ลืมรหัสผ่าน'
-  const subheader = 'เราจะทำการส่ง OTP ไปยังหมายเลขโทรศัพท์ของท่าน'
+const CreateNewPassword = ({navigation} : any) => {
+  const header = 'สร้างรหัสผ่านใหม่';
+  const subheader = 'รหัสผ่านของคุณควรไม่เหมือนกับ รหัสผ่านก่อนหน้า';
 
   return(
     <View style={styles.container}>
@@ -23,11 +23,18 @@ const ForgetPassword = ({navigation} : any) => {
               <View style={{width: '85%', paddingTop: 10, paddingBottom: 20}}>
                 <TextInput
                   style={[styles.input]}
-                  placeholder='หมายเลขโทรศัพท์'
+                  placeholder='รหัสผ่าน'
                   placeholderTextColor="#856464"
+                  secureTextEntry={true}
+                />
+                <TextInput
+                  style={[styles.input]}
+                  placeholder='ยืนยันรหัสผ่าน'
+                  placeholderTextColor="#856464"
+                  secureTextEntry={true}
                 />
                 <View style={{marginTop: 20}}>
-                  <Button title="Next" to="VerificationScreen" buttonWidth={100} buttonHeight={10} navigation={navigation}/>
+                  <Button title="ยืนยัน" to="SignIn" buttonWidth={100} buttonHeight={10} navigation={navigation}/>
                 </View>
               </View>
             </View>
@@ -37,6 +44,6 @@ const ForgetPassword = ({navigation} : any) => {
       </Layer>
     </View>
   );
-}
+};
 
-export default ForgetPassword
+export default CreateNewPassword;
