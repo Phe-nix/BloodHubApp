@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "reac
 import { Button } from '../../core/components/Button';
 import Layer from '../../core/layouts/Layout';
 
-export const SignInScreen = ({navigation} : any) => {
+const SignInScreen = ({navigation} : any) => {
   return (
     <View style={styles.container}>
       <Layer>
@@ -28,7 +28,9 @@ export const SignInScreen = ({navigation} : any) => {
               placeholder='รหัสผ่าน'
               secureTextEntry={true}
             />
-            <Text style={{color: '#FF6D6E', textAlign: 'right', width: '100%', marginTop: 20}}>ลืมรหัสผ่าน</Text>
+            <TouchableOpacity onPress={()=>{navigation.navigate("ForgetPassword")}}>
+              <Text style={{color: '#FF6D6E', textAlign: 'right', width: '100%', marginTop: 20}}>ลืมรหัสผ่าน</Text>
+            </TouchableOpacity>
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 30}}>
             <Button title={'เข้าสู่ระบบ'} to="Home" buttonWidth={120} buttonHeight={10} navigation={navigation}/>
@@ -80,3 +82,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   }
 })
+
+export default SignInScreen

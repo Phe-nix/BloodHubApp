@@ -21,14 +21,18 @@ export const SignUpScreen = ({navigation} : any) => {
           <View style={{marginTop: 20, width: '85%'}}>
             <TextInput
               style={[styles.input, {marginTop: 20}]}
-              placeholder='รหัสบัตรประชาชน / หมายเลขโทรศัพท์'
+              placeholder='รหัสบัตรประชาชน'
             />
             <TextInput
               style={[styles.input, {marginTop: 20}]}
               placeholder='รหัสผ่าน'
               secureTextEntry={true}
             />
-            <Text style={{color: '#FF6D6E', textAlign: 'right', width: '100%', marginTop: 20}}>ลืมรหัสผ่าน</Text>
+            <TextInput
+              style={[styles.input, {marginTop: 20}]}
+              placeholder='ยืนยันรหัสผ่าน'
+              secureTextEntry={true}
+            />
           </View>
           <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 30}}>
             <Button title={'สมัครสมาชิก'} to="CreateAccount" buttonWidth={120} buttonHeight={10} navigation={navigation}/>
@@ -85,3 +89,5 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   }
 })
+
+export default SignUpScreen

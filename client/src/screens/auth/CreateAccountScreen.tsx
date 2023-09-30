@@ -4,7 +4,7 @@ import Layer from "../../core/layouts/Layout";
 
 const {width, height} = Dimensions.get('screen')
 
-export const CreateAccountScreen = ({navigation} : any) => {
+const CreateAccountScreen = ({navigation} : any) => {
   return(
     <View style={styles.container}>
       <Layer>
@@ -48,19 +48,20 @@ export const CreateAccountScreen = ({navigation} : any) => {
 
             <Text style={styles.headerPanel}>บัตรประชาชน</Text>
             <View style={[styles.panel, {flex: 1}]}>
-              <View style={{width: '85%', justifyContent: 'center', alignItems: 'center'}}>
-                <Image source={require("../../../assets/citizen1.png")}/>
+              <View style={{width: '85%', paddingTop: 10, paddingBottom: 20, justifyContent: 'center', alignItems: 'center'}}>
+                <Image style={{marginTop: 20}} source={require("../../../assets/citizen1.png")}/>
                 <TextInput
                   style={[styles.input, {marginTop: 20}]}
                 />
-                <Image source={require("../../../assets/citizen2.png")}/>
+                <Image style={{marginTop: 40}}  source={require("../../../assets/citizen2.png")}/>
                 <TextInput
                   style={[styles.input, {marginTop: 20}]}
                 />
               </View>
             </View>
-
-            <Button title="Next" to="Home" buttonWidth={100} buttonHeight={10} navigation={navigation}/>
+            <View style={{marginTop: 20}}>
+              <Button title="Next" to="Home" buttonWidth={100} buttonHeight={10} navigation={navigation}/>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </Layer>
@@ -90,7 +91,6 @@ const styles = StyleSheet.create({
   subheader: {
     fontSize: 18,
     color: '#4D4D4D',
-    marginHorizontal: 50,
     lineHeight: 27,
     justifyContent: 'center',
     alignItems: 'center',
@@ -114,3 +114,5 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   }
 })
+
+export default CreateAccountScreen
