@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import AppHeader from '../../core/components/AppHeader';
 import { Button } from '../../core/components/Button';
 import Layer from '../../core/layouts/Layout';
-import { styles } from './auth.styles';
+import { styles } from './Auth.styles';
 
 const SignInScreen = ({navigation} : any) => {
   const header = 'เข้าสู่ระบบ';
@@ -35,7 +35,7 @@ const SignInScreen = ({navigation} : any) => {
               </TouchableOpacity>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 30}}>
-              <Button title={'เข้าสู่ระบบ'} to="Home" buttonWidth={120} buttonHeight={10} navigation={navigation}/>
+              <Button title={'เข้าสู่ระบบ'} to="App" buttonWidth={120} buttonHeight={10} navigation={navigation}/>
               <View style={{flexDirection: 'row', alignItems: 'center', marginVertical: 10}}>
                 <Text style={{marginVertical: 10, marginHorizontal: 10}}>ยังไม่เป็นสมาชิก ?</Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate("SignUp")}}>

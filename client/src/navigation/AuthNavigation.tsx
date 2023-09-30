@@ -1,22 +1,25 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CreateAccountScreen from "../screens/auth/CreateAccountScreen";
-import CreateNewPassword from "../screens/auth/CreateNewPassword";
-import ForgetPassword from "../screens/auth/ForgetPassword";
-import SignInScreen from "../screens/auth/SignInScreen";
-import SignUpScreen from '../screens/auth/SignUpScreen';
-import VerificationScreen from "../screens/auth/VerificationScreen";
+import { GetStarted } from "../screens";
+import CreateAccountScreen from "../screens/Auth/CreateAccountScreen";
+import CreateNewPassword from "../screens/Auth/CreateNewPassword";
+import ForgetPassword from "../screens/Auth/ForgetPassword";
+import SignInScreen from "../screens/Auth/SignInScreen";
+import SignUpScreen from '../screens/Auth/SignUpScreen';
+import VerificationScreen from "../screens/Auth/VerificationScreen";
 
 const Stack = createNativeStackNavigator();
 
 export const AuthNaivgation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SignUp"
+      initialRouteName="GetStarted"
       screenOptions={{
         title: '',
         headerTransparent: true,
       }}
-    >
+    > 
+      <Stack.Screen name="GetStarted" component={GetStarted}
+      />
       <Stack.Screen name="SignIn" component={SignInScreen}
       />
       <Stack.Screen name="SignUp" component={SignUpScreen}
