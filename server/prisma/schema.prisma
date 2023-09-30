@@ -8,18 +8,104 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  posts Post[]
+enum BloodType {
+  A_POSITIVE
+  B_POSITIVE
+  O_POSITIVE
+  AB_POSITIVE
+  A_NEGATIVE
+  B_NEGATIVE
+  O_NEGATIVE
+  AB_NEGATIVE
 }
 
-model Post {
-  id        Int      @default(autoincrement()) @id
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+enum Prefix {
+  Mr
+  Ms
+  Mrs
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id                  String                @id @unique @default(cuid()) 
+  image_src           String?
+  prefix              Prefix
+  first_name          String
+  last_name           String
+  dob                 DateTime
+  phone_number        String                @unique
+  gender              Gender
+  citizen_id          String
+  citizen_back        String
+  address             String?
+  password            String
+  created_at          DateTime              @default(now())
+  updated_at          DateTime?
+
+}
+
+enum PostType {
+  NORMAL
+  EMERGENCY
+}
+
+model News {
+  id          String    @id @unique @default(cuid())
+  name        String
+  description String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+  deleted_at  DateTime?
+}
+
+model Reservation_Slots {
+  id           String         @id @unique @default(cuid())
+  reserve_date DateTime
+  reserve_time DateTime
+  created_at   DateTime       @default(now())
+  updated_at   DateTime?
+  cancelled_at DateTime?
+  place_id     String
+}
+
+
+
+enum AppointmentStatus {
+  BOOKED
+  COMPLETED
+  CANCELLED
+}
+
+model Appointments {
+  id                   String                 @id @unique @default(cuid())
+  status               AppointmentStatus
+  created_at           DateTime               @default(now())
+  cancelled_at         DateTime?
+  updated_at           DateTime?
+  reservation_slot_id  String                 @unique
+  donator_id           String
+}
+
+
+enum DonationStatus {
+  PENDING
+  APPOINTED
+  DENIED
+}
+
+model Donation_History {
+  id                     String                  @id @unique @default(cuid())
+  rewarded_points        Int
+  blood_quality_status   String?
+  blood_type             BloodType
+  status                 DonationStatus
+  created_at             DateTime                @default(now())
+  updated_at             DateTime?
+  deleted_at             DateTime?
+  reservation_id         String
+  post_donation_db_id    String
 }
