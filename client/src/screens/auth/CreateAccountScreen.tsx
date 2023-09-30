@@ -2,7 +2,7 @@ import { Dimensions, Image, SafeAreaView, ScrollView, Text, TextInput, View } fr
 import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
-import { styles } from "./Auth.styles";
+import { styles } from "./auth.styles";
 
 const {width, height} = Dimensions.get('screen')
 

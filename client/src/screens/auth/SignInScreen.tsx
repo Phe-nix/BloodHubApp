@@ -3,7 +3,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import AppHeader from '../../core/components/AppHeader';
 import { Button } from '../../core/components/Button';
 import Layer from '../../core/layouts/Layout';
-import { styles } from './Auth.styles';
+import { styles } from './auth.styles';
 
 const SignInScreen = ({navigation} : any) => {
   const header = 'เข้าสู่ระบบ';
