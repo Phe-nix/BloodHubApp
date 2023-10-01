@@ -9,7 +9,6 @@ import HelpCenterScreen from "../screens/Settings/HelpCenterScreen";
 import AboutScreen from "../screens/Settings/AboutScreen";
 import SettingScreen from "../screens/Settings/SettingScreen";
 import AddressScreen from "../screens/Settings/AddressScreen";
-import SignInScreen from "../screens/auth/SignInScreen";
 import { TouchableOpacity, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -47,7 +46,6 @@ const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
       <tab.Screen name="About" component={AboutScreen} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
-      <tab.Screen name="SignIn" component={SignInScreen} />
     </tab.Navigator>
   );
 };
