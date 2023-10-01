@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  TextInput, // Import TextInput from react-native
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
+import TextInputWithLabel from "../../core/components/TextInputWithLabel";
 
 const ProfileEditScreen = ({ navigation }: any) => {
   const [prefix, setPrefix] = useState("Tinnaphoom");
@@ -24,12 +24,11 @@ const ProfileEditScreen = ({ navigation }: any) => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [congenitalDisease, setCongenitalDisease] = useState("");
+  const handleProfileImageEdit = () => {
 
-  // Function to handle the save action
+    console.log("Profile image clicked for selection/edit");
+  };
   const handleSave = () => {
-    // You can perform save logic here, but for now, just update the state
-    // with the user input
-    // Example:
     const userData = {
       prefix,
       name,
@@ -49,122 +48,61 @@ const ProfileEditScreen = ({ navigation }: any) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.profileImageContainer}>
-        <View style={styles.profileImage}></View>
-        <Text style={styles.changeProfileImageText}>Change Profile Photo</Text>
-      </View>
-
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Prefix</Text>
-        <View style={styles.pickerContainer}>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            value={prefix}
-            onValueChange={(value) => setBloodGroup(value)}
-            items={[
-              { label: "Mr.", value: "Mr." },
-              { label: "Ms.", value: "Ms." },
-              { label: "Mrs.", value: "Mrs." },
-            ]}
-          />
+      <TouchableOpacity onPress={handleProfileImageEdit}>
+        <View style={styles.profileImageContainer}>
+          <View style={styles.profileImage}></View>
         </View>
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Name</Text>
-        <TextInput
-          style={styles.fieldValue}
-          value={name}
-          onChangeText={(text) => setName(text)}
-          placeholder="Enter name"
-        />
-      </View>
+      <TextInputWithLabel
+        label="Prefix"
+        value={prefix}
+        onChangeText={(text) => setPrefix(text)}
+        placeholder="Enter prefix"
+      />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Surname</Text>
-        <TextInput
-          style={styles.fieldValue}
-          value={surname}
-          onChangeText={(text) => setSurname(text)}
-          placeholder="Enter surname"
-        />
-      </View>
+      <TextInputWithLabel
+        label="Name"
+        value={name}
+        onChangeText={(text) => setName(text)}
+        placeholder="Enter name"
+      />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Email</Text>
-        <View style={styles.inputWithIcon}>
-          <TextInput
-            style={[styles.fieldValue]}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            placeholder="Enter email"
-          />
-          <FontAwesome
-            name="pencil"
-            size={18}
-            color="black"
-            style={styles.editIcon}
-          />
-        </View>
-      </View>
+      <TextInputWithLabel
+        label="Surname"
+        value={surname}
+        onChangeText={(text) => setSurname(text)}
+        placeholder="Enter surname"
+      />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Phone Number</Text>
-        <View style={styles.inputWithIcon}>
-          <TextInput
-            style={styles.fieldValue}
-            value={phoneNumber}
-            onChangeText={(text) => setPhoneNumber(text)}
-            placeholder="Enter phone number"
-          />
-          <FontAwesome
-            name="pencil"
-            size={18}
-            color="black"
-            style={styles.editIcon}
-          />
-        </View>
-      </View>
+      <TextInputWithLabel
+        label="Email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+        placeholder="Enter email"
+      />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Password</Text>
-        <View style={styles.inputWithIcon}>
-          <TextInput
-            style={styles.fieldValue}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            placeholder="Enter password"
-            secureTextEntry={true}
-          />
-          <FontAwesome
-            name="pencil"
-            size={18}
-            color="black"
-            style={styles.editIcon}
-          />
-        </View>
-      </View>
+      <TextInputWithLabel
+        label="Phone Number"
+        value={phoneNumber}
+        onChangeText={(text) => setPhoneNumber(text)}
+        placeholder="Enter phone number"
+      />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Blood Type</Text>
-        <View style={styles.pickerContainer}>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            value={bloodGroup}
-            onValueChange={(value) => setBloodGroup(value)}
-            items={[
-              { label: "A+", value: "A+" },
-              { label: "B+", value: "B+" },
-              { label: "AB+", value: "AB+" },
-              { label: "O+", value: "O+" },
-              { label: "A-", value: "A-" },
-              { label: "B-", value: "B-" },
-              { label: "AB-", value: "AB-" },
-              { label: "O-", value: "O-" },
-            ]}
-          />
-        </View>
-      </View>
+      <TextInputWithLabel
+        label="Password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        placeholder="Enter password"
+        secureTextEntry={true}
+      />
+
+      <TextInputWithLabel
+        label="Blood Type"
+        value={bloodGroup}
+        onChangeText={(text) => setBloodGroup(text)}
+        placeholder="Enter blood type"
+      />
 
       <View style={styles.genderTitleContainer}>
         <Text style={[styles.fieldTitle]}>Gender</Text>
@@ -216,15 +154,12 @@ const ProfileEditScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>DoB</Text>
-        <TextInput
-          style={styles.fieldValue}
-          value={dateOfBirth}
-          onChangeText={(text) => setDateOfBirth(text)}
-          placeholder="Enter date of birth"
-        />
-      </View>
+      <TextInputWithLabel
+        label="DoB"
+        value={dateOfBirth}
+        onChangeText={(text) => setDateOfBirth(text)}
+        placeholder="Enter date of birth"
+      />
 
       <View style={styles.fieldContainer}>
         <Text style={styles.fieldTitle}>Weight</Text>
@@ -252,15 +187,12 @@ const ProfileEditScreen = ({ navigation }: any) => {
         </View>
       </View>
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Congenital Disease</Text>
-        <TextInput
-          style={styles.fieldValue}
-          value={congenitalDisease}
-          onChangeText={(text) => setCongenitalDisease(text)}
-          placeholder="Enter congenital disease"
-        />
-      </View>
+      <TextInputWithLabel
+        label="Congenital Disease"
+        value={congenitalDisease}
+        onChangeText={(text) => setCongenitalDisease(text)}
+        placeholder="Enter congenital disease"
+      />
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
@@ -293,17 +225,6 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: "#ED8085",
     borderRadius: 50,
-    marginBottom: 10,
-  },
-  changeProfileImageText: {
-    color: "#ED8085",
-    fontSize: 16,
-  },
-  fieldContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 12,
   },
   genderTitleContainer: {
     marginLeft: 170,
@@ -335,9 +256,6 @@ const styles = StyleSheet.create({
     borderColor: "#ED8085",
     padding: 10,
   },
-  genderIcon: {
-    marginBottom: 8,
-  },
   selectedGender: {
     backgroundColor: "#ED8085",
     opacity: 0.7,
@@ -345,18 +263,6 @@ const styles = StyleSheet.create({
   genderText: {
     fontSize: 16,
     color: "#ED8085",
-  },
-  logoutButton: {
-    backgroundColor: "#ED8085",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  logoutButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 18,
   },
   inputWithIcon: {
     flexDirection: "row",
@@ -400,16 +306,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputAndroid: {
-    ...styles.fieldValue,
-    flex: 1,
-  },
-  inputIOS: {
-    ...styles.fieldValue,
-    flex: 1,
+  fieldContainer: { // Add this fieldContainer style
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 
