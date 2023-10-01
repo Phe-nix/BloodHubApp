@@ -11,6 +11,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 
+
 const ProfileEditScreen = ({ navigation }: any) => {
   const [prefix, setPrefix] = useState("Tinnaphoom");
   const [name, setName] = useState("");
@@ -252,7 +253,7 @@ const ProfileEditScreen = ({ navigation }: any) => {
           title="Logout"
           buttonWidth={30}
           buttonHeight={15}
-          to="SignUp"
+          to="SignIn"
           navigation={navigation}
         />
       </View>
