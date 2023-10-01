@@ -15,7 +15,7 @@ const ProfileEditScreen = ({ navigation }: any) => {
           title="Change Location"
           buttonWidth={70}
           buttonHeight={15}
-          to="Address"
+          to="Edit My Address"
           navigation={navigation}
         />
     </View>

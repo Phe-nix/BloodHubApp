@@ -11,7 +11,6 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 
-
 const ProfileEditScreen = ({ navigation }: any) => {
   const [prefix, setPrefix] = useState("Tinnaphoom");
   const [name, setName] = useState("");
@@ -47,7 +46,6 @@ const ProfileEditScreen = ({ navigation }: any) => {
     };
     console.log("User Data to be saved:", userData);
   };
-
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -180,8 +178,19 @@ const ProfileEditScreen = ({ navigation }: any) => {
           ]}
           onPress={() => setGender("male")}
         >
-          <FontAwesome name="mars" size={18} color="black" />
-          <Text style={styles.genderText}>Male</Text>
+          <FontAwesome
+            name="mars"
+            size={18}
+            color={gender === "male" ? "white" : "#ED8085"}
+          />
+          <Text
+            style={[
+              styles.genderText,
+              gender === "male" ? { color: "white" } : null,
+            ]}
+          >
+            Male
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -191,8 +200,19 @@ const ProfileEditScreen = ({ navigation }: any) => {
           ]}
           onPress={() => setGender("female")}
         >
-          <FontAwesome name="venus" size={18} color="black" />
-          <Text style={styles.genderText}>Female</Text>
+          <FontAwesome
+            name="venus"
+            size={18}
+            color={gender === "female" ? "white" : "#ED8085"}
+          />
+          <Text
+            style={[
+              styles.genderText,
+              gender === "female" ? { color: "white" } : null,
+            ]}
+          >
+            Female
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -242,11 +262,8 @@ const ProfileEditScreen = ({ navigation }: any) => {
         />
       </View>
 
-	  <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleSave}
-        >
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
         <Button
@@ -257,7 +274,6 @@ const ProfileEditScreen = ({ navigation }: any) => {
           navigation={navigation}
         />
       </View>
-
     </ScrollView>
   );
 };
@@ -316,7 +332,7 @@ const styles = StyleSheet.create({
     margin: 4,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#ED8085",
     padding: 10,
   },
   genderIcon: {
@@ -324,10 +340,11 @@ const styles = StyleSheet.create({
   },
   selectedGender: {
     backgroundColor: "#ED8085",
-    opacity: 0.8,
+    opacity: 0.7,
   },
   genderText: {
     fontSize: 16,
+    color: "#ED8085",
   },
   logoutButton: {
     backgroundColor: "#ED8085",
@@ -363,27 +380,26 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   buttonContainer: {
-	alignItems: "center",
-	flexDirection: "row",
-	justifyContent: "space-between",
-	marginTop: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 5,
   },
   saveButton: {
-	backgroundColor: "white", // You can change the color as needed
-	borderRadius: 100,
-	alignItems: "center",
-	justifyContent: "center",
-	width: 250,
-	height: 55,
-	borderWidth: 2,
-	borderColor: "#ED8085",
+    backgroundColor: "white", // You can change the color as needed
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 250,
+    height: 55,
+    borderWidth: 2,
+    borderColor: "#ED8085",
   },
   saveButtonText: {
     color: "#ED8085",
     fontWeight: "bold",
     fontSize: 18,
   },
-
 });
 
 const pickerSelectStyles = StyleSheet.create({
@@ -395,7 +411,6 @@ const pickerSelectStyles = StyleSheet.create({
     ...styles.fieldValue,
     flex: 1,
   },
-
 });
 
 export default ProfileEditScreen;

@@ -46,7 +46,7 @@ const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="Bookmark" component={BookmarkScreen} />
       <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
       <tab.Screen name="About" component={AboutScreen} />
-      <tab.Screen name="Address" component={AddressScreen} />
+      <tab.Screen name="Edit My Address" component={AddressScreen} />
       <tab.Screen name="SignIn" component={SignInScreen} />
     </tab.Navigator>
   );
