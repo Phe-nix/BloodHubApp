@@ -40,7 +40,7 @@ model User {
   phone_number        String                @unique
   gender              Gender
   citizen_id          String
-  citizen_back        String
+  citizenBack         String @map("citizen_back")
   address             String?
   password            String
   created_at          DateTime              @default(now())

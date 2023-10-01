@@ -3,6 +3,8 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from "react-nati
 import { Feather, FontAwesome } from "@expo/vector-icons"; // Assuming you're using Expo for FontAwesome
 import { AntDesign } from "@expo/vector-icons";
 
+
+
 type SectionHeaderProps = {
   title: string;
 };
@@ -19,31 +21,33 @@ type AntDesignIcon =
 type SettingOptionProps = {
   title: string;
   icon: AntDesignIcon;
+  navigation?: any;
+  to?: string
 };
 
-const SettingScreen: React.FC = () => {
+const SettingScreen: React.FC = ({navigation}:any) => {
   return (
     <ScrollView style={styles.container}>
       <SectionHeader title="General Settings" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="My Profile" icon="user" />
-          <SettingOption title="My Address" icon="home" />
-          <SettingOption title="Notifications" icon="bell" />
+          <SettingOption title="My Profile" icon="user" navigation={navigation} to ="MyProfile"/>
+          <SettingOption title="My Address" icon="home" navigation={navigation} to ="EditAddress"/>
+          <SettingOption title="Notifications" icon="bell" navigation={navigation} to ="EditNotification"/>
         </View>
       </View>
       <SectionHeader title="Information" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="History" icon="history" />
-          <SettingOption title="Bookmarks" icon="bookmark" />
+          <SettingOption title="History" icon="history" navigation={navigation} to ="History"/>
+          <SettingOption title="Bookmarks" icon="bookmark" navigation={navigation} to ="Bookmark"/>
         </View>
       </View>
       <SectionHeader title="Support" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="Help Center" icon="question-circle" />
-          <SettingOption title="About" icon="info-circle" />
+          <SettingOption title="Help Center" icon="question-circle" navigation={navigation} to ="HelpCenter"/>
+          <SettingOption title="About" icon="info-circle" navigation={navigation} to ="About"/>
         </View>
       </View>
     </ScrollView>
@@ -56,8 +60,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title }) => (
   </View>
 );
 
-const SettingOption: React.FC<SettingOptionProps> = ({ title, icon }) => (
-  <TouchableOpacity style={styles.settingOption}>
+const SettingOption: React.FC<SettingOptionProps> = ({ title, icon, navigation, to } : any) => (
+  <TouchableOpacity style={styles.settingOption} onPress={()=>{navigation.navigate(to)}} >
     <View style={styles.settingTextContainer}>
       {renderIcon(icon)}
       <Text style={styles.settingOptionText}>{title}</Text>

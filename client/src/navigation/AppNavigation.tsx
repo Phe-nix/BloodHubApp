@@ -14,6 +14,7 @@ import IconHome from '../../assets/icons/icon_home.png';
 import IconNew from '../../assets/icons/icon_news.png';
 import IconPost from '../../assets/icons/icon_post.png';
 import IconSettings from '../../assets/icons/icon_settings.png';
+import SettingNavigation from './SettingNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +76,8 @@ const AppNavigation = ({ route }: any) => {
       <Tab.Screen name="Blood" component={BloodScreen} />
       <Tab.Screen name="Post" component={PostScreen} />
       <Tab.Screen name="New" component={NewScreen} />
-      <Tab.Screen name="Settings" component={SettingScreen} />
+      <Tab.Screen name="Settings" component={SettingNavigation} 
+      options={{headerShown: false}}/>
     </Tab.Navigator>
   );
 };
