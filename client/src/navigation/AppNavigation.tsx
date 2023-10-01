@@ -31,7 +31,7 @@ const AppNavigation = ({ route }: any) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Post"
+      initialRouteName="Blood"
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',

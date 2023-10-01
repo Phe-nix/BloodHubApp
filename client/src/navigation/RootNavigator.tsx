@@ -10,7 +10,7 @@ export const RootNavigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Root.Navigator
-        initialRouteName='Auth'
+        initialRouteName='App'
         screenOptions={{
           headerShown: false,
         }}
