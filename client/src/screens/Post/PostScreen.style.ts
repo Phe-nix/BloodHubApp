@@ -30,13 +30,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: '#505050',
-    height: 150,
-    justifyContent: 'center',
+    // height: 150,
     alignItems: 'center',
   },
   addIcon: {
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 30,
   },
   underline: {
     borderWidth: 0.5,
