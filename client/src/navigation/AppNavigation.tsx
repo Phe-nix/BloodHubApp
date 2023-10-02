@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import BloodScreen from '../screens/blood/BloodScreen';
 import HomeScreen from '../screens/home/HomeScreen';
@@ -40,6 +40,10 @@ const AppNavigation = ({ route }: any) => {
         tabBarLabelStyle: {
           fontWeight: 'bold',
         },
+        headerBackgroundContainerStyle: {
+          borderBottomWidth: 5, // เพิ่ม underline ด้านล่างของ Header
+          borderBottomColor: '#D9D9D9', // สีของ underline
+        },
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
           const tintColor = focused ? '#FF6D6E' : '#7B7B7B';
@@ -66,16 +70,40 @@ const AppNavigation = ({ route }: any) => {
               break;
           }
       
-          return <Image source={iconSource} style={{ tintColor }} />;
+          return (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image source={iconSource} style={{ tintColor }} />
+            </View>
+          );
         },
       })}
       
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Blood" component={BloodScreen} />
-      <Tab.Screen name="Post" component={PostScreen} />
-      <Tab.Screen name="New" component={NewScreen} />
-      <Tab.Screen name="Settings" component={SettingScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} 
+        options={{
+          title: 'โฮมเพจ'
+        }}
+      />
+      <Tab.Screen name="Blood" component={BloodScreen}
+        options={{
+          title: 'คลังเลือด'
+        }}
+      />
+      <Tab.Screen name="Post" component={PostScreen}
+        options={{
+          title: 'โพสต์',
+        }}
+      />
+      <Tab.Screen name="New" component={NewScreen} 
+        options={{
+          title: 'ข่าวสาร'
+        }}
+      />
+      <Tab.Screen name="Settings" component={SettingScreen} 
+        options={{
+          title: 'ตั้งค่า'
+        }}
+      />
     </Tab.Navigator>
   );
 };
