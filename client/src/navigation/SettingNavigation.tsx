@@ -1,16 +1,14 @@
-import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MyProfileScreen from "../screens/Settings/MyProfileScreen";
+import React from "react";
+import AboutScreen from "../screens/Settings/AboutScreen";
+import AddressScreen from "../screens/Settings/AddressScreen";
 import EditAddressScreen from "../screens/Settings/EditAddressScreen";
 import EditNotificationScreen from "../screens/Settings/EditNotificationScreen";
-import HistoryScreen from "../screens/Settings/HistoryScreen";
-import BookmarkScreen from "../screens/Settings/BookmarkScreen";
 import HelpCenterScreen from "../screens/Settings/HelpCenterScreen";
-import AboutScreen from "../screens/Settings/AboutScreen";
+import MyProfileScreen from "../screens/Settings/MyProfileScreen";
 import SettingScreen from "../screens/Settings/SettingScreen";
-import AddressScreen from "../screens/Settings/AddressScreen";
-import { TouchableOpacity, Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import BookMarkNavigation from "./BookMarkNavigation";
+import HistoryNavigation from "./HistoryNavigation";
 
 const tab = createNativeStackNavigator();
 
@@ -41,8 +39,13 @@ const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="MyProfile" component={MyProfileScreen} />
       <tab.Screen name="EditAddress" component={EditAddressScreen} />
       <tab.Screen name="EditNotification" component={EditNotificationScreen} />
-      <tab.Screen name="History" component={HistoryScreen} />
-      <tab.Screen name="Bookmark" component={BookmarkScreen} />
+
+
+      <tab.Screen name="History" component={HistoryNavigation} />
+      
+      <tab.Screen name="Bookmark" component={BookMarkNavigation} />
+
+      
       <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
       <tab.Screen name="About" component={AboutScreen} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
