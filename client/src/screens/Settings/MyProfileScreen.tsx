@@ -20,7 +20,7 @@ interface ProfileEditScreenProps {
   }
 
 const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => {
-	const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState(String);
   const [prefix, setPrefix] = useState("Tinnaphoom");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -34,22 +34,16 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
   const [height, setHeight] = useState("");
   const [congenitalDisease, setCongenitalDisease] = useState("");
 
-  const handleProfileImageEdit = async () => {
-    try {
-      const result: any = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1], // 1:1 aspect ratio (adjust as needed)
-        quality: 1, // Image quality (adjust as needed)
-      });
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsMultipleSelection: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-      if (!result.cancelled) {
-        if (result.uri) {
-          setImage(result.uri); // Set the selected image URI in state
-        }
-      }
-    } catch (error) {
-      console.error("Error picking an image:", error);
+    if (!result.canceled) {
+      setImage(result.uri);
     }
   };
 
@@ -73,11 +67,10 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity onPress={handleProfileImageEdit}>
+      <TouchableOpacity onPress={pickImage}>
         <View style={styles.profileImageContainer}>
           {image ? (
-            <Image
-              source={{ uri: image }}
+            <Image source={require("/Users/lazender/Documents/GitHub/mobile/BloodHubApp/client/assets/icon.png")}
               style={styles.profileImage}
               resizeMode="cover"
             />
