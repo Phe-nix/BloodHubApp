@@ -3,14 +3,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   ScrollView,
-  TextInput, // Import TextInput from react-native
+  TextInput,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
-import { styles } from "./style/MyProfileScreen.style";
+import { styles, pickerSelectStyles } from "./style/MyProfileScreen.style";
+import RNPickerSelect from "react-native-picker-select";
 
 const ProfileEditScreen = ({ navigation }: any) => {
   const [prefix, setPrefix] = useState("Tinnaphoom");
@@ -55,12 +55,21 @@ const ProfileEditScreen = ({ navigation }: any) => {
         </View>
       </TouchableOpacity>
 
-      <TextInputWithLabel
-        label="Prefix"
-        value={prefix}
-        onChangeText={(text) => setPrefix(text)}
-        placeholder="Enter prefix"
-      />
+      <View style={styles.fieldContainer}>
+        <Text style={styles.fieldTitle}>Prefix</Text>
+        <View style={styles.pickerContainer}>
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            value={prefix}
+            onValueChange={(value) => setBloodGroup(value)}
+            items={[
+              { label: "Mr.", value: "Mr." },
+              { label: "Ms.", value: "Ms." },
+              { label: "Mrs.", value: "Mrs." },
+            ]}
+          />
+        </View>
+      </View>
 
       <TextInputWithLabel
         label="Name"
@@ -98,15 +107,25 @@ const ProfileEditScreen = ({ navigation }: any) => {
         secureTextEntry={true}
       />
 
-      <TextInputWithLabel
-        label="Blood Type"
-        value={bloodGroup}
-        onChangeText={(text) => setBloodGroup(text)}
-        placeholder="Enter blood type"
-      />
-
-      <View style={styles.genderTitleContainer}>
-        <Text style={[styles.fieldTitle]}>Gender</Text>
+<View style={styles.fieldContainer}>
+        <Text style={styles.fieldTitle}>Blood Type</Text>
+        <View style={styles.pickerContainer}>
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            value={bloodGroup}
+            onValueChange={(value) => setBloodGroup(value)}
+            items={[
+              { label: "A+", value: "A+" },
+              { label: "B+", value: "B+" },
+              { label: "AB+", value: "AB+" },
+              { label: "O+", value: "O+" },
+              { label: "A-", value: "A-" },
+              { label: "B-", value: "B-" },
+              { label: "AB-", value: "AB-" },
+              { label: "O-", value: "O-" },
+            ]}
+          />
+        </View>
       </View>
 
       <View style={[styles.genderContainer, { marginBottom: 16 }]}>
@@ -210,4 +229,6 @@ const ProfileEditScreen = ({ navigation }: any) => {
     </ScrollView>
   );
 };
+
+
 export default ProfileEditScreen;

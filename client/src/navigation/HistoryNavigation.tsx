@@ -9,7 +9,7 @@ const HistoryNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarInactiveTintColor: 'orange',
+        tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: { fontSize: 14, fontWeight: 'bold' },
         tabBarIndicatorStyle: { backgroundColor: 'pink' },
       }}

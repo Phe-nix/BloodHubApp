@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 const News = () => {
   return(
@@ -7,5 +7,11 @@ const News = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default News;

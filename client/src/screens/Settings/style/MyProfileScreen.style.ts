@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     pickerContainer: {
       flex: 1,
       borderBottomColor: "#ED8085",
-      paddingVertical: 4,
+      marginBottom: 10,
     },
     buttonContainer: {
       alignItems: "center",
@@ -102,3 +102,14 @@ export const styles = StyleSheet.create({
     },
   });
   
+  export const pickerSelectStyles = StyleSheet.create({
+    inputAndroid: {
+      ...styles.fieldValue,
+      flex: 1,
+    },
+    inputIOS: {
+      ...styles.fieldValue,
+      flex: 1,
+    },
+  
+  });
