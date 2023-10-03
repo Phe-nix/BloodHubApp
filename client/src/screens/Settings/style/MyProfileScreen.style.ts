@@ -13,8 +13,9 @@ export const styles = StyleSheet.create({
     profileImage: {
       width: 100,
       height: 100,
-      backgroundColor: "#ED8085",
       borderRadius: 50,
+      borderWidth: 1,
+      borderColor: "#ED8085",
     },
     genderTitleContainer: {
       marginLeft: 170,

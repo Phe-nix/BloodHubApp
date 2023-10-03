@@ -1,13 +1,33 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 
 interface PostProps {
   onDelete: () => void; // Callback function for handling post deletion
 }
 
 const SmallPostBox: React.FC<PostProps> = ({ onDelete }) => {
+  const [isCircleVisible, setCircleVisible] = useState(false);
+
+  const handlerLongClick = () => {
+    // Toggle the visibility of the circle
+    setCircleVisible(!isCircleVisible);
+  };
+
+  const handleCirclePress = () => {
+    // Check if the circle is visible before handling the click event
+    if (isCircleVisible) {
+      onDelete(); // Trigger the onDelete callback
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onLongPress={handlerLongClick}>
       <View style={styles.leftContainer}>
         {/* Image */}
         <Image
@@ -19,17 +39,19 @@ const SmallPostBox: React.FC<PostProps> = ({ onDelete }) => {
 
       <View style={styles.rightContainer}>
         <View style={styles.textRight}>
-          
           <Text style={styles.name}>Suphanat Anumat</Text>
-          <TouchableOpacity onLongPress={onDelete}>
-            <View style={styles.circle} />
-          </TouchableOpacity>
+          {isCircleVisible && (
+            <TouchableOpacity 
+            onPress={handleCirclePress}>
+              <View style={styles.circle} />
+            </TouchableOpacity>
+          )}
         </View>
         <Text style={styles.date}>Date, City</Text>
         {/* Description */}
         <Text style={styles.description}>Description of the post goes here.</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -60,6 +82,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
   },
   circle: {
+    position: "absolute",
     width: 30,
     height: 30,
     borderRadius: 50,
@@ -71,7 +94,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   date: {
-    marginTop: -10,
     fontSize: 12,
     color: "gray",
   },

@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
 import { styles, pickerSelectStyles } from "./style/MyProfileScreen.style";
 import RNPickerSelect from "react-native-picker-select";
+import * as ImagePicker from "expo-image-picker";
 
-const ProfileEditScreen = ({ navigation }: any) => {
+interface ProfileEditScreenProps {
+	navigation: any;
+  }
+
+const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => {
+	const [image, setImage] = useState<string | null>(null);
   const [prefix, setPrefix] = useState("Tinnaphoom");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -25,10 +33,26 @@ const ProfileEditScreen = ({ navigation }: any) => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [congenitalDisease, setCongenitalDisease] = useState("");
-  const handleProfileImageEdit = () => {
 
-    console.log("Profile image clicked for selection/edit");
+  const handleProfileImageEdit = async () => {
+    try {
+      const result: any = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1], // 1:1 aspect ratio (adjust as needed)
+        quality: 1, // Image quality (adjust as needed)
+      });
+
+      if (!result.cancelled) {
+        if (result.uri) {
+          setImage(result.uri); // Set the selected image URI in state
+        }
+      }
+    } catch (error) {
+      console.error("Error picking an image:", error);
+    }
   };
+
   const handleSave = () => {
     const userData = {
       prefix,
@@ -51,25 +75,17 @@ const ProfileEditScreen = ({ navigation }: any) => {
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity onPress={handleProfileImageEdit}>
         <View style={styles.profileImageContainer}>
-          <View style={styles.profileImage}></View>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              style={styles.profileImage}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={styles.profileImage}></View>
+          )}
         </View>
       </TouchableOpacity>
-
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Prefix</Text>
-        <View style={styles.pickerContainer}>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            value={prefix}
-            onValueChange={(value) => setBloodGroup(value)}
-            items={[
-              { label: "Mr.", value: "Mr." },
-              { label: "Ms.", value: "Ms." },
-              { label: "Mrs.", value: "Mrs." },
-            ]}
-          />
-        </View>
-      </View>
 
       <TextInputWithLabel
         label="Name"
@@ -107,7 +123,7 @@ const ProfileEditScreen = ({ navigation }: any) => {
         secureTextEntry={true}
       />
 
-<View style={styles.fieldContainer}>
+      <View style={styles.fieldContainer}>
         <Text style={styles.fieldTitle}>Blood Type</Text>
         <View style={styles.pickerContainer}>
           <RNPickerSelect
@@ -229,6 +245,5 @@ const ProfileEditScreen = ({ navigation }: any) => {
     </ScrollView>
   );
 };
-
 
 export default ProfileEditScreen;
