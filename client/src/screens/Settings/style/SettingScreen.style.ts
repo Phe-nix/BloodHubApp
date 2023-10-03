@@ -5,9 +5,10 @@ export const styles = StyleSheet.create({
           flex: 1,
           paddingHorizontal: 20,
           paddingTop: 20,
+          backgroundColor: "white",
         },
         sectionHeader: {
-          backgroundColor: "#F2F2F2",
+          backgroundColor: "white",
           paddingVertical: 10,
           paddingLeft: 15,
           marginBottom: 10,

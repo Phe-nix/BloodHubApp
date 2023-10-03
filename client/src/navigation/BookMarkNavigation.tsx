@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import Bookmark from "../screens/Settings/tabs/News";
+import News from "../screens/Settings/tabs/News";
 import Post from "../screens/Settings/tabs/Post";
 
 const Tab = createMaterialTopTabNavigator();
@@ -15,7 +15,7 @@ const BookMarkNavigation = () => {
       }}
     >
       <Tab.Screen name="Post" component={Post} />
-      <Tab.Screen name="Appointment" component={Bookmark} />
+      <Tab.Screen name="News" component={News} />
     </Tab.Navigator>
   );
 };

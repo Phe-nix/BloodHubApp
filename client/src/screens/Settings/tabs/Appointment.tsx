@@ -10,7 +10,16 @@ const Post = () => {
   };
 
   return (
+    <View style={styles.bgcolor}>
       <SmallPostBox onDelete={handleDeletePost} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+    bgcolor:{
+        backgroundColor: "white",
+        flex: 1,
+    }
+});
 export default Post;

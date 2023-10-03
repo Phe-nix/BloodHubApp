@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "85%",
     marginTop: 15,
-    backgroundColor: "pink",
+    backgroundColor: "#FDE8E9",
     borderRadius: 20,
   },
   textRight: {

@@ -43,7 +43,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
     });
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -70,7 +70,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
       <TouchableOpacity onPress={pickImage}>
         <View style={styles.profileImageContainer}>
           {image ? (
-            <Image source={require("/Users/lazender/Documents/GitHub/mobile/BloodHubApp/client/assets/icon.png")}
+            <Image source={{ uri: image }}
               style={styles.profileImage}
               resizeMode="cover"
             />
@@ -136,7 +136,9 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
           />
         </View>
       </View>
-
+      <View style={styles.genderTitleContainer}>
+        <Text style={[styles.fieldTitle]}>Gender</Text>
+      </View>
       <View style={[styles.genderContainer, { marginBottom: 16 }]}>
         <TouchableOpacity
           style={[
