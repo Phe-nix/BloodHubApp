@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
 
-const Bookmark = () => {
+const News = () => {
   return(
     <View>
-      <Text>Bookmark</Text>
+      <Text>News</Text>
     </View>
   );
 };
 
-export default Bookmark;
+export default News;

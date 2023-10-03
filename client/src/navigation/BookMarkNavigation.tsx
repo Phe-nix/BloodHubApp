@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import Bookmark from "../screens/Settings/tabs/Bookmark";
-import Post from "../screens/Settings/tabs/post";
+import Bookmark from "../screens/Settings/tabs/News";
+import Post from "../screens/Settings/tabs/Post";
 
 const Tab = createMaterialTopTabNavigator();
 
