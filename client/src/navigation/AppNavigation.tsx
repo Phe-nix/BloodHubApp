@@ -6,7 +6,6 @@ import { Image, View } from 'react-native';
 import BloodScreen from '../screens/blood/BloodScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import NewScreen from '../screens/news/NewScreen';
-import PostScreen from '../screens/post/PostScreen';
 import SettingScreen from '../screens/Settings/SettingScreen';
 
 import IconBlood from '../../assets/icons/icon_blood.png';
@@ -14,6 +13,7 @@ import IconHome from '../../assets/icons/icon_home.png';
 import IconNew from '../../assets/icons/icon_news.png';
 import IconPost from '../../assets/icons/icon_post.png';
 import IconSettings from '../../assets/icons/icon_settings.png';
+import PostDetailScreen from '../screens/post/PostDetailScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,14 +31,17 @@ const AppNavigation = ({ route }: any) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Post"
+      initialRouteName="PostNav"
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
+          borderBottomWidth: 5,
         },
         tabBarActiveTintColor: 'orange',
         tabBarLabelStyle: {
           fontWeight: 'bold',
+          fontSize: 12,
+          marginBottom: -10,
         },
         headerBackgroundContainerStyle: {
           borderBottomWidth: 5, // เพิ่ม underline ด้านล่างของ Header
@@ -47,7 +50,6 @@ const AppNavigation = ({ route }: any) => {
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
           const tintColor = focused ? '#FF6D6E' : '#7B7B7B';
-      
           let iconSource;
       
           switch (tabName) {
@@ -57,7 +59,7 @@ const AppNavigation = ({ route }: any) => {
             case 'Blood':
               iconSource = IconBlood;
               break;
-            case 'Post':
+            case 'PostNav':
               iconSource = IconPost;
               break;
             case 'New':
