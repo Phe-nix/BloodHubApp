@@ -6,7 +6,7 @@ import { AuthNaivgation } from './AuthNavigation';
 
 const Root = createNativeStackNavigator();
 
-export const RootNavigator: React.FC = () => {
+export const RootNavigator = () => {
   return (
     <NavigationContainer>
       <Root.Navigator

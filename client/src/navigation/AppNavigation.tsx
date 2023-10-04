@@ -1,19 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 
 import BloodScreen from '../screens/blood/BloodScreen';
 import HomeScreen from '../screens/home/HomeScreen';
 import NewScreen from '../screens/news/NewScreen';
 import PostScreen from '../screens/post/PostScreen';
+import SettingScreen from '../screens/Settings/SettingScreen';
 
 import IconBlood from '../../assets/icons/icon_blood.png';
 import IconHome from '../../assets/icons/icon_home.png';
 import IconNew from '../../assets/icons/icon_news.png';
 import IconPost from '../../assets/icons/icon_post.png';
 import IconSettings from '../../assets/icons/icon_settings.png';
-import SettingNavigation from './SettingNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,19 +31,25 @@ const AppNavigation = ({ route }: any) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Settings"
+      initialRouteName="Post"
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
+          borderBottomWidth: 5,
         },
         tabBarActiveTintColor: 'orange',
         tabBarLabelStyle: {
           fontWeight: 'bold',
+          fontSize: 12,
+          marginBottom: -10,
+        },
+        headerBackgroundContainerStyle: {
+          borderBottomWidth: 5,
+          borderBottomColor: '#D9D9D9',
         },
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
           const tintColor = focused ? '#FF6D6E' : '#7B7B7B';
-      
           let iconSource;
       
           switch (tabName) {
@@ -66,17 +72,40 @@ const AppNavigation = ({ route }: any) => {
               break;
           }
       
-          return <Image source={iconSource} style={{ tintColor }} />;
+          return (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image source={iconSource} style={{ tintColor }} />
+            </View>
+          );
         },
       })}
       
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Blood" component={BloodScreen} />
-      <Tab.Screen name="Post" component={PostScreen} />
-      <Tab.Screen name="New" component={NewScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} 
+        options={{
+          title: 'โฮมเพจ'
+        }}
+      />
+      <Tab.Screen name="Blood" component={BloodScreen}
+        options={{
+          title: 'คลังเลือด'
+        }}
+      />
+      <Tab.Screen name="Post" component={PostScreen}
+        options={{
+          title: 'โพสต์',
+        }}
+      />
+      <Tab.Screen name="New" component={NewScreen} 
+        options={{
+          title: 'ข่าวสาร'
+        }}
+      />
       <Tab.Screen name="Settings" component={SettingNavigation} 
-      options={{headerShown: false}}/>
+        options={{
+          title: 'ตั้งค่า'
+        }}
+      />
     </Tab.Navigator>
   );
 };
