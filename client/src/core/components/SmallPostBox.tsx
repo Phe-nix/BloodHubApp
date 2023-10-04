@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   Image,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 interface PostProps {
@@ -31,7 +31,7 @@ const SmallPostBox: React.FC<PostProps> = ({ onDelete }) => {
       <View style={styles.leftContainer}>
         {/* Image */}
         <Image
-          source={require("/Users/lazender/Documents/GitHub/mobile/BloodHubApp/client/assets/citizen1.png")}
+          source={require("../../../assets/citizen1.png")}
           style={styles.image}
           resizeMode="cover"
         />

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 interface SmallNewsBoxProps {
   isVisible: boolean;
@@ -15,7 +15,7 @@ const SmallNewsBox: React.FC<SmallNewsBoxProps> = ({ isVisible, onBookmarkPress 
           <View style={styles.leftContainer}>
             {/* Image */}
             <Image
-              source={require("/Users/lazender/Documents/GitHub/mobile/BloodHubApp/client/assets/citizen1.png")}
+              source={require("../../../assets/citizen1.png")}
               style={styles.image}
               resizeMode="cover"
             />
