@@ -63,6 +63,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
     backgroundColor: "#FDE8E9",
     borderRadius: 20,
+    shadowRadius: 2,
+    shadowColor: "gray",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 4, height: 3 },
   },
   textRight: {
     flexDirection: "row",
