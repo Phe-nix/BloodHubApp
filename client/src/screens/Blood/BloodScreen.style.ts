@@ -1,22 +1,50 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    Container :{
+    container: {
         flex: 1
     },
-    Header : {
+    title: {
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 20,
     },
-    Text_header: {
+    hospital: {
         fontSize: 20,
         fontWeight: 'bold'
     },
-    Button : {
-        width: 100,
-        height: 100,
-        borderRadius: 100 / 2,
-        backgroundColor: "red",
-    }
+    underLine_1: {
+        borderColor: '#FFB6B6',
+        borderBottomWidth: 1,
+        marginHorizontal: 20,
+        marginTop: 20
+    },
+    chooseHospital: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    arrowButton: {
+        marginHorizontal: 10
+    },
+    hospitals: {
+        justifyContent: 'center'
+    },
+    underLine_2: {
+        borderColor: 'grey',
+        borderBottomWidth: 1,
+        marginTop: 20
+    },
+    underLine_3: {
+        borderColor: '#F0888C',
+        borderWidth: 1,
+        width: 150
+
+    },
+    hospitalName: {
+        marginTop: 10,
+        fontSize: 15
+    },
+
 
 })

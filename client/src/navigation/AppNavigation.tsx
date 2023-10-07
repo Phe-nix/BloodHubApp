@@ -4,16 +4,16 @@ import React from 'react';
 import { Image } from 'react-native';
 
 import BloodScreen from '../screens/Blood/BloodScreen';
-import HomeScreen from '../screens/Home/HomeScreen';
-import NewScreen from '../screens/News/NewScreen';
 import PostScreen from '../screens/Post/PostScreen';
 import SettingScreen from '../screens/Settings/SettingScreen';
-
-import IconBlood from '../../assets/icons/icon_blood.png';
-import IconHome from '../../assets/icons/icon_home.png';
-import IconNew from '../../assets/icons/icon_news.png';
-import IconPost from '../../assets/icons/icon_post.png';
-import IconSettings from '../../assets/icons/icon_settings.png';
+import { NewNavigation } from './NewNavigation';
+import IconBlood from '../../assets/icon/icon_blood.png';
+import IconHome from '../../assets/icon/icon_home.png';
+import IconNew from '../../assets/icon/icon_news.png';
+import IconPost from '../../assets/icon/icon_post.png';
+import IconSettings from '../../assets/icon/icon_settings.png';
+import { HomeNavigation } from './HomeNavigation';
+import NewScreen from '../screens/News/NewScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -71,10 +71,17 @@ const AppNavigation = ({ route }: any) => {
       })}
       
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeNavigation} 
+        options={{
+          headerShown: false,
+        }}
+      />
       <Tab.Screen name="Blood" component={BloodScreen} />
       <Tab.Screen name="Post" component={PostScreen} />
-      <Tab.Screen name="New" component={NewScreen} />
+      <Tab.Screen name="New" component={NewNavigation} 
+      options={{
+        headerShown: false,
+      }}/>
       <Tab.Screen name="Settings" component={SettingScreen} />
     </Tab.Navigator>
   );
