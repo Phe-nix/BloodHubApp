@@ -48,11 +48,15 @@ model User {
   disease      String?
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
-  address      Address  @relation(fields: [addressId], references: [id])
+
   addressId    String   @unique
+  address      Address  @relation(fields: [addressId], references: [id])
+  donationHistory DonationHistory[]
   post         Post[]
 }
 
+
+// แก้ relation
 model Address {
   id          String  @id @default(cuid())
   houseNo     String
@@ -63,6 +67,7 @@ model Address {
   province    String?
   country     String?
   postcode    String?
+
   user        User?
 }
 
@@ -70,6 +75,8 @@ enum caseType {
   NORMAL
   EMERGENCY
 }
+
+// ไม่มีรูปภาพให้เก็บ
 model News {
   id          String   @id @unique @default(cuid())
   title       String
@@ -78,6 +85,8 @@ model News {
   updatedAt   DateTime @updatedAt
   deleted_at  DateTime
 }
+
+// แก้ relation appointment_id
 model Post {
   id           String     @id @unique @default(cuid())
   image        String?
@@ -85,22 +94,11 @@ model Post {
   phone_number String?    @unique
   bloodType    BloodType?
   case         caseType?
-  user         User?      @relation(fields: [userId], references: [id])
   userId       String     @unique
-  appointment_id Appointment?
+  user         User      @relation(fields: [userId], references: [id])
+  // appointment_id Appointment[]
 }
 
-
-
-// model Reservation_Slots {
-//   id           String    @id @unique @default(cuid())
-//   reserve_date DateTime
-//   reserve_time DateTime
-//   created_at   DateTime  @default(now())
-//   updated_at   DateTime?
-//   cancelled_at DateTime?
-//   place_id     String
-// }
 
 enum AppointmentStatus {
   Pending
@@ -108,49 +106,61 @@ enum AppointmentStatus {
   Cancelled
 }
 
-model Appointment {
-  id                  String            @id @unique @default(cuid())
-  status              AppointmentStatus
-  created_at          DateTime          @default(now())
-  cancelled_at        DateTime?
-  reservation_slot_id String            @unique
-  donator_id          String
-  post Post @relation(fields: [postId], references: [id])
-  postId String @unique
-}
+// model Appointment {
+//   id                  String            @id @unique @default(cuid())
+//   status              AppointmentStatus
+//   created_at          DateTime          @default(now())
+//   cancelled_at        DateTime?
+//   reservation_slot_id String            @unique
+//   donator_id          String
 
-model Hospital{
-  id String @id @unique
-  hospitalImage String
-  hospitalName String
-}
-
-model BloodNeed{
-  id String @id @unique
-  aPositiveNeed Int
-  bPositiveNeed Int
-  oPositiveNeed Int
-  abPositiveNeed Int
-  aPositiveRecieve String
-  bPositiveRecieve String
-  oPositiveRecieve String
-  abPositiveRecieve String
-  aNegativeNeed Int
-  bNegativeNeed Int
-  oNegativeNeed Int
-  abNegativeNeed Int
-}
-// enum DonationStatus {
-//   PENDING
-//   APPOINTED
-//   DENIED
+//   postId String @unique
+//   post Post @relation(fields: [postId], references: [id])
 // }
 
-// model Donation_History {
-//   id         String         @id @unique @default(cuid())
-//   blood_type BloodType
-//   status     DonationStatus
-//   created_at DateTime       @default(now())
-//   updated_at DateTime?
-//   deleted_at DateTime?
-// }
+
+// แก้เป็นแต่ละ โรงพยายาบาล หรือ ทำ relation แต่ละโรงบาล
+
+model Hospital {
+  id             String   @id @default(cuid())
+  hospitalName   String
+  hospitalImg    String
+  bloodNeed      BloodNeed?
+}
+
+model BloodNeed {
+  id                 String   @id @default(cuid())
+  aPositiveNeed      Int
+  bPositiveNeed      Int
+  oPositiveNeed      Int
+  abPositiveNeed     Int
+  aPositiveReceive   String
+  bPositiveReceive   String
+  oPositiveReceive   String
+  abPositiveReceive  String
+  aNegativeNeed      Int
+  bNegativeNeed      Int
+  oNegativeNeed      Int
+  abNegativeNeed     Int
+  hospitalId         String   @unique
+  hospital           Hospital @relation(fields: [hospitalId], references: [id])
+}
+
+
+enum DonationStatus {
+  PENDING
+  APPOINTED
+  DENIED
+}
+
+model DonationHistory {
+  id         String         @id @default(cuid())
+  blood_type BloodType
+  status     DonationStatus
+  created_at DateTime       @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
