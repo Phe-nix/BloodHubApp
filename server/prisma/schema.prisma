@@ -70,6 +70,7 @@ enum caseType {
   NORMAL
   EMERGENCY
 }
+
 model News {
   id          String   @id @unique @default(cuid())
   title       String
@@ -78,19 +79,18 @@ model News {
   updatedAt   DateTime @updatedAt
   deleted_at  DateTime
 }
+
 model Post {
-  id           String     @id @unique @default(cuid())
-  image        String?
-  description  String?
-  phone_number String?    @unique
-  bloodType    BloodType?
-  case         caseType?
-  user         User?      @relation(fields: [userId], references: [id])
-  userId       String     @unique
+  id             String       @id @unique @default(cuid())
+  image          String?
+  description    String?
+  phone_number   String?      @unique
+  bloodType      BloodType?
+  case           caseType?
+  user           User?        @relation(fields: [userId], references: [id])
+  userId         String       @unique
   appointment_id Appointment?
 }
-
-
 
 // model Reservation_Slots {
 //   id           String    @id @unique @default(cuid())
@@ -115,31 +115,34 @@ model Appointment {
   cancelled_at        DateTime?
   reservation_slot_id String            @unique
   donator_id          String
-  post Post @relation(fields: [postId], references: [id])
-  postId String @unique
+  post                Post              @relation(fields: [postId], references: [id])
+  postId              String            @unique
 }
 
-model Hospital{
-  id String @id @unique
-  hospitalImage String
+model Hospital {
+  id           String @id @default(cuid())
   hospitalName String
+  bloodNeed   BloodNeed?
 }
 
-model BloodNeed{
-  id String @id @unique
-  aPositiveNeed Int
-  bPositiveNeed Int
-  oPositiveNeed Int
-  abPositiveNeed Int
-  aPositiveRecieve String
-  bPositiveRecieve String
-  oPositiveRecieve String
-  abPositiveRecieve String
-  aNegativeNeed Int
-  bNegativeNeed Int
-  oNegativeNeed Int
-  abNegativeNeed Int
+model BloodNeed {
+  id                String @id @default(cuid())
+  aPositiveNeed     Int
+  bPositiveNeed     Int
+  oPositiveNeed     Int
+  abPositiveNeed    Int
+  aPositiveReceive  String
+  bPositiveReceive  String
+  oPositiveReceive  String
+  abPositiveReceive String
+  aNegativeNeed     Int
+  bNegativeNeed     Int
+  oNegativeNeed     Int
+  abNegativeNeed    Int
+  hospitalId String   @unique
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
 }
+
 // enum DonationStatus {
 //   PENDING
 //   APPOINTED
