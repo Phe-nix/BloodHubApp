@@ -58,15 +58,29 @@ CREATE TABLE `News` (
 CREATE TABLE `Post` (
     `id` VARCHAR(191) NOT NULL,
     `image` VARCHAR(191) NULL,
-    `description` VARCHAR(191) NULL,
-    `phone_number` VARCHAR(191) NULL,
-    `bloodType` ENUM('A_POSITIVE', 'B_POSITIVE', 'O_POSITIVE', 'AB_POSITIVE', 'A_NEGATIVE', 'B_NEGATIVE', 'O_NEGATIVE', 'AB_NEGATIVE') NULL,
-    `case` ENUM('NORMAL', 'EMERGENCY') NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `phone_number` VARCHAR(191) NOT NULL,
+    `bloodType` ENUM('A_POSITIVE', 'B_POSITIVE', 'O_POSITIVE', 'AB_POSITIVE', 'A_NEGATIVE', 'B_NEGATIVE', 'O_NEGATIVE', 'AB_NEGATIVE') NOT NULL,
+    `case` ENUM('NORMAL', 'EMERGENCY') NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Post_id_key`(`id`),
-    UNIQUE INDEX `Post_phone_number_key`(`phone_number`),
-    UNIQUE INDEX `Post_userId_key`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Appointment` (
+    `id` VARCHAR(191) NOT NULL,
+    `status` ENUM('Pending', 'Completed', 'Cancelled') NOT NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `cancelled_at` DATETIME(3) NULL,
+    `reservation_slot_id` VARCHAR(191) NOT NULL,
+    `donator_id` VARCHAR(191) NOT NULL,
+    `postId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `Appointment_id_key`(`id`),
+    UNIQUE INDEX `Appointment_reservation_slot_id_key`(`reservation_slot_id`),
+    UNIQUE INDEX `Appointment_postId_key`(`postId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -118,6 +132,9 @@ ALTER TABLE `Address` ADD CONSTRAINT `Address_userId_fkey` FOREIGN KEY (`userId`
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Post`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `BloodNeed` ADD CONSTRAINT `BloodNeed_hospitalId_fkey` FOREIGN KEY (`hospitalId`) REFERENCES `Hospital`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

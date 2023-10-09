@@ -22,11 +22,11 @@ export class AuthController {
   }
 
   @Post('register')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   public async register(
     @Body() authDto: AuthRegisterDto,
     ): Promise<string> {
-    return await this.authService.register(authDto)
+   return await this.authService.register(authDto)
   }
 
   @Post('forgotPassword')

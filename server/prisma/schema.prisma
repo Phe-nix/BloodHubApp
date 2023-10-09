@@ -84,19 +84,17 @@ model News {
   deleted_at  DateTime
 }
 
-// แก้ relation appointment_id
 model Post {
   id           String     @id @unique @default(cuid())
   image        String?
-  description  String?
-  phone_number String?    @unique
-  bloodType    BloodType?
-  case         caseType?
-  userId       String     @unique
+  description  String
+  phone_number String
+  bloodType    BloodType
+  case         caseType
+  userId       String    
   user         User      @relation(fields: [userId], references: [id])
-  // appointment_id Appointment[]
+  appointment_id Appointment[]
 }
-
 
 enum AppointmentStatus {
   Pending
@@ -104,17 +102,17 @@ enum AppointmentStatus {
   Cancelled
 }
 
-// model Appointment {
-//   id                  String            @id @unique @default(cuid())
-//   status              AppointmentStatus
-//   created_at          DateTime          @default(now())
-//   cancelled_at        DateTime?
-//   reservation_slot_id String            @unique
-//   donator_id          String
+model Appointment {
+  id                  String            @id @unique @default(cuid())
+  status              AppointmentStatus
+  created_at          DateTime          @default(now())
+  cancelled_at        DateTime?
+  reservation_slot_id String            @unique
+  donator_id          String
 
-//   postId String @unique
-//   post Post @relation(fields: [postId], references: [id])
-// }
+  postId String @unique
+  post Post @relation(fields: [postId], references: [id])
+}
 
 
 // แก้เป็นแต่ละ โรงพยายาบาล หรือ ทำ relation แต่ละโรงบาล

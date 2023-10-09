@@ -9,7 +9,7 @@ export class UsersService {
     private prisma: PrismaService
   ){}
 
-  async createUser(data: Prisma.UserCreateInput): Promise<string> {
+  async createUser(data: Prisma.UserCreateInput): Promise<any> {
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [
@@ -30,7 +30,7 @@ export class UsersService {
       );
     };
 
-    const newUser = this.prisma.user.create({data});
+    const newUser = await this.prisma.user.create({data});
     return "CREATED USER";
   }
 
