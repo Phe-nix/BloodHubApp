@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { PostCreateDto } from './dto/post-create-dto';
@@ -30,6 +30,27 @@ export class PostController {
   async deletePost(@Body() postDto: PostDeleteDto): Promise<any> {
     try {
       return await this.postService.deletePost(postDto);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  @Get('getPostById/:id')
+  async getPostById(@Param('id') id: string): Promise<any> {
+    try {
+      return await this.postService.getPostById(id);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+  @Get('getAllPosts')
+  async getAllPosts(): Promise<any> {
+    try {
+      return await this.postService.getAllPost();
     } catch (error) {
       console.error(error);
       throw error;

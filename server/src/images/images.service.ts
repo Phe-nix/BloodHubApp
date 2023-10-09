@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { deleteObject, getStorage, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 @Injectable()
 export class ImagesService {
@@ -31,6 +31,15 @@ export class ImagesService {
     }).catch((error) => {
       return 
     });
+  }
+
+  async getImage(imageName: string): Promise<string>{
+    const storage = getStorage();
+    const desertRef = ref(storage, `image/${imageName}`);
+
+    const url = await getDownloadURL(desertRef)
+
+    return url;
   }
 }
 
