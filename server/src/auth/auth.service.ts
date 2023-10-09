@@ -1,6 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as crypto from 'crypto';
 import { UsersService } from 'src/users/users.service';
+import { AuthLoginDto } from './dto/auth-login.dto';
+import { AuthRegisterDto } from './dto/auth-register.dto';
+import { ResetPasswordDto } from './dto/auth-reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -8,15 +12,98 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService
   ) {}
+  
+  async login(authDto: AuthLoginDto): Promise<LoginResponseType> {
+    const user = await this.usersService.findOne(authDto.citizenId);
 
-  async signIn(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
-    if(user?.password !== pass) {
-      throw new UnauthorizedException('Password is not correct.');
+    if(!user){
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'USER NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      );
     }
-    const payload = { sub: user.userId, username: user.username };
+
+    const hashedPassword = crypto
+      .createHash('sha256')
+      .update(authDto.password)
+      .digest('hex');
+
+    if (hashedPassword !== user.password) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'INVALID PASSWORD'
+        },
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+
+    const payload = { sub: user.id }
     return {
-      assess_token: await this.jwtService.signAsync(payload),
+      access_token: this.jwtService.sign(payload),
     }
+  }
+
+  async register(authDto: AuthRegisterDto): Promise<string> {
+    const hashedPassword = crypto
+      .createHash('sha256')
+      .update(authDto.password)
+      .digest('hex');
+
+    return await this.usersService.createUser({
+      ...authDto,
+      prefix: authDto.prefix,
+      firstName: authDto.firstName,
+      lastName: authDto.lastName,
+      password: hashedPassword,
+      dob: authDto.dob,
+      phoneNumber: authDto.phoneNumber,
+      citizenId: authDto.citizenId,
+      citizenBack: authDto.citizenBack,
+    })
+  }
+
+  async forgotPassword(phoneNumber: string): Promise<string> {
+    const user = await this.usersService.findOne(phoneNumber);
+
+    if(!user){
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'USER NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    return 'OTP SENT'
+
+    // ยิง service ไปยัง phone ขอ OTP ยิง phoneNumber ไปด้วย
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<string> {
+    const user = await this.usersService.findOne(resetPasswordDto.phoneNumber);
+
+    if(!user){
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'USER NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    // เหลือ validate password
+    const hashedPassword = crypto
+      .createHash('sha256')
+      .update(resetPasswordDto.password)
+      .digest('hex');
+
+    const updateUser = await this.usersService.updatePassword(user.id, hashedPassword);
+    return 'PASSWORD UPDATED'
   }
 }

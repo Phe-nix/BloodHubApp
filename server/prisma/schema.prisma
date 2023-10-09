@@ -33,30 +33,27 @@ model User {
   id           String   @id @default(cuid())
   citizenId    String   @unique
   citizenBack  String   @unique
-  profileImage String?
   prefix       String
   firstName    String
   lastName     String
-  email        String   @unique
   phoneNumber  String   @unique
   password     String
-  bloodType    String
   dob          DateTime
-  gender       String
+  profileImage String?
+  bloodType    String?
+  gender       String?
   weight       Float?
-  height       Float
+  height       Float?
   disease      String?
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  addressId    String   @unique
-  address      Address  @relation(fields: [addressId], references: [id])
+  address      Address?
   donationHistory DonationHistory[]
   post         Post[]
 }
 
 
-// แก้ relation
 model Address {
   id          String  @id @default(cuid())
   houseNo     String
@@ -68,7 +65,8 @@ model Address {
   country     String?
   postcode    String?
 
-  user        User?
+  userId      String @unique
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum caseType {
