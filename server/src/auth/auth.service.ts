@@ -47,13 +47,13 @@ export class AuthService {
     }
   }
 
-  async register(authDto: AuthRegisterDto): Promise<string> {
+  async register(authDto: AuthRegisterDto): Promise<any> {
     const hashedPassword = crypto
       .createHash('sha256')
       .update(authDto.password)
       .digest('hex');
 
-    return await this.usersService.createUser({
+    const user = await this.usersService.createUser({
       ...authDto,
       prefix: authDto.prefix,
       firstName: authDto.firstName,
@@ -64,6 +64,10 @@ export class AuthService {
       citizenId: authDto.citizenId,
       citizenBack: authDto.citizenBack,
     })
+    return {
+      message: "USER CREATED",
+      user: user
+    }
   }
 
   async forgotPassword(phoneNumber: string): Promise<string> {

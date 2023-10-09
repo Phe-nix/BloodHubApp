@@ -31,7 +31,7 @@ export class UsersService {
     };
 
     const newUser = await this.prisma.user.create({data});
-    return "CREATED USER";
+    return newUser;
   }
 
   async updateUser(data: Prisma.UserCreateInput): Promise<AuthRegisterDto>{

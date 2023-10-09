@@ -51,6 +51,7 @@ model User {
   address      Address?
   donationHistory DonationHistory[]
   post         Post[]
+  bookmark     Bookmark[]
 }
 
 
@@ -94,6 +95,15 @@ model Post {
   userId       String    
   user         User      @relation(fields: [userId], references: [id])
   appointment_id Appointment[]
+  bookmark      Bookmark[]
+}
+
+model Bookmark {
+  id      String @id @default(cuid())
+  postId  String
+  userId  String
+  post    Post   @relation(fields: [postId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
 
 enum AppointmentStatus {

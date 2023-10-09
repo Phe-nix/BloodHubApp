@@ -3,6 +3,7 @@ import { ImagesService } from 'src/images/images.service';
 import { PrismaService } from 'src/prisma.service';
 import { PostCreateDto } from './dto/post-create-dto';
 import { PostDeleteDto } from './dto/post-delete-dto';
+import { PostGetAllDto } from './dto/post-get-all.dto';
 
 @Injectable()
 export class PostService {
@@ -32,7 +33,10 @@ export class PostService {
         await this.imageService.uploadImage(imagedto);
       }
 
-      return post;
+      return {
+        message: 'POST CREATED',
+        post: post
+      };
     } catch(error){
       console.error(error);
       throw error;
@@ -100,8 +104,19 @@ export class PostService {
     }
   }
 
-  async getAllPost(): Promise<any> {
+  async getAllPost(userId: PostGetAllDto): Promise<any> {
     const posts = await this.prisma.post.findMany();
+
+    if(!posts){
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'POST NOT FOUND'
+        },
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
     const postsWithImages = await Promise.all(posts.map(async (post) => {
       const firestoreImage = await this.imageService.getImage(post.image);
       return {
@@ -110,6 +125,24 @@ export class PostService {
       }
     }));
 
-    return postsWithImages;
+    const bookmark = await this.prisma.bookmark.findMany({
+      where: {
+        userId: userId.id
+      }
+    });
+
+    const updatedPostsWithImages = postsWithImages.map((post) => {
+      const isBookmarked = bookmark.some((book) => post.id === book.postId);
+    
+      return {
+        ...post,
+        isBookmarked
+      };
+    });
+
+    return {
+      message: 'GET ALL POSTS',
+      posts: updatedPostsWithImages
+    };
   }
 }

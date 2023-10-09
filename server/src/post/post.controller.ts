@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { PostCreateDto } from './dto/post-create-dto';
 import { PostDeleteDto } from './dto/post-delete-dto';
+import { PostGetAllDto } from './dto/post-get-all.dto';
 import { PostService } from './post.service';
 
 @Controller('posts')
@@ -47,10 +48,10 @@ export class PostController {
   }
 
 
-  @Get('getAllPosts')
-  async getAllPosts(): Promise<any> {
+  @Get('getAllPosts/:id')
+  async getAllPosts(@Param('id') userId: PostGetAllDto): Promise<any> {
     try {
-      return await this.postService.getAllPost();
+      return await this.postService.getAllPost(userId);
     } catch (error) {
       console.error(error);
       throw error;
