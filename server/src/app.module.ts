@@ -6,7 +6,18 @@ import { DonationModule } from './donation/donation.module';
 import { NewsModule } from './news/news.module';
 import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
+import { BloodModule } from './blood/blood.module';
 @Module({
-  imports: [UsersModule, AuthModule, NewsModule, PostModule, BookmarkModule, AddressModule, DonationModule, NewsModule],
+  imports: [
+    UsersModule,
+    AuthModule,
+    NewsModule,
+    PostModule,
+    BookmarkModule,
+    AddressModule,
+    DonationModule,
+    NewsModule,
+    BloodModule
+  ],
 })
 export class AppModule {}

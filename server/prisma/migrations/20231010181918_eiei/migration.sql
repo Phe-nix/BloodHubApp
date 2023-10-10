@@ -44,11 +44,11 @@ CREATE TABLE `Address` (
 -- CreateTable
 CREATE TABLE `News` (
     `id` VARCHAR(191) NOT NULL,
+    `image` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `deleted_at` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `News_id_key`(`id`),
     PRIMARY KEY (`id`)
