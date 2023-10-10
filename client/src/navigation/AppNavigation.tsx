@@ -3,12 +3,11 @@ import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import BloodScreen from '../screens/blood/BloodScreen';
-import HomeScreen from '../screens/home/HomeScreen';
-import NewScreen from '../screens/news/NewScreen';
-import PostScreen from '../screens/post/PostScreen';
-import SettingScreen from '../screens/Settings/SettingScreen';
-
+import BloodScreen from '../screens/Blood/BloodScreen';
+import HomeScreen from '../screens/Home/HomeScreen';
+import NewScreen from '../screens/News/NewScreen';
+import PostScreen from '../screens/Post/PostScreen';
+import SettingNavigation from './SettingNavigation';
 import IconBlood from '../../assets/icons/icon_blood.png';
 import IconHome from '../../assets/icons/icon_home.png';
 import IconNew from '../../assets/icons/icon_news.png';

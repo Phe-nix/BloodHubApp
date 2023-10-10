@@ -16,7 +16,7 @@ const SettingNavigation = ({ navigation }: any) => {
   return (
     <tab.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerStyle: {
           backgroundColor: "#E99999",
         },
