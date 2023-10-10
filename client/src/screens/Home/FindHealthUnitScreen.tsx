@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput, Button } from "react-native";
+import { View, StyleSheet, TextInput, Button, Text, ActivityIndicator } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
@@ -10,25 +10,23 @@ interface FindHealthUnitScreenProps {
 const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = (props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [markerCoordinates, setMarkerCoordinates] = useState({
-    latitude: 0, // Updated with the current latitude
-    longitude: 0, // Updated with the current longitude
+    latitude: 0,
+    longitude: 0,
   });
-
   const [initialRegion, setInitialRegion] = useState({
     latitude: 0,
     longitude: 0,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-
-  const [useCurrentLocation, setUseCurrentLocation] = useState(true); // Track whether to use current location
+  const [loadingLocation, setLoadingLocation] = useState(true); // Added loading state
 
   useEffect(() => {
-    // When the component mounts, get the current location and set the map's initial region
-    (async () => {
+    const getLocation = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.error("Permission to access location was denied");
+        setLoadingLocation(false); // Update loading state
         return;
       }
 
@@ -36,21 +34,21 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = (props) => {
         const location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
         setMarkerCoordinates({ latitude, longitude });
-
-        // Set the initial region based on the state
-        if (useCurrentLocation) {
-          setInitialRegion({
-            latitude,
-            longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          });
-        }
+        setInitialRegion({
+          latitude,
+          longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+        setLoadingLocation(false); // Update loading state when location is fetched
       } catch (error) {
         console.error("Error fetching current location:", error);
+        setLoadingLocation(false); // Update loading state on error
       }
-    })();
-  }, [useCurrentLocation]);
+    };
+
+    getLocation();
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -62,15 +60,6 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = (props) => {
           latitude,
           longitude,
         });
-        // Always set the initial region to the marker's location when searching
-        setInitialRegion({
-          latitude,
-          longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        });
-        // Update the state to stop using current location as the initial region
-        setUseCurrentLocation(false);
       }
     } catch (error) {
       console.error("Error fetching location:", error);
@@ -90,10 +79,21 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = (props) => {
         <Button title="Search" onPress={handleSearch} />
       </View>
 
-      {/* Map */}
-      <MapView style={styles.map} initialRegion={initialRegion}>
-        <Marker coordinate={markerCoordinates} title="Health Unit Location" />
-      </MapView>
+      {/* Display loading indicator if location is still being fetched */}
+      {loadingLocation ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text>Loading your location...</Text>
+        </View>
+      ) : (
+        // Map view once location is fetched
+        <MapView style={styles.map} initialRegion={initialRegion}>
+          <Marker
+            coordinate={markerCoordinates}
+            title="Your location"
+          />
+        </MapView>
+      )}
     </View>
   );
 };
@@ -122,6 +122,12 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
 });
 

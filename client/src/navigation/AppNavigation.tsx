@@ -30,7 +30,7 @@ const AppNavigation = ({ route }: any) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Blood"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
