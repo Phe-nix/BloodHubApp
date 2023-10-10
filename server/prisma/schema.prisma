@@ -79,6 +79,7 @@ enum caseType {
 // ไม่มีรูปภาพให้เก็บ
 model News {
   id          String   @id @unique @default(cuid())
+  image       String
   title       String
   description String
   createdAt   DateTime @default(now())
