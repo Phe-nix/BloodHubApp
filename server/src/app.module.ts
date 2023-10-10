@@ -7,6 +7,6 @@ import { NewsModule } from './news/news.module';
 import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
 @Module({
-  imports: [UsersModule, AuthModule, NewsModule, PostModule, BookmarkModule, AddressModule, DonationModule],
+  imports: [UsersModule, AuthModule, NewsModule, PostModule, BookmarkModule, AddressModule, DonationModule, NewsModule],
 })
 export class AppModule {}

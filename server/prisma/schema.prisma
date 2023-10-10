@@ -84,7 +84,6 @@ model News {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  deleted_at  DateTime
 }
 
 model Post {
