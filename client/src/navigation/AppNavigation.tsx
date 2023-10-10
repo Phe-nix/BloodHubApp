@@ -13,7 +13,6 @@ import IconNew from '../../assets/icon/icon_news.png';
 import IconPost from '../../assets/icon/icon_post.png';
 import IconSettings from '../../assets/icon/icon_settings.png';
 import { HomeNavigation } from './HomeNavigation';
-import NewScreen from '../screens/News/NewScreen';
 
 const Tab = createBottomTabNavigator();
 
