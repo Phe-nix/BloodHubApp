@@ -33,25 +33,27 @@ model User {
   id           String   @id @default(cuid())
   citizenId    String   @unique
   citizenBack  String   @unique
-  profileImage String?
   prefix       String
   firstName    String
   lastName     String
-  email        String   @unique
   phoneNumber  String   @unique
   password     String
-  bloodType    String
   dob          DateTime
-  gender       String
+  profileImage String?
+  bloodType    String?
+  gender       String?
   weight       Float?
-  height       Float
+  height       Float?
   disease      String?
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
-  address      Address  @relation(fields: [addressId], references: [id])
-  addressId    String   @unique
+
+  address      Address?
+  donationHistory DonationHistory[]
   post         Post[]
+  bookmark     Bookmark[]
 }
+
 
 model Address {
   id          String  @id @default(cuid())
@@ -63,7 +65,9 @@ model Address {
   province    String?
   country     String?
   postcode    String?
-  user        User?
+
+  userId      String @unique
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum caseType {
@@ -71,6 +75,10 @@ enum caseType {
   EMERGENCY
 }
 
+<<<<<<< HEAD
+=======
+// ไม่มีรูปภาพให้เก็บ
+>>>>>>> cbdda88c524b1a62ed8fa5289556ed8fa81284fd
 model News {
   id          String   @id @unique @default(cuid())
   title       String
@@ -81,6 +89,7 @@ model News {
 }
 
 model Post {
+<<<<<<< HEAD
   id             String       @id @unique @default(cuid())
   image          String?
   description    String?
@@ -101,6 +110,27 @@ model Post {
 //   cancelled_at DateTime?
 //   place_id     String
 // }
+=======
+  id           String     @id @unique @default(cuid())
+  image        String?
+  description  String
+  phone_number String
+  bloodType    BloodType
+  case         caseType
+  userId       String    
+  user         User      @relation(fields: [userId], references: [id])
+  appointment_id Appointment[]
+  bookmark      Bookmark[]
+}
+
+model Bookmark {
+  id      String @id @default(cuid())
+  postId  String
+  userId  String
+  post    Post   @relation(fields: [postId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+}
+>>>>>>> cbdda88c524b1a62ed8fa5289556ed8fa81284fd
 
 enum AppointmentStatus {
   Pending
@@ -115,6 +145,7 @@ model Appointment {
   cancelled_at        DateTime?
   reservation_slot_id String            @unique
   donator_id          String
+<<<<<<< HEAD
   post                Post              @relation(fields: [postId], references: [id])
   postId              String            @unique
 }
@@ -148,12 +179,56 @@ model BloodNeed {
 //   APPOINTED
 //   DENIED
 // }
+=======
 
-// model Donation_History {
-//   id         String         @id @unique @default(cuid())
-//   blood_type BloodType
-//   status     DonationStatus
-//   created_at DateTime       @default(now())
-//   updated_at DateTime?
-//   deleted_at DateTime?
-// }
+  postId String @unique
+  post Post @relation(fields: [postId], references: [id])
+}
+
+
+// แก้เป็นแต่ละ โรงพยายาบาล หรือ ทำ relation แต่ละโรงบาล
+
+model Hospital {
+  id             String   @id @default(cuid())
+  hospitalName   String
+  hospitalImg    String
+  bloodNeed      BloodNeed?
+}
+
+model BloodNeed {
+  id                 String   @id @default(cuid())
+  aPositiveNeed      Int
+  bPositiveNeed      Int
+  oPositiveNeed      Int
+  abPositiveNeed     Int
+  aPositiveReceive   String
+  bPositiveReceive   String
+  oPositiveReceive   String
+  abPositiveReceive  String
+  aNegativeNeed      Int
+  bNegativeNeed      Int
+  oNegativeNeed      Int
+  abNegativeNeed     Int
+  hospitalId         String   @unique
+  hospital           Hospital @relation(fields: [hospitalId], references: [id])
+}
+>>>>>>> cbdda88c524b1a62ed8fa5289556ed8fa81284fd
+
+
+enum DonationStatus {
+  PENDING
+  APPOINTED
+  DENIED
+}
+
+model DonationHistory {
+  id         String         @id @default(cuid())
+  blood_type BloodType
+  status     DonationStatus
+  created_at DateTime       @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
