@@ -81,15 +81,12 @@ CREATE TABLE `Bookmark` (
 CREATE TABLE `Appointment` (
     `id` VARCHAR(191) NOT NULL,
     `status` ENUM('Pending', 'Completed', 'Cancelled') NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `cancelled_at` DATETIME(3) NULL,
-    `reservation_slot_id` VARCHAR(191) NOT NULL,
-    `donator_id` VARCHAR(191) NOT NULL,
     `postId` VARCHAR(191) NOT NULL,
+    `donatorId` VARCHAR(191) NOT NULL,
+    `cancelled_at` DATETIME(3) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Appointment_id_key`(`id`),
-    UNIQUE INDEX `Appointment_reservation_slot_id_key`(`reservation_slot_id`),
-    UNIQUE INDEX `Appointment_postId_key`(`postId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -128,9 +125,8 @@ CREATE TABLE `DonationHistory` (
     `id` VARCHAR(191) NOT NULL,
     `blood_type` ENUM('A_POSITIVE', 'B_POSITIVE', 'O_POSITIVE', 'AB_POSITIVE', 'A_NEGATIVE', 'B_NEGATIVE', 'O_NEGATIVE', 'AB_NEGATIVE') NOT NULL,
     `status` ENUM('PENDING', 'APPOINTED', 'DENIED') NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
-    `deleted_at` DATETIME(3) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -147,6 +143,9 @@ ALTER TABLE `Bookmark` ADD CONSTRAINT `Bookmark_postId_fkey` FOREIGN KEY (`postI
 
 -- AddForeignKey
 ALTER TABLE `Bookmark` ADD CONSTRAINT `Bookmark_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_donatorId_fkey` FOREIGN KEY (`donatorId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_postId_fkey` FOREIGN KEY (`postId`) REFERENCES `Post`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

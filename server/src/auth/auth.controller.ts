@@ -34,7 +34,7 @@ export class AuthController {
   public async forgotPassword(
     @Body() forgotDto: ForgotPasswordDto,
     ): Promise<string> {
-    return await this.authService.forgotPassword(forgotDto.phoneNumber)
+    return await this.authService.forgotPassword(forgotDto)
   }
 
   @Post('resetPassword')

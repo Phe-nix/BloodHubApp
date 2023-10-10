@@ -27,7 +27,7 @@ export class PostService {
           bloodType: postDto.bloodType, 
           case: postDto.case,
           userId: postDto.userId
-        }
+        },
       });
       if(post){
         await this.imageService.uploadImage(imagedto);
@@ -78,12 +78,17 @@ export class PostService {
     }
   }
   
-  async updatePost(params: string): Promise<any> {}
+  async updatePost(params: string): Promise<any> {
+    
+  }
   
   async getPostById(id: string): Promise<any> {
     const post = await this.prisma.post.findFirst({
       where:{
         id: id
+      },
+      include: {
+        user: true,
       }
     });
 

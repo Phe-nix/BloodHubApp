@@ -2,11 +2,12 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { AuthRegisterDto } from 'src/auth/dto/auth-register.dto';
 import { PrismaService } from 'src/prisma.service';
+import { UserGetDto } from './dto/users-get.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private prisma: PrismaService
+    private prisma: PrismaService,
   ){}
 
   async createUser(data: Prisma.UserCreateInput): Promise<any> {
@@ -56,29 +57,35 @@ export class UsersService {
     })
   }
 
-  async findOne(userInput: string): Promise<User | null> {
+  async findOne(userDto: UserGetDto): Promise<User | null> {
     try {
-      if(userInput.length === 13){
-        const user = await this.prisma.user.findUnique({
+        const user = await this.prisma.user.findFirst({
           where: {
-            citizenId: userInput,
+            OR: [
+              { id: userDto.userId },
+              { citizenId: userDto.citizenId },
+              { phoneNumber: userDto.phoneNumber },
+            ]
           },
+          include: {
+            address: true,
+          }
         });
 
-        return user; 
-      } else if (userInput.length === 10) {
-        const user = await this.prisma.user.findUnique({
-          where: {
-            phoneNumber: userInput,
-          },
-        });
+        if(!user){
+          throw new HttpException(
+            {
+              status: HttpStatus.NOT_FOUND,
+              error: 'USER NOT FOUND'
+            },
+            HttpStatus.NOT_FOUND
+          );
+        }
 
         return user; 
-      }
-  
-    } catch (error) {
-
-      throw error;
+      } catch (error) {
+        
+        throw error;
     }
   }
 }

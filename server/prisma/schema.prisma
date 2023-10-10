@@ -49,9 +49,10 @@ model User {
   updated_at   DateTime @updatedAt
 
   address      Address?
-  donationHistory DonationHistory[]
-  post         Post[]
+  appointment  Appointment[]
   bookmark     Bookmark[]
+  post         Post[]
+  donationHistory DonationHistory[]
 }
 
 
@@ -115,12 +116,12 @@ enum AppointmentStatus {
 model Appointment {
   id                  String            @id @unique @default(cuid())
   status              AppointmentStatus
-  created_at          DateTime          @default(now())
+  postId              String 
+  donatorId           String 
   cancelled_at        DateTime?
-  reservation_slot_id String            @unique
-  donator_id          String
+  created_at          DateTime          @default(now())
 
-  postId String @unique
+  user User @relation(fields: [donatorId], references: [id])
   post Post @relation(fields: [postId], references: [id])
 }
 
@@ -163,10 +164,8 @@ model DonationHistory {
   id         String         @id @default(cuid())
   blood_type BloodType
   status     DonationStatus
+  updated_at DateTime?      @updatedAt
   created_at DateTime       @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-
-  userId String
-  user User @relation(fields: [userId], references: [id])
+  userId     String
+  user       User           @relation(fields: [userId], references: [id])
 }

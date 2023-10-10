@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
 import { UsersService } from 'src/users/users.service';
+import { ForgotPasswordDto } from './dto/auth-forgot-password.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ResetPasswordDto } from './dto/auth-reset-password.dto';
@@ -14,7 +15,7 @@ export class AuthService {
   ) {}
   
   async login(authDto: AuthLoginDto): Promise<LoginResponseType> {
-    const user = await this.usersService.findOne(authDto.citizenId);
+    const user = await this.usersService.findOne(authDto);
 
     if(!user){
       throw new HttpException(
@@ -70,8 +71,8 @@ export class AuthService {
     }
   }
 
-  async forgotPassword(phoneNumber: string): Promise<string> {
-    const user = await this.usersService.findOne(phoneNumber);
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
+    const user = await this.usersService.findOne(forgotPasswordDto);
 
     if(!user){
       throw new HttpException(
@@ -89,7 +90,7 @@ export class AuthService {
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<string> {
-    const user = await this.usersService.findOne(resetPasswordDto.phoneNumber);
+    const user = await this.usersService.findOne(resetPasswordDto);
 
     if(!user){
       throw new HttpException(
