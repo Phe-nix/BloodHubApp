@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from "react-native";
-import MapView, { Marker, Region } from 'react-native-maps';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Button,
+  ActivityIndicator,
+  Text,
+  ScrollView,
+} from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 import { FontAwesome } from "@expo/vector-icons";
 import { styles } from "./style/AddressScreen.style";
-import * as Location from "expo-location";
 
-const LocationScreen = () => {
-  const [address, setAddress] = useState("");
-  const [houseNo, setHouseNo] = useState("");
-  const [district, setDistrict] = useState("");
-  const [province, setProvince] = useState("");
-  const [region, setRegion] = useState<Region | null>(null);
+interface LocationScreenProps {
+  // Define any props your component needs here
+}
+
+const LocationScreen: React.FC<LocationScreenProps> = (props) => {
+  const [region, setRegion] = useState({
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.01, // Adjust this value for initial zoom level
+    longitudeDelta: 0.01, // Adjust this value for initial zoom level
+  });
   const [loadingLocation, setLoadingLocation] = useState(true); // Added loading state
 
   useEffect(() => {
@@ -24,11 +37,12 @@ const LocationScreen = () => {
 
       try {
         const location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords;
         setRegion({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
+          latitude,
+          longitude,
+          latitudeDelta: 0.01, // Adjust this value for loading zoom level
+          longitudeDelta: 0.01, // Adjust this value for loading zoom level
         });
         setLoadingLocation(false); // Update loading state when location is fetched
       } catch (error) {
@@ -46,53 +60,49 @@ const LocationScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Address"
-        value={address}
-        onChangeText={(text) => setAddress(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="House No. / Moo / Soi"
-        value={houseNo}
-        onChangeText={(text) => setHouseNo(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Sub-District / District"
-        value={district}
-        onChangeText={(text) => setDistrict(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Province / Country / Postal Code"
-        value={province}
-        onChangeText={(text) => setProvince(text)}
-      />
+      <View>
+        <TextInput style={styles.input} placeholder="Address" />
+        <TextInput style={styles.input} placeholder="House No. / Moo / Soi" />
+        <TextInput style={styles.input} placeholder="Sub-District / District" />
+        <TextInput
+          style={styles.input}
+          placeholder="Province / Country / Postal Code"
+        />
+      </View>
+
       <View style={styles.panel}>
         <View style={styles.panelContent}>
-          <FontAwesome name="map-marker" size={24} color="#ED8085" style={styles.icon} />
+          <FontAwesome
+            name="map-marker"
+            size={24}
+            color="#ED8085"
+            style={styles.icon}
+          />
           <Text style={styles.panelText}>Place an accurate pin</Text>
         </View>
-        <Text style={{ color: "white" }}>Click the map to adjust.</Text>
+        <Text style={styles.panelText}>Click the map to adjust.</Text>
       </View>
 
       {loadingLocation ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <ActivityIndicator size="large" color="#fff" />
           <Text>Loading your location...</Text>
         </View>
       ) : (
         <MapView style={styles.map} region={region}>
-          {/* Add a marker for the selected location */}
-          <Marker coordinate={region} />
+          <Marker
+            coordinate={{
+              latitude: region.latitude,
+              longitude: region.longitude,
+            }}
+            title="Your location"
+          />
         </MapView>
       )}
-
       <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
         <Text style={styles.saveButtonText}>Save</Text>
       </TouchableOpacity>
+      
     </ScrollView>
   );
 };
