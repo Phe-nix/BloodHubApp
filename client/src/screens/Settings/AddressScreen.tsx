@@ -50,7 +50,6 @@ const LocationScreen: React.FC<LocationScreenProps> = (props) => {
         setLoadingLocation(false); // Update loading state on error
       }
     };
-
     getLocation();
   }, []);
 
