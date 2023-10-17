@@ -16,7 +16,7 @@ export const HomeNavigation = () => {
                 },
             }}
         >
-            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="HomePage" component={Home} />
             <Tab.Screen name="Donate Request" component={DonateRequestScreen} />
             <Tab.Screen name="My Appointment" component={MyAppointmentScreen} />
             <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} />

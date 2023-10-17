@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'white',
     },
     title: {
         alignItems: 'center',
@@ -39,7 +40,6 @@ export const styles = StyleSheet.create({
         borderColor: '#F0888C',
         borderWidth: 1,
         width: 150
-
     },
     hospitalName: {
         marginTop: 10,

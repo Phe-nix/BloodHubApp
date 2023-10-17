@@ -52,11 +52,11 @@ export const styles = StyleSheet.create({
     },
     description: {
         fontSize: 15,
-        margintop: 10
+        marginTop: 10
     },
     pending: {
         color: 'orange',
-        fontsize: 12,
+        fontSize: 12,
         textAlign: 'right',
         marginRight: 10
     }
