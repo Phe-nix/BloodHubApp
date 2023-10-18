@@ -106,10 +106,26 @@ export class NewsService {
 
   async updateNews(image: Express.Multer.File, newsDto: NewsUpdateDto): Promise<any>{
     try {
+      const oldNews = await this.prismaSerivce.news.findFirst({
+        where: {
+          id: newsDto.id,
+        },
+      });
+
+      if(!oldNews){
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'NEWS NOT FOUND'
+          }, HttpStatus.BAD_REQUEST
+        )
+      }
+
       const imagedto = {
         ...image,
         originalname: `${Date.now()}`
       }
+
       const news = await this.prismaSerivce.news.update({
         where: {
           id: newsDto.id,
@@ -121,6 +137,7 @@ export class NewsService {
         },
       });
       if (news){
+        await this.imageService.deleteImage(oldNews.image);
         await this.imageService.uploadImage(imagedto);
       }
       return {
