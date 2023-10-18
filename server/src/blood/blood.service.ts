@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ImagesService } from "src/images/images.service";
 import { PrismaService } from "src/prisma.service";
 import { HospitalCreateDto } from "./dto/blood-create-dto";
+import { HospitalDeleteDto } from "./dto/blood-delete-dto";
 import { HospitalUpdateDto } from "./dto/blood-update-dto";
-import { HospitalDeleteDto} from "./dto/blood-delete-dto";
 
 @Injectable()
 export class HospitalService {
@@ -31,9 +31,6 @@ export class HospitalService {
             }
 
             const blood = JSON.parse(`${hospitalDto.blood}`)
-            
-            
-            
             const bloodNeed = await this.prisma.bloodNeed.create({
                 data: {
                     ...blood,

@@ -3,6 +3,8 @@ import { Prisma, User } from '@prisma/client';
 import { AuthRegisterDto } from 'src/auth/dto/auth-register.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UserGetDto } from './dto/users-get.dto';
+import { UpdateUserDto } from './dto/users-update.dto';
+import { DeleteUserDto } from './dto/users-delete.dto';
 
 @Injectable()
 export class UsersService {
@@ -35,7 +37,7 @@ export class UsersService {
     return newUser;
   }
 
-  async updateUser(data: Prisma.UserCreateInput): Promise<AuthRegisterDto>{
+  async updateUser(data: UpdateUserDto): Promise<AuthRegisterDto>{
     return await this.prisma.user.update({
       where: {
         id: data.id
@@ -86,6 +88,36 @@ export class UsersService {
       } catch (error) {
         
         throw error;
+    }
+  }
+
+  async deleteUser(userDto: DeleteUserDto): Promise<any> {
+    try{
+      const user = await this.prisma.user.findFirst({
+        where: { id: userDto.id }
+      })
+
+      if(!user) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'USER NOT FOUND'
+          },
+          HttpStatus.NOT_FOUND
+        );
+      }
+
+      const deleteUser = await this.prisma.user.delete({
+        where: { id: userDto.id }
+      })
+
+      return {
+        message: 'USER DELETED',
+        data: deleteUser
+      }
+    } catch(error){
+      
+      throw error;
     }
   }
 }

@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { BloodType, Gender, Prefix } from '@prisma/client';
 import { MinLength, Validate } from 'class-validator';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 
 export class AuthRegisterDto {
-  @ApiProperty({ example: 'Mr' })
-  prefix: string;
+  @ApiProperty({enum: Prefix,  example: 'Mr' })
+  prefix: Prefix;
 
   @ApiProperty({ example: 'John' })
   firstName: string;
@@ -32,11 +33,11 @@ export class AuthRegisterDto {
   @ApiProperty({ example: '9876543210981' })
   citizenBack: string;
 
-  @ApiProperty({ example: 'A_POSITIVE' })
-  bloodType: string | null;
+  @ApiProperty({ enum: BloodType, example: 'A_POSITIVE' })
+  bloodType: BloodType | null;
 
-  @ApiProperty({ example: 'MALE' })
-  gender: string | null;
+  @ApiProperty({ enum: Gender, example: 'MALE' })
+  gender: Gender | null;
 
   @ApiProperty({ example: 70.5 })
   weight: number | null;
