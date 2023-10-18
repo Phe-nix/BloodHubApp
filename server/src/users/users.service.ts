@@ -1,31 +1,123 @@
-import { Injectable } from '@nestjs/common';
-
-export type User = {
-  userId: number;
-  username: string;
-  password: string;
-};
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Prisma, User } from '@prisma/client';
+import { AuthRegisterDto } from 'src/auth/dto/auth-register.dto';
+import { PrismaService } from 'src/prisma.service';
+import { UserGetDto } from './dto/users-get.dto';
+import { UpdateUserDto } from './dto/users-update.dto';
+import { DeleteUserDto } from './dto/users-delete.dto';
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[] = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
+  constructor(
+    private prisma: PrismaService,
+  ){}
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async createUser(data: Prisma.UserCreateInput): Promise<any> {
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { phoneNumber: data.phoneNumber },
+          { citizenId: data.citizenId },
+          { citizenBack: data.citizenBack },
+        ],
+      },
+    });
+
+    if(existingUser){
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'USER ALREADY EXIST'
+        },
+        HttpStatus.BAD_REQUEST
+      );
+    };
+
+    const newUser = await this.prisma.user.create({data});
+    return newUser;
   }
 
-  async getAll(): Promise<User[]> {
-    return this.users;
+  async updateUser(data: UpdateUserDto): Promise<AuthRegisterDto>{
+    return await this.prisma.user.update({
+      where: {
+        id: data.id
+      },
+      data: {
+        ...data
+      }
+    })
+  }
+
+  async updatePassword(id : string, password: string): Promise<void>{
+    await this.prisma.user.update({
+      where:{
+        id: id
+      },
+      data: {
+        password: password
+      }
+    })
+  }
+
+  async findOne(userDto: UserGetDto): Promise<User | null> {
+    try {
+        const user = await this.prisma.user.findFirst({
+          where: {
+            OR: [
+              { id: userDto.userId },
+              { citizenId: userDto.citizenId },
+              { phoneNumber: userDto.phoneNumber },
+            ]
+          },
+          include: {
+            address: true,
+          }
+        });
+
+        if(!user){
+          throw new HttpException(
+            {
+              status: HttpStatus.NOT_FOUND,
+              error: 'USER NOT FOUND'
+            },
+            HttpStatus.NOT_FOUND
+          );
+        }
+
+        return user; 
+      } catch (error) {
+        
+        throw error;
+    }
+  }
+
+  async deleteUser(userDto: DeleteUserDto): Promise<any> {
+    try{
+      const user = await this.prisma.user.findFirst({
+        where: { id: userDto.id }
+      })
+
+      if(!user) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'USER NOT FOUND'
+          },
+          HttpStatus.NOT_FOUND
+        );
+      }
+
+      const deleteUser = await this.prisma.user.delete({
+        where: { id: userDto.id }
+      })
+
+      return {
+        message: 'USER DELETED',
+        data: deleteUser
+      }
+    } catch(error){
+      
+      throw error;
+    }
   }
 }
