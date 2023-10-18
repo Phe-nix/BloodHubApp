@@ -110,4 +110,5 @@ export class HospitalService {
             blood: blood
         }
     }
+
 }
