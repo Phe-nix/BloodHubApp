@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
       backgroundColor: "rgba(237, 128, 133, 0.5)", // Pink color with opacity
       width: "100%",
       padding: 12,
-      marginTop: 12,
       flexDirection: "column", // Stack children elements vertically
       alignItems: "center", // Center horizontally
     },
@@ -25,6 +24,13 @@ export const styles = StyleSheet.create({
       color: "#ED8085",
       fontWeight: "bold",
       fontSize: 18,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 400,
+      marginBottom: 15,
     },
     input: {
       borderBottomColor: "lightgray",
@@ -51,4 +57,5 @@ export const styles = StyleSheet.create({
       fontWeight: "bold",
       fontSize: 18,
     },
+
   });
