@@ -4,10 +4,9 @@ import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
-import axios from "axios";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const CreateAccountScreen = ({ route }: any) => {
+const CreateAccountScreen = ({ navigation, route }: any) => {
   const header = "ลงทะเบียน";
   const subheader = "กรุณากรอกข้อมูลด้านล่างเพื่อเข้าใช้งานแอปพลิเคชั่น";
 
@@ -21,22 +20,17 @@ const CreateAccountScreen = ({ route }: any) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const create = async () => {
-    console.log(citizenId, password);
-    try {
-      const { data: res } = await axios.post("http://localhost:3000/auth/register", {
-        prefixซ: prefix,
+    const dobTimestamp = dob.getTime();
+      navigation.navigate("VerificationScreen", {
+        prefix: prefix,
         firstName: firstName,
         lastName: lastName,
         password: password,
-        dob: dob,
+        dob: dobTimestamp,
         phoneNumber: phoneNumber,
         citizenId: citizenId,
         citizenBack: citizenBack,
       });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const toggleDatePicker = () => {
