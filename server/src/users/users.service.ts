@@ -13,6 +13,7 @@ export class UsersService {
   ){}
 
   async createUser(data: Prisma.UserCreateInput): Promise<any> {
+    console.log(data)
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [
@@ -55,6 +56,17 @@ export class UsersService {
       },
       data: {
         password: password
+      }
+    })
+  }
+
+  async findByUserId(userId: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        address: true,
       }
     })
   }

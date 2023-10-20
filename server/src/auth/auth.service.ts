@@ -11,19 +11,19 @@ import { ResetPasswordDto } from './dto/auth-reset-password.dto';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
-  
+
   async login(authDto: AuthLoginDto): Promise<LoginResponseType> {
     const user = await this.usersService.findOne(authDto);
 
-    if(!user){
+    if (!user) {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'USER NOT FOUND'
+          error: 'USER NOT FOUND',
         },
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
@@ -36,16 +36,17 @@ export class AuthService {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,
-          error: 'INVALID PASSWORD'
+          error: 'INVALID PASSWORD',
         },
-        HttpStatus.UNAUTHORIZED
+        HttpStatus.UNAUTHORIZED,
       );
     }
 
-    const payload = { sub: user.id }
+    const payload = { sub: user.id };
     return {
+      userId: user.id,
       access_token: this.jwtService.sign(payload),
-    }
+    };
   }
 
   async register(authDto: AuthRegisterDto): Promise<any> {
@@ -64,27 +65,27 @@ export class AuthService {
       phoneNumber: authDto.phoneNumber,
       citizenId: authDto.citizenId,
       citizenBack: authDto.citizenBack,
-    })
+    });
     return {
-      message: "USER CREATED",
-      user: user
-    }
+      message: 'USER CREATED',
+      user: user,
+    };
   }
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
     const user = await this.usersService.findOne(forgotPasswordDto);
 
-    if(!user){
+    if (!user) {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'USER NOT FOUND'
+          error: 'USER NOT FOUND',
         },
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
-    return 'OTP SENT'
+    return 'OTP SENT';
 
     // ยิง service ไปยัง phone ขอ OTP ยิง phoneNumber ไปด้วย
   }
@@ -92,13 +93,13 @@ export class AuthService {
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<string> {
     const user = await this.usersService.findOne(resetPasswordDto);
 
-    if(!user){
+    if (!user) {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'USER NOT FOUND'
+          error: 'USER NOT FOUND',
         },
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
@@ -108,7 +109,10 @@ export class AuthService {
       .update(resetPasswordDto.password)
       .digest('hex');
 
-    const updateUser = await this.usersService.updatePassword(user.id, hashedPassword);
-    return 'PASSWORD UPDATED'
+    const updateUser = await this.usersService.updatePassword(
+      user.id,
+      hashedPassword,
+    );
+    return 'PASSWORD UPDATED';
   }
 }

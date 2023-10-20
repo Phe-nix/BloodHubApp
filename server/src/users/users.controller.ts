@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post, Get, Delete } from "@nestjs/common";
+import { Body, Controller, HttpException, HttpStatus, Post, Get, Delete, Param } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { UserGetDto } from "./dto/users-get.dto";
 import { UsersService } from './users.service';
@@ -14,9 +14,9 @@ export class UserController {
   ){}
 
   @Get(":id")
-  async getUser(@Body() data: UserGetDto): Promise<any> {
+  async getUser(@Param('id') userId: string): Promise<any> {
     try{
-      return this.userService.findOne(data);
+      return this.userService.findByUserId(userId);
 
     } catch(error){
       console.log(error);
