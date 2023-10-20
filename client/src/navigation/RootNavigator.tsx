@@ -15,8 +15,8 @@ export const RootNavigator = () => {
           headerShown: false,
         }}
       >
-          <Root.Screen name="Auth" component={AuthNaivgation} />
-          <Root.Screen name="App" component={AppNavigation} />
+        <Root.Screen name="Auth" component={AuthNaivgation} />
+        <Root.Screen name="App" component={AppNavigation} />
       </Root.Navigator>
     </NavigationContainer>
   );

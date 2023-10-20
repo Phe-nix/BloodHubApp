@@ -3,16 +3,17 @@ import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import BloodScreen from '../screens/Blood/BloodScreen';
-import HomeScreen from '../screens/Home/HomeScreen';
-import NewScreen from '../screens/News/NewScreen';
-import PostScreen from '../screens/Post/PostScreen';
-import SettingNavigation from './SettingNavigation';
-import IconBlood from '../../assets/icons/icon_blood.png';
-import IconHome from '../../assets/icons/icon_home.png';
-import IconNew from '../../assets/icons/icon_news.png';
-import IconPost from '../../assets/icons/icon_post.png';
-import IconSettings from '../../assets/icons/icon_settings.png';
+import BloodScreen from '../screens/blood/BloodScreen';
+import PostScreen from '../screens/post/PostScreen';
+import SettingScreen from '../screens/Settings/SettingScreen';
+import { NewNavigation } from './NewNavigation';
+import IconBlood from '../../assets/icon/icon_blood.png';
+import IconHome from '../../assets/icon/icon_home.png';
+import IconNew from '../../assets/icon/icon_news.png';
+import IconPost from '../../assets/icon/icon_post.png';
+import IconSettings from '../../assets/icon/icon_settings.png';
+import { HomeNavigation } from './HomeNavigation';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +31,7 @@ const AppNavigation = ({ route }: any) => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Post"
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
@@ -80,7 +81,7 @@ const AppNavigation = ({ route }: any) => {
       })}
       
     >
-      <Tab.Screen name="Home" component={HomeScreen} 
+      <Tab.Screen name="Home" component={HomeNavigation} 
         options={{
           title: 'โฮมเพจ'
         }}
@@ -95,7 +96,7 @@ const AppNavigation = ({ route }: any) => {
           title: 'โพสต์',
         }}
       />
-      <Tab.Screen name="New" component={NewScreen} 
+      <Tab.Screen name="New" component={NewNavigation} 
         options={{
           title: 'ข่าวสาร'
         }}
