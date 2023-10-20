@@ -20,9 +20,19 @@ export const RootNavigator = () => {
 
   return (
     <NavigationContainer>
-      {userId && (
+      {userId ? (
         <Root.Navigator
-          initialRouteName={userId ? "App" : "Auth"}
+          initialRouteName={"App"}
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Root.Screen name="Auth" component={AuthNaivgation} />
+          <Root.Screen name="App" component={AppNavigation} />
+        </Root.Navigator>
+      ) : (
+        <Root.Navigator
+          initialRouteName={"Auth"}
           screenOptions={{
             headerShown: false,
           }}

@@ -16,7 +16,11 @@ export const Button = (props: buttonProps) => {
 
   return (
     <TouchableOpacity
-      onPress={props.onPress}
+      onPress={
+        props.to && props.navigation
+          ? () => props.navigation.navigate(props.to)
+          : props.onPress
+      }
       // onPress={() => {
       //   props.to ? props.navigation.navigate(props.to) : props?.onPress;
       // }}

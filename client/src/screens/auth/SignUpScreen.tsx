@@ -13,9 +13,15 @@ export const SignUpScreen = ({ navigation }: any) => {
 
   const [password, setPassword] = React.useState("");
   const [citizenId, setCitizenId] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
 
   const create = async () => {
-    console.log("login");
+    if (password !== confirmPassword) {
+      setPasswordError("รหัสผ่านไม่ตรงกัน");
+      return;
+    }
+
     try {
       const { data: res } = await axios.post(
         "http://localhost:3000/auth/register",
@@ -35,45 +41,48 @@ export const SignUpScreen = ({ navigation }: any) => {
   return (
     <Layer>
       <View style={{ marginHorizontal: 20, flex: 1 }}>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          <AppHeader header={header} subheader={subheader} />
-        </View>
-
-        <View style={{ flex: 1, height: "100%" }}>
-          <View style={styles.panel}>
-            <View style={{ width: "85%" }}>
-              <TextInput
-                style={styles.input}
-                placeholder="รหัสบัตรประชาชน"
-                placeholderTextColor="#856464"
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="รหัสผ่าน"
-                placeholderTextColor="#856464"
-                secureTextEntry={true}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="ยืนยันรหัสผ่าน"
-                placeholderTextColor="#856464"
-                secureTextEntry={true}
-              />
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginVertical: 30,
-              }}
-            >
-              <Button
-                title={"สมัครสมาชิก"}
-                onPress={() => create()}
-                buttonWidth={120}
-                buttonHeight={10}
-                navigation={navigation}
-              />
+        {/* ... other code */}
+        <View style={styles.panel}>
+          <View style={{ width: "85%" }}>
+            <TextInput
+              style={styles.input}
+              placeholder="รหัสบัตรประชาชน"
+              placeholderTextColor="#856464"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="รหัสผ่าน"
+              placeholderTextColor="#856464"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="ยืนยันรหัสผ่าน"
+              placeholderTextColor="#856464"
+              secureTextEntry={true}
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+            />
+            {passwordError ? (
+              <Text style={{ color: "red" }}>{passwordError}</Text>
+            ) : null}
+          </View>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: 30,
+            }}
+          >
+            <Button
+              title={"สมัครสมาชิก"}
+              onPress={() => create()}
+              buttonWidth={120}
+              buttonHeight={10}
+              navigation={navigation}
+            />
               <View
                 style={{
                   flexDirection: "row",
@@ -95,7 +104,6 @@ export const SignUpScreen = ({ navigation }: any) => {
             </View>
           </View>
         </View>
-      </View>
     </Layer>
   );
 };

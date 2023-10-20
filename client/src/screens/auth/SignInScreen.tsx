@@ -32,7 +32,7 @@ const SignInScreen = ({ navigation }: any) => {
       );
       
       await AsyncStorage.setItem("token", res.access_token);
-      await AsyncStorage.setItem("userId", res.userId);
+      await AsyncStorage.setItem("userId", res.access_token);
 
       navigation.navigate("App");
     } catch (error) {
