@@ -12,7 +12,7 @@ import HistoryNavigation from "./HistoryNavigation";
 
 const tab = createNativeStackNavigator();
 
-const SettingNavigation = ({ navigation }: any) => {
+export const SettingNavigation = ({ navigation }: any) => {
   return (
     <tab.Navigator
       screenOptions={{
@@ -39,18 +39,11 @@ const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="MyProfile" component={MyProfileScreen} />
       <tab.Screen name="EditAddress" component={EditAddressScreen} />
       <tab.Screen name="EditNotification" component={EditNotificationScreen} />
-
-
       <tab.Screen name="History" component={HistoryNavigation} />
-      
       <tab.Screen name="Bookmark" component={BookMarkNavigation} />
-
-      
       <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
       <tab.Screen name="About" component={AboutScreen} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
     </tab.Navigator>
   );
 };
-
-export default SettingNavigation;

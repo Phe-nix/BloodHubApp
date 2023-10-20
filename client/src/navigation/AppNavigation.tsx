@@ -5,14 +5,16 @@ import { Image, View } from 'react-native';
 
 import BloodScreen from '../screens/blood/BloodScreen';
 import PostScreen from '../screens/post/PostScreen';
-import SettingScreen from '../screens/Settings/SettingScreen';
-import { NewNavigation } from './NewNavigation';
+
 import IconBlood from '../../assets/icon/icon_blood.png';
 import IconHome from '../../assets/icon/icon_home.png';
 import IconNew from '../../assets/icon/icon_news.png';
 import IconPost from '../../assets/icon/icon_post.png';
 import IconSettings from '../../assets/icon/icon_settings.png';
+
+import { NewNavigation } from './NewNavigation';
 import { HomeNavigation } from './HomeNavigation';
+import { SettingNavigation } from './SettingNavigation';
 
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +85,8 @@ const AppNavigation = ({ route }: any) => {
     >
       <Tab.Screen name="Home" component={HomeNavigation} 
         options={{
-          title: 'โฮมเพจ'
+          title: 'โฮมเพจ',
+          headerShown: false,
         }}
       />
       <Tab.Screen name="Blood" component={BloodScreen}
@@ -98,7 +101,8 @@ const AppNavigation = ({ route }: any) => {
       />
       <Tab.Screen name="New" component={NewNavigation} 
         options={{
-          title: 'ข่าวสาร'
+          title: 'ข่าวสาร',
+          headerShown: false,
         }}
       />
       <Tab.Screen name="Settings" component={SettingNavigation} 
