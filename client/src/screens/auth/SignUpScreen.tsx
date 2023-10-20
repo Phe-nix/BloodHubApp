@@ -41,7 +41,7 @@ export const SignUpScreen = ({ navigation }: any) => {
   return (
     <Layer>
       <View style={{ marginHorizontal: 20, flex: 1 }}>
-        {/* ... other code */}
+      <AppHeader header={header} subheader={subheader} />
         <View style={styles.panel}>
           <View style={{ width: "85%" }}>
             <TextInput
