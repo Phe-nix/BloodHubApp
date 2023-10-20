@@ -14,14 +14,17 @@ import TextInputWithLabel from "../../core/components/TextInputWithLabel";
 import { styles, pickerSelectStyles } from "./style/MyProfileScreen.style";
 import RNPickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface ProfileEditScreenProps {
-	navigation: any;
-  }
+  navigation: any;
+}
 
-const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => {
+const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
+  navigation,
+}) => {
   const [image, setImage] = useState(String);
-  const [prefix, setPrefix] = useState("Tinnaphoom");
+  const [prefix, setPrefix] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -29,10 +32,20 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
   const [password, setPassword] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [gender, setGender] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dob, setdob] = useState("");
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [congenitalDisease, setCongenitalDisease] = useState("");
+
+  const logout = () => {
+    try {
+      AsyncStorage.removeItem("token");
+      AsyncStorage.removeItem("userId");
+      navigation.navigate("Auth");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -57,7 +70,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
       password,
       bloodGroup,
       gender,
-      dateOfBirth,
+      dob,
       weight,
       height,
       congenitalDisease,
@@ -70,7 +83,8 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
       <TouchableOpacity onPress={pickImage}>
         <View style={styles.profileImageContainer}>
           {image ? (
-            <Image source={{ uri: image }}
+            <Image
+              source={{ uri: image }}
               style={styles.profileImage}
               resizeMode="cover"
             />
@@ -187,8 +201,8 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
 
       <TextInputWithLabel
         label="DoB"
-        value={dateOfBirth}
-        onChangeText={(text) => setDateOfBirth(text)}
+        value={dob}
+        onChangeText={(text) => setdob(text)}
         placeholder="Enter date of birth"
       />
 
@@ -233,8 +247,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({ navigation }) => 
           title="Logout"
           buttonWidth={30}
           buttonHeight={15}
-          to="SignIn"
-          navigation={navigation}
+          onPress={()=>logout()}
         />
       </View>
     </ScrollView>
