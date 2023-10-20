@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import NewsScreen from "../screens/News/NewScreen";
-import NewsDetailScreen from "../screens/News/NewDetailScreen";
+import NewsScreen from "../screens/news/NewScreen";
+import NewsDetailScreen from "../screens/news/NewDetailScreen";
 const Tab = createNativeStackNavigator();
 
 export const NewNavigation = () => {

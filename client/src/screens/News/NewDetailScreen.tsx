@@ -8,7 +8,7 @@ const NewDetailScreen = () => {
     <View style={styles.background}>
         <View style={styles.container}>
             <View style={{marginTop:10}}>
-                <Text style={styles.title}>ฺBlack Cat</Text>
+                <Text style={styles.title}>Black Cat</Text>
                 <View style={styles.timeAndBookmark}>
                     <Text style={styles.time}>22 พ.ค. 2546 · สุราษฎร์ธานี</Text>
                     <Image style={styles.bookmarkIcon} source={bookmark}/>

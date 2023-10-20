@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        margintop: 10
+        marginTop: 10
     },
     timeAndBookmark: {
         flexDirection: 'row',
