@@ -29,31 +29,26 @@ const CreateAccountScreen = ({navigation} : any) => {
                     style={[styles.input]}
                     placeholder='คำนำหน้า'
                     placeholderTextColor="#856464"
-
                   />
                   <TextInput
                     style={[styles.input, {marginTop: 20}]}
                     placeholder='ชื่อ'
                     placeholderTextColor="#856464"
-
                   />
                   <TextInput
                     style={[styles.input, {marginTop: 20}]}
                     placeholder='นามสกุล'
                     placeholderTextColor="#856464"
-
                   />
                   <TextInput
                     style={[styles.input, {marginTop: 20}]}
                     placeholder='วัน/เดือน/ปี เกิด'
                     placeholderTextColor="#856464"
-
                   />
                   <TextInput
                     style={[styles.input, {marginTop: 20}]}
                     placeholder='หมายเลขโทรศัพท์'
                     placeholderTextColor="#856464"
-
                   />
                 </View>
               </View>
