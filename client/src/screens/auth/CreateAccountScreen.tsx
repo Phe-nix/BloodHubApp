@@ -1,37 +1,36 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, ScrollView, Image } from "react-native";
+import { Text, TextInput, View, ScrollView, Image, Platform } from "react-native";
 import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const CreateAccountScreen = ({ route }: any) => {
   const header = "ลงทะเบียน";
   const subheader = "กรุณากรอกข้อมูลด้านล่างเพื่อเข้าใช้งานแอปพลิเคชั่น";
 
-  // Access the passed parameters here
   const { citizenId, password } = route.params || {};
-
-  // State for other input fields
   const [prefix, setPrefix] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState("");
+  const [dob, setDob] = useState(new Date());
   const [phoneNumber, setPhoneNumber] = useState("");
   const [citizenBack, setCitizenBack] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const create = async () => {
     console.log(citizenId, password);
     try {
-      const {data: res} = await axios.post("http://localhost:3000/auth/register", {
-        citizenId: citizenId,
-        password: password,
-        prefix: prefix,
+      const { data: res } = await axios.post("http://localhost:3000/auth/register", {
+        prefixซ: prefix,
         firstName: firstName,
         lastName: lastName,
+        password: password,
         dob: dob,
         phoneNumber: phoneNumber,
+        citizenId: citizenId,
         citizenBack: citizenBack,
       });
       console.log(res);
@@ -40,10 +39,21 @@ const CreateAccountScreen = ({ route }: any) => {
     }
   };
 
+  const toggleDatePicker = () => {
+    setShowDatePicker(!showDatePicker);
+  };
+
+  const handleDateChange = (event: any, selectedDate: Date | undefined) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDob(selectedDate);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Layer>
-        <ScrollView showsVerticalScrollIndicator={false} style={{marginVertical:50}}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ marginVertical: 50 }}>
           <View style={{ marginHorizontal: 20, flex: 1 }}>
             <View style={{ flex: 1, justifyContent: "center" }}>
               <AppHeader header={header} subheader={subheader} />
@@ -82,13 +92,23 @@ const CreateAccountScreen = ({ route }: any) => {
                   value={lastName}
                   onChangeText={(text) => setLastName(text)}
                 />
-                <TextInput
-                  style={[styles.input, { marginTop: 20 }]}
-                  placeholder="วัน/เดือน/ปี เกิด"
-                  placeholderTextColor="#856464"
-                  value={dob}
-                  onChangeText={(text) => setDob(text)}
-                />
+                <View>
+                  <TextInput
+                    style={[styles.input, { marginTop: 10 }]}
+                    placeholder="วัน/เดือน/ปี เกิด"
+                    placeholderTextColor="#856464"
+                    value={dob.toDateString()} // Format the date as a string
+                    onTouchStart={toggleDatePicker}
+                  />
+                  {showDatePicker && (
+                    <DateTimePicker
+                      value={dob}
+                      mode="date"
+                      display="spinner"
+                      onChange={handleDateChange}
+                    />
+                  )}
+                </View>
                 <TextInput
                   style={[styles.input, { marginTop: 20 }]}
                   placeholder="หมายเลขโทรศัพท์"
@@ -127,7 +147,7 @@ const CreateAccountScreen = ({ route }: any) => {
                   style={[styles.input, { marginTop: 20 }]}
                   placeholder="รหัสบัตรประชาชน"
                   placeholderTextColor="#856464"
-                  value={citizenId} // Display the citizenId
+                  value={citizenId}
                 />
                 <Image
                   style={{ marginTop: 40 }}
@@ -137,7 +157,7 @@ const CreateAccountScreen = ({ route }: any) => {
                   style={[styles.input, { marginTop: 20 }]}
                   placeholder="รหัสหลังบัตรประชาชน"
                   placeholderTextColor="#856464"
-                  value={citizenBack} // Display the citizenId
+                  value={citizenBack}
                   onChangeText={(text) => setCitizenBack(text)}
                 />
               </View>
