@@ -32,19 +32,4 @@ export class AuthRegisterDto {
 
   @ApiProperty({ example: '9876543210981' })
   citizenBack: string;
-
-  @ApiProperty({ enum: BloodType, example: 'A_POSITIVE' })
-  bloodType: BloodType | null;
-
-  @ApiProperty({ enum: Gender, example: 'MALE' })
-  gender: Gender | null;
-
-  @ApiProperty({ example: 70.5 })
-  weight: number | null;
-
-  @ApiProperty({ example: 175.2 })
-  height: number | null;
-
-  @ApiProperty({ example: 'Diabetes' })
-  disease: string | null;
 }

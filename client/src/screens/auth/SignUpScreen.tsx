@@ -4,7 +4,6 @@ import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
-import axios from "axios";
 
 export const SignUpScreen = ({ navigation }: any) => {
   const header = "สมัครสมาชิก";
@@ -16,73 +15,68 @@ export const SignUpScreen = ({ navigation }: any) => {
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
 
-  const create = async () => {
-    if (password !== confirmPassword) {
+  const create = () => {
+    if (password !== confirmPassword || password === "") {
       setPasswordError("รหัสผ่านไม่ตรงกัน");
       return;
     }
 
-    try {
-      const { data: res } = await axios.post(
-        "http://localhost:3000/auth/register",
-        {
-          password: password,
-          citizenId: citizenId,
-        }
-      );
-
-      console.log(res);
-      // navigation.navigate("CreateAccount");
-    } catch (error) {
-      console.log(error);
-    }
+    // Pass citizenId and password as parameters to the next screen
+    navigation.navigate("CreateAccount", {
+      citizenId: citizenId,
+      password: password,
+    });
   };
 
   return (
     <Layer>
       <View style={{ marginHorizontal: 20, flex: 1 }}>
-      <AppHeader header={header} subheader={subheader} />
-        <View style={styles.panel}>
-          <View style={{ width: "85%" }}>
-            <TextInput
-              style={styles.input}
-              placeholder="รหัสบัตรประชาชน"
-              placeholderTextColor="#856464"
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="รหัสผ่าน"
-              placeholderTextColor="#856464"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="ยืนยันรหัสผ่าน"
-              placeholderTextColor="#856464"
-              secureTextEntry={true}
-              value={confirmPassword}
-              onChangeText={(text) => setConfirmPassword(text)}
-            />
-            {passwordError ? (
-              <Text style={{ color: "red" }}>{passwordError}</Text>
-            ) : null}
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 30,
-            }}
-          >
-            <Button
-              title={"สมัครสมาชิก"}
-              onPress={() => create()}
-              buttonWidth={120}
-              buttonHeight={10}
-              navigation={navigation}
-            />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <AppHeader header={header} subheader={subheader} />
+        </View>
+        <View style={{ flex: 1, height: "100%" }}>
+          <View style={styles.panel}>
+            <View style={{ width: "85%" }}>
+              <TextInput
+                style={styles.input}
+                placeholder="รหัสบัตรประชาชน"
+                placeholderTextColor="#856464"
+                value={citizenId}
+                onChangeText={(text) => setCitizenId(text)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="รหัสผ่าน"
+                placeholderTextColor="#856464"
+                secureTextEntry={true}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="ยืนยันรหัสผ่าน"
+                placeholderTextColor="#856464"
+                secureTextEntry={true}
+                value={confirmPassword}
+                onChangeText={(text) => setConfirmPassword(text)}
+              />
+              {passwordError ? (
+                <Text style={{ color: "red" }}>{passwordError}</Text>
+              ) : null}
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginVertical: 30,
+              }}
+            >
+              <Button
+                title={"สมัครสมาชิก"}
+                onPress={create}
+                buttonWidth={120}
+                buttonHeight={10}
+              />
               <View
                 style={{
                   flexDirection: "row",
@@ -104,6 +98,7 @@ export const SignUpScreen = ({ navigation }: any) => {
             </View>
           </View>
         </View>
+      </View>
     </Layer>
   );
 };
