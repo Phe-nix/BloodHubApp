@@ -37,6 +37,7 @@ model User {
   firstName     String
   lastName      String
   phoneNumber   String    @unique
+  email         String    @unique
   password      String
   dob           DateTime
   profileImage  String?
@@ -45,9 +46,11 @@ model User {
   weight        Float?
   height        Float?
   disease       String?
+  verified      Boolean   @default(false)
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt
 
+  verifications Verifications?
   address        Address?
   appointments   Appointment[]
   bookmarks      Bookmark[]
@@ -186,3 +189,13 @@ model DonationHistory {
 //   updated_at DateTime?
 //   deleted_at DateTime?
 // }
+
+
+model Verifications {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  otp            String
+  email         String
+  userId         String   @unique @db.ObjectId
+  user           User     @relation(fields: [userId], references: [id])
+  created_at     DateTime @default(now())
+}

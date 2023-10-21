@@ -1,20 +1,61 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
 import * as crypto from 'crypto';
+import otp from 'otp-generator';
+
 import { UsersService } from 'src/users/users.service';
 import { ForgotPasswordDto } from './dto/auth-forgot-password.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ResetPasswordDto } from './dto/auth-reset-password.dto';
+import { MailService } from 'src/mail/mail.service';
+import { PrismaService } from 'src/prisma.service';
+import { OTPService } from 'src/otp/otp.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private mailService: MailService,
+    private otpService: OTPService,
+    private prismaService: PrismaService 
   ) {}
 
-  async login(authDto: AuthLoginDto): Promise<LoginResponseType> {
+  async validateAccount(otp: string, userId: string): Promise<any>{
+    const user = await this.usersService.findByUserId(userId)
+    if(!user){
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'USER NOT FOUND',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const validateDto = {userId, otp}
+    const OTP = await this.otpService.validateOTP(validateDto)
+    if(OTP) {
+      let userUpdate = {...user, verified: true}
+      const verifiedAccount = await this.usersService.updateUser(userUpdate)
+      
+      return {
+        message: "ACCOUNT VERIFIED",
+        user: verifiedAccount
+      }
+    } else {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'INVALID OTP',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+  }  
+
+  async login(authDto: AuthLoginDto): Promise<any> {
     const user = await this.usersService.findOne(authDto);
 
     if (!user) {
@@ -25,6 +66,12 @@ export class AuthService {
         },
         HttpStatus.NOT_FOUND,
       );
+    }
+
+    if(!user.verified){
+      return {
+        message: 'USER NOT VERIFIED',
+      }
     }
 
     const hashedPassword = crypto
@@ -63,9 +110,21 @@ export class AuthService {
       password: hashedPassword,
       dob: authDto.dob,
       phoneNumber: authDto.phoneNumber,
+      email: authDto.email,
       citizenId: authDto.citizenId,
       citizenBack: authDto.citizenBack,
     });
+
+    const OTP = await this.otpService.generateOTP({
+      userId: user.id,
+      email: user.email
+    })
+    
+    await this.mailService.postMail({
+      to: 'nrpt.smiz@gmail.com',
+      otp: OTP.otp
+    })
+
     return {
       message: 'USER CREATED',
       user: user,
@@ -86,8 +145,6 @@ export class AuthService {
     }
 
     return 'OTP SENT';
-
-    // ยิง service ไปยัง phone ขอ OTP ยิง phoneNumber ไปด้วย
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<string> {

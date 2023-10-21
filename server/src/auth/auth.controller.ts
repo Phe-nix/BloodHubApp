@@ -5,6 +5,7 @@ import { ForgotPasswordDto } from './dto/auth-forgot-password.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ResetPasswordDto } from './dto/auth-reset-password.dto';
+import { AuthVerifyDto } from './dto/auth-verify.dto';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -43,5 +44,13 @@ export class AuthController {
     @Body() resetDto: ResetPasswordDto,
     ): Promise<string> {
     return await this.authService.resetPassword(resetDto)
+  }
+
+  @Post('verify')
+  @HttpCode(HttpStatus.OK)
+  public async verify(
+    @Body() verifyDto: AuthVerifyDto
+  ): Promise<any>{
+    return await this.authService.validateAccount(verifyDto.otp, verifyDto.userId)
   }
 }

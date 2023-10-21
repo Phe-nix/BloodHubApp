@@ -12,12 +12,13 @@ export class UsersService {
     private prisma: PrismaService,
   ){}
 
-  async createUser(data: Prisma.UserCreateInput): Promise<any> {
+  async createUser(data: any): Promise<any> {
     console.log(data)
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [
           { phoneNumber: data.phoneNumber },
+          { email: data.email },
           { citizenId: data.citizenId },
           { citizenBack: data.citizenBack },
         ],
@@ -38,13 +39,29 @@ export class UsersService {
     return newUser;
   }
 
-  async updateUser(data: UpdateUserDto): Promise<AuthRegisterDto>{
+  async updateUser(data: any): Promise<any>{
+    console.log(data);
+    
     return await this.prisma.user.update({
       where: {
         id: data.id
       },
       data: {
-        ...data
+        citizenBack: data.citizenBack,
+        citizenId: data.citizenId,
+        prefix: data.prefix,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        password: data.password,
+        dob: data.dob,
+        bloodType: data.bloodType,
+        gender: data.gender,
+        weight: data.weight,
+        height: data.height,
+        disease: data.disease,
+        verified: data.verified,
       }
     })
   }

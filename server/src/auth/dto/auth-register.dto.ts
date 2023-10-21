@@ -23,6 +23,9 @@ export class AuthRegisterDto {
   @MinLength(10)
   phoneNumber: string;
 
+  @ApiProperty({ example: 'nrpt.smiz@gmail.com'})
+  email: string;
+
   @Validate(IsNotExist, ['citizenId'],{
     message: 'Citizen ID already exists'
   })

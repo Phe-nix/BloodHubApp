@@ -6,8 +6,8 @@ import { DonationDeleteDto } from "./dto/donation-delete.dto";
 import { DonationGetDto } from "./dto/donation-get-donation.dto";
 import { DonationUpdateDto } from "./dto/donation-update.dto";
 
-@ApiTags('Donation')
 @Controller('donation')
+@ApiTags('Donation')
 export class DonationController {
   constructor(
     private donationService: DonationService
