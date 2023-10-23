@@ -18,7 +18,6 @@ export const styles = StyleSheet.create({
       blackgroundColor: "#ED8085",
     },
     genderTitleContainer: {
-      marginLeft: 170,
       marginBottom: 10,
     },
     fieldTitle: {
@@ -87,7 +86,8 @@ export const styles = StyleSheet.create({
       borderRadius: 100,
       alignItems: "center",
       justifyContent: "center",
-      width: 250,
+      width: 210,
+      marginRight: 10,
       height: 55,
       borderWidth: 2,
       borderColor: "#ED8085",

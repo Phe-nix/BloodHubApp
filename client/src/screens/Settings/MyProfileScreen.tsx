@@ -10,8 +10,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
-import { styles, pickerSelectStyles } from "./style/MyProfileScreen.style";
-import RNPickerSelect from "react-native-picker-select";
+import { styles } from "./style/MyProfileScreen.style";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios"; // Import Axios for making HTTP requests.
@@ -59,17 +58,14 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         console.error("Error fetching user data:", error);
       }
     };
-
-    // Call the function to fetch user data
     fetchUserData();
   }, []);
 
   // Function to format DoB as "YYYY-MM-DD"
-  const formatDob = (dob:string) => {
+  const formatDob = (dob: string) => {
     const date = new Date(dob);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   };
-
 
   const logout = () => {
     try {
@@ -93,15 +89,23 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
     }
   };
 
-  const handleSave = () => {
-    const userData = {
-      image,
-      phoneNumber,
-      weight,
-      height,
-      disease,
-    };
-    console.log("User Data to be saved:", userData);
+  const handleSave = async() => {
+    try {
+        const { data: res } = await axios.post(
+        "http://localhost:3000/user",
+        {
+		  image: image,
+          weight: weight,
+		  height: height,
+		  disease: disease,
+		  phoneNumber: phoneNumber,
+        }
+      );
+      
+      navigation.navigate("VerificationScreen", {id: res.user.id});
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -121,118 +125,84 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       </TouchableOpacity>
 
       <TextInputWithLabel
-        label="Prefix"
+        label="คำนำหน้า"
         value={prefix}
         onChangeText={(text) => setPrefix(text)}
         placeholder={"Enter prefix"}
       />
 
       <TextInputWithLabel
-        label="First Name"
+        label="ชื่อจริง"
         value={firstName}
         onChangeText={(text) => setFirstName(text)}
         placeholder="Enter first name"
       />
 
       <TextInputWithLabel
-        label="Last Name"
+        label="นามสกุล"
         value={lastName}
         onChangeText={(text) => setLastName(text)}
         placeholder="Enter last name"
       />
 
       <TextInputWithLabel
-        label="Email"
+        label="อีเมล"
         value={email}
         onChangeText={(text) => setEmail(text)}
         placeholder="Enter email"
       />
 
       <TextInputWithLabel
-        label="Phone Number"
+        label="เบอร์โทรศัพท์"
         value={phoneNumber}
         onChangeText={(text) => setPhoneNumber(text)}
         placeholder="Enter phone number"
       />
 
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Blood Type</Text>
-        <View style={styles.pickerContainer}>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            value={bloodType}
-            onValueChange={(value) => setBloodType(value)}
-            items={[
-              { label: "A+", value: "A+" },
-              { label: "B+", value: "B+" },
-              { label: "AB+", value: "AB+" },
-              { label: "O+", value: "O+" },
-              { label: "A-", value: "A-" },
-              { label: "B-", value: "B-" },
-              { label: "AB-", value: "AB-" },
-              { label: "O-", value: "O-" },
-            ]}
-          />
-        </View>
-      </View>
-      <View style={styles.genderTitleContainer}>
-        <Text style={[styles.fieldTitle, {marginTop:10}]}>Gender</Text>
-      </View>
+      <TextInputWithLabel
+        label="กรุ๊ปเลือด"
+        value={bloodType}
+        onChangeText={(text) => setBloodType(text)}
+        placeholder="Enter Blood Type"
+      />
 	  
-      <View style={[styles.genderContainer, { marginBottom: 16}]}>
+	  <Text style={[{ fontWeight: "bold",fontSize: 16,flex:1, marginTop: 10, marginBottom:10, textAlign:"center"}]}>เพศ</Text>
+
+      <View style={[styles.genderContainer, { marginBottom: 16 }]}>
         <TouchableOpacity
           style={[
             styles.genderButton,
-            gender === "male" ? styles.selectedGender : null,
+            gender === "ชาย" ? styles.selectedGender : null,
           ]}
-          onPress={() => setGender("male")}
         >
-          <FontAwesome
-            name="mars"
-            size={18}
-            color={gender === "male" ? "white" : "#ED8085"}
-          />
-          <Text
-            style={[
-              styles.genderText,
-              gender === "male" ? { color: "white" } : null,
-            ]}
-          >
-            Male
+        <FontAwesome name="mars" size={18} color={gender === "ชาย" ? "white" : "#ED8085"}/>
+          <Text style={[styles.genderText, gender === "ชาย" ? { color: "white" } : null,]}>
+            ชาย
           </Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           style={[
             styles.genderButton,
-            gender === "female" ? styles.selectedGender : null,
+            gender === "หญิง" ? styles.selectedGender : null,
           ]}
-          onPress={() => setGender("female")}
         >
-          <FontAwesome
-            name="venus"
-            size={18}
-            color={gender === "female" ? "white" : "#ED8085"}
-          />
-          <Text
-            style={[
-              styles.genderText,
-              gender === "female" ? { color: "white" } : null,
-            ]}
-          >
-            Female
+        <FontAwesome name="venus" size={18} color={gender === "หญิง" ? "white" : "#ED8085"}/>
+          <Text style={[styles.genderText, gender === "หญิง" ? { color: "white" } : null,]}>
+            หญิง
           </Text>
         </TouchableOpacity>
       </View>
 
       <TextInputWithLabel
-        label="DoB"
+        label="วันเดือนปีเกิด"
         value={dob}
         onChangeText={(text) => setDob(text)}
         placeholder="YYYY-MM-DD" // Display the desired date format
       />
 
       <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>Weight</Text>
+        <Text style={styles.fieldTitle}>น้ำหนัก</Text>
         <View style={styles.inputWithUnit}>
           <TextInput
             style={styles.fieldValue}
@@ -240,14 +210,14 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
             onChangeText={(text) => setWeight(text)}
             placeholder="Enter weight"
           />
-          <Text style={styles.unitText}>KG</Text>
+          <Text style={styles.unitText}>กก.</Text>
         </View>
       </View>
 
       <View
         style={[styles.fieldContainer, { marginTop: 10, marginBottom: 10 }]}
       >
-        <Text style={styles.fieldTitle}>Height</Text>
+        <Text style={styles.fieldTitle}>ส่วนสูง</Text>
         <View style={styles.inputWithUnit}>
           <TextInput
             style={styles.fieldValue}
@@ -255,12 +225,12 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
             onChangeText={(text) => setHeight(text)}
             placeholder="Enter height"
           />
-          <Text style={styles.unitText}>CM</Text>
+          <Text style={styles.unitText}>ซม.</Text>
         </View>
       </View>
 
       <TextInputWithLabel
-        label="Congenital Disease"
+        label="โรคประจำตัว"
         value={disease}
         onChangeText={(text) => setDisease(text)}
         placeholder="Enter congenital disease"
@@ -268,10 +238,10 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
+          <Text style={styles.saveButtonText}>บันทึก</Text>
         </TouchableOpacity>
         <Button
-          title="Logout"
+          title="ออกจากระบบ"
           buttonWidth={30}
           buttonHeight={15}
           onPress={() => logout()}
