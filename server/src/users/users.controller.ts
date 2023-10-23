@@ -17,7 +17,7 @@ export class UserController {
   async getUser(@Param('id') userId: string): Promise<any> {
     try{
       return this.userService.findByUserId(userId);
-
+      
     } catch(error){
       console.log(error);
       
