@@ -121,7 +121,7 @@ export class AuthService {
     })
     
     await this.mailService.postMail({
-      to: 'nrpt.smiz@gmail.com',
+      to: user.email,
       otp: OTP.otp
     })
 
@@ -131,7 +131,7 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<any> {
     const user = await this.usersService.findOne(forgotPasswordDto);
 
     if (!user) {
@@ -144,7 +144,19 @@ export class AuthService {
       );
     }
 
-    return 'OTP SENT';
+    const OTP = await this.otpService.generateOTP({
+      userId: user.id,
+      email: user.email
+    })
+    
+    await this.mailService.postMail({
+      to: user.email,
+      otp: OTP.otp
+    })
+
+    return {
+      message: 'FORGOT PASSWORD!',
+    };
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<string> {

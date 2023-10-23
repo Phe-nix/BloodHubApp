@@ -12,12 +12,12 @@ export class OtpController {
   ){}
 
   @Post()
-  async sendOtp(@Body() otpDto: OtpGenerateDto): Promise<any>{
+  async generateOTP(@Body() otpDto: OtpGenerateDto): Promise<any>{
     return await this.otpService.generateOTP(otpDto)
   }
 
   @Post()
-  async validateOtp(@Body() otpDto: OtpValidateDto): Promise<any>{
+  async validateOtp(@Body() otpDto: OtpValidateDto): Promise<boolean>{
     return await this.otpService.validateOTP(otpDto)
   }
 }
