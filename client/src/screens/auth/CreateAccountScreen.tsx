@@ -39,8 +39,10 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
           citizenBack: citizenBack,
         }
       );
-      navigation.navigate("VerificationScreen");
+      
+      navigation.navigate("VerificationScreen", {id: res.user.id});
       console.log(res);
+      console.log(res.user.id);
     } catch (error) {
       console.log(error);
     }

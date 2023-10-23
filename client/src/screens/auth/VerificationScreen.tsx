@@ -4,18 +4,41 @@ import AppHeader from "../../core/components/AppHeader";
 import OTPInputField from "../../core/components/OTPInputField";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
+import axios from "axios";
 
-const VerificationScreen = ({ navigation }: any) => {
+const VerificationScreen = ({ navigation, route }: any) => {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [pinReady, setPinReady] = useState(false);
+  const [id, setId] = useState("");
   const MAX_CODE_LENGTH = 6;
 
   const header = 'ยืนยัน OTP';
   const subheader = 'กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ';
 
+  const verify = async () => {
+    try {
+      const { data: res } = await axios.post(
+      "http://localhost:3000/user/validate",
+      {
+
+      }
+    );
+    navigation.navigate("VerificationScreen");
+    console.log(res);
+  } catch (error) {
+    console.log(error);
+  }
+};
+  useEffect(() => {
+    if (route.params) {
+      setId(route.params.id);
+      console.log(route.params.id);
+    }
+  }
+  , [route.params]);
+
   useEffect(() => {
     if (pinReady) {
-      // Show an alert
       Alert.alert(
         'Account Created',
         'You have successfully created an account!',

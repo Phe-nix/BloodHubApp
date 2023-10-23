@@ -52,7 +52,7 @@ const SignInScreen = ({ navigation }: any) => {
             <View style={{ width: "85%" }}>
               <TextInput
                 style={styles.input}
-                placeholder="รหัสบัตรประชาชน / เบอร์โทรศัพท์"
+                placeholder="รหัสบัตรประชาชน"
                 placeholderTextColor="#856464"
                 onChangeText={setCitizenId}
                 value={citizenId}

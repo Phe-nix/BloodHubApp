@@ -39,14 +39,14 @@ export const SignUpScreen = ({ navigation }: any) => {
           <View style={styles.panel}>
             <View style={{ width: "85%" }}>
               <TextInput
-                style={styles.input}
+                style={[styles.input,{marginBottom: 10}]}
                 placeholder="รหัสบัตรประชาชน"
                 placeholderTextColor="#856464"
                 value={citizenId}
                 onChangeText={(text) => setCitizenId(text)}
               />
               <TextInput
-                style={styles.input}
+                style={[styles.input,{marginBottom: 10}]}
                 placeholder="รหัสผ่าน"
                 placeholderTextColor="#856464"
                 secureTextEntry={true}
@@ -54,7 +54,7 @@ export const SignUpScreen = ({ navigation }: any) => {
                 onChangeText={(text) => setPassword(text)}
               />
               <TextInput
-                style={styles.input}
+                style={[styles.input,{marginBottom: 10}]}
                 placeholder="ยืนยันรหัสผ่าน"
                 placeholderTextColor="#856464"
                 secureTextEntry={true}
