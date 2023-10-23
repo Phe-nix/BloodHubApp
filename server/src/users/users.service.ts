@@ -62,32 +62,51 @@ export class UsersService {
       originalname: `${Date.now()}`
     }
 
-    console.log(data);
-    
+    if(image){
+      const user = await this.prisma.user.update({
+        where: {
+          id: data.id
+        },
+        data: {
+          phoneNumber: data.phoneNumber,
+          profileImage: imagedto.originalname,
+          weight: data.weight,
+          height: data.height,
+          disease: data.disease,
+        }
+      })
 
-    const user = await this.prisma.user.update({
-      where: {
-        id: data.id
-      },
-      data: {
-        phoneNumber: data.phoneNumber,
-        profileImage: imagedto.originalname,
-        weight: data.weight,
-        height: data.height,
-        disease: data.disease,
+      if(user && user.profileImage !== 'default.png'){
+        await this.imageService.deleteImage(user.profileImage);
+        await this.imageService.uploadImage(imagedto);
+      } else {
+        await this.imageService.uploadImage(imagedto);
       }
-    })
-    if(user && user.profileImage !== 'default.png'){
-      await this.imageService.deleteImage(user.profileImage);
-      await this.imageService.uploadImage(imagedto);
+
+      return {
+        message: 'USER UPDATED',
+        user: user
+      }
     } else {
-      await this.imageService.uploadImage(imagedto);
+      const user = await this.prisma.user.update({
+        where: {
+          id: data.id
+        },
+        data: {
+          phoneNumber: data.phoneNumber,
+          weight: data.weight,
+          height: data.height,
+          disease: data.disease,
+        }
+      })
+      
+      return {
+        message: 'USER UPDATED',
+        user: user
+      }
     }
 
-    return {
-      message: 'USER UPDATED',
-      user: user
-    }
+    
   }
 
   async userValidation(id: any) {
