@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { OtpValidateDto } from "./dto/otp-validate.dto";
+import { MailerService } from "@nestjs-modules/mailer";
 
 type otpGenerateDto = {
   userId: string
@@ -10,6 +11,7 @@ type otpGenerateDto = {
 @Injectable()
 export class OTPService {
   constructor(
+    private mailerService: MailerService,
     private prismaService: PrismaService
   ) {}
 
@@ -36,6 +38,13 @@ export class OTPService {
         email: otpDto.email,
         otp: OneTimePassword
       }
+    })
+
+    this.mailerService.sendMail({
+      to: otpDto.email,
+      from: 'Developer of Bloodhub',
+      subject: 'Verification OTP',
+      text: `Your Verification Code is ${OneTimePassword}`,
     })
 
     return {

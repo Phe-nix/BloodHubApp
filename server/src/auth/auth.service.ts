@@ -12,15 +12,15 @@ import { ResetPasswordDto } from './dto/auth-reset-password.dto';
 import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma.service';
 import { OTPService } from 'src/otp/otp.service';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private mailService: MailService,
+    private mailerService: MailerService,
     private otpService: OTPService,
-    private prismaService: PrismaService 
   ) {}
 
   async validateAccount(otp: string, userId: string): Promise<any>{
@@ -107,9 +107,7 @@ export class AuthService {
       prefix: authDto.prefix,
       firstName: authDto.firstName,
       lastName: authDto.lastName,
-      password: hashedPassword,
       dob: authDto.dob,
-      phoneNumber: authDto.phoneNumber,
       email: authDto.email,
       citizenId: authDto.citizenId,
       citizenBack: authDto.citizenBack,
@@ -118,11 +116,6 @@ export class AuthService {
     const OTP = await this.otpService.generateOTP({
       userId: user.id,
       email: user.email
-    })
-    
-    await this.mailService.postMail({
-      to: user.email,
-      otp: OTP.otp
     })
 
     return {
@@ -149,11 +142,6 @@ export class AuthService {
       email: user.email
     })
     
-    await this.mailService.postMail({
-      to: user.email,
-      otp: OTP.otp
-    })
-
     return {
       message: 'FORGOT PASSWORD!',
     };

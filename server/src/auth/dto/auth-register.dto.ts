@@ -21,7 +21,7 @@ export class AuthRegisterDto {
 
   @ApiProperty({ example: '1234567891' })
   @MinLength(10)
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty({ example: 'nrpt.smiz@gmail.com'})
   email: string;
