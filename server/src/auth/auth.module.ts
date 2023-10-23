@@ -4,7 +4,6 @@ import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { jwtConstants } from './constants';
-import { MailModule } from 'src/mail/mail.module';
 import { PrismaService } from 'src/prisma.service';
 import { OTPModule } from 'src/otp/otp.module';
 import { MailerModule } from '@nestjs-modules/mailer';
