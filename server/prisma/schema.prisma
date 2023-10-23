@@ -42,7 +42,8 @@ model User {
   verifications Verifications?
   address        Address?
   appointments   Appointment[]
-  bookmarks      Bookmark[]
+  bookmarkPost      BookmarkPost[]
+  bookmarkNews      BookmarkNews[]
   posts          Post[]
   donationHistory DonationHistory[]
 }
@@ -72,6 +73,7 @@ model News {
   description String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  bookmarks   BookmarkNews[]
 }
 
 model Post {
@@ -84,14 +86,22 @@ model Post {
   userId        String      @db.ObjectId
   user          User        @relation(fields: [userId], references: [id])
   appointments  Appointment[]
-  bookmarks     Bookmark[]
+  bookmarks     BookmarkPost[]
 }
 
-model Bookmark {
+model BookmarkPost {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   postId String @db.ObjectId
   userId String @db.ObjectId
   post   Post   @relation(fields: [postId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model BookmarkNews {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  newId  String @db.ObjectId
+  userId String @db.ObjectId
+  news   News   @relation(fields: [newId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
 }
 

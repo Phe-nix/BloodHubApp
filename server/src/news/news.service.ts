@@ -4,6 +4,7 @@ import { PrismaService } from "src/prisma.service";
 import { NewsCreateDto } from "./dto/news-create.dto";
 import { NewsDeleteDto } from "./dto/news-delete.dto";
 import { NewsUpdateDto } from "./dto/news-update.dto";
+import { NewsGetAllDto } from "./dto/news-get-all.dto";
 
 @Injectable()
 export class NewsService {
@@ -72,7 +73,7 @@ export class NewsService {
     }
   }
 
-  async getAllNews(): Promise<any>{
+  async getAllNews(newsDto: NewsGetAllDto): Promise<any>{
     try {
       const news = await this.prismaSerivce.news.findMany();
       for (let i = 0; i < news.length; i++){
@@ -80,7 +81,26 @@ export class NewsService {
         news[i].image = firestoreImage;
       }
 
-      return news;
+      const bookmark = await this.prismaSerivce.bookmarkNews.findMany({
+        where:{
+          userId: newsDto.id
+        }
+      })
+
+      const updatedNews = news.map((item) => {
+        const isBookmarked = bookmark.some((bookmark) => bookmark.newId === item.id);
+
+        return {
+          ...item,
+          isBookmarked: isBookmarked
+        }
+      })
+
+      return {
+        message: "News retrieved successfully",
+        news: updatedNews,
+      };
+      
     } catch (error) {
       console.log("Error getting news:", error);
       throw error;

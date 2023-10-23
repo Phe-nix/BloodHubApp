@@ -7,7 +7,7 @@ const New = (props: any) => {
         <View>
             <View style={styles.underLine} />
             <View style={styles.news}>
-                <Image style={styles.newsPicture} source={props.image} />
+                <Image style={styles.newsPicture} source={{uri: props.image}} />
                 <View style={styles.box}>
                     <View>
                         <Text style={styles.title}>{props.title}</Text>

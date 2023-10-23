@@ -5,6 +5,7 @@ import { NewsCreateDto } from "./dto/news-create.dto";
 import { NewsDeleteDto } from "./dto/news-delete.dto";
 import { NewsUpdateDto } from "./dto/news-update.dto";
 import { NewsService } from "./news.service";
+import { NewsGetAllDto } from "./dto/news-get-all.dto";
 
 @Controller('news')
 @ApiTags('news')
@@ -50,10 +51,10 @@ export class NewsController {
     }
   }
 
-  @Get('getAllNews')
-  async getAllNews(): Promise<any> {
+  @Get('getAllNews/:id')
+  async getAllNews(@Param() newsDto: NewsGetAllDto): Promise<any> {
     try {
-      return await this.newsService.getAllNews();
+      return await this.newsService.getAllNews(newsDto);
     } catch (error) {
       console.log(error);
       throw error;

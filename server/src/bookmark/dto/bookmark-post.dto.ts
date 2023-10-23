@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class bookMarkDto {
+export class bookMarkPostDto {
   @ApiProperty({type: 'string'})
   userId: string;
 
