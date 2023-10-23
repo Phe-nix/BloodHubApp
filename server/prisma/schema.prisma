@@ -172,7 +172,6 @@ model DonationHistory {
   user       User    @relation(fields: [userId], references: [id])
 }
 
-
 model Verifications {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   otp            String
