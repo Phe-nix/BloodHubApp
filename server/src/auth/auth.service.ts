@@ -9,7 +9,6 @@ import { ForgotPasswordDto } from './dto/auth-forgot-password.dto';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ResetPasswordDto } from './dto/auth-reset-password.dto';
-import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma.service';
 import { OTPService } from 'src/otp/otp.service';
 import { MailerService } from '@nestjs-modules/mailer';
