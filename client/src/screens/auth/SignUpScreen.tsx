@@ -25,8 +25,6 @@ export const SignUpScreen = ({ navigation }: any) => {
       citizenId: citizenId,
       password: password,
     });
-    console.log("citizenId", citizenId);
-    console.log("password", password);
   };
 
   return (
@@ -52,6 +50,7 @@ export const SignUpScreen = ({ navigation }: any) => {
                 secureTextEntry={true}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                autoCapitalize="none"
               />
               <TextInput
                 style={[styles.input,{marginBottom: 10}]}
@@ -60,6 +59,7 @@ export const SignUpScreen = ({ navigation }: any) => {
                 secureTextEntry={true}
                 value={confirmPassword}
                 onChangeText={(text) => setConfirmPassword(text)}
+                autoCapitalize="none"
               />
               {passwordError ? (
                 <Text style={{ color: "red" }}>{passwordError}</Text>

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { SafeAreaView, ScrollView, TextInput, View } from "react-native";
 import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
@@ -6,21 +6,20 @@ import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
 
-const ForgetPassword = ({ navigation }: any) => {
-  const header = "ลืมรหัสผ่าน";
-  const subheader = "เราจะทำการส่ง OTP ไปยังอีเมลของท่าน";
+interface ForgetPasswordProps {
+  navigation: any;
+}
+
+const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
   const [email, setemail] = useState("");
 
   const forget = async () => {
     try {
-        const { data: res } = await axios.post(
-        "http://localhost:3000/auth/forgotPassword",
-        {
-          email: email,
-        }
-      );
-      navigation.navigate("VerificationScreen", {res.user.id : id},{ source: "forgetPassword" });
-      console.log(res.user.id);
+      const { data: res } = await axios.post("http://localhost:3000/auth/forgotPassword", {
+        email: email,
+      });
+
+      navigation.navigate("VerificationScreen", { id: res.user, source: "forgetPassword" });
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +31,7 @@ const ForgetPassword = ({ navigation }: any) => {
         <SafeAreaView style={[styles.container, { marginHorizontal: 20 }]}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ flex: 1, justifyContent: "center" }}>
-              <AppHeader header={header} subheader={subheader} />
+              <AppHeader header="ลืมรหัสผ่าน" subheader="เราจะทำการส่ง OTP ไปยังอีเมลของท่าน" />
             </View>
 
             <View
@@ -48,7 +47,7 @@ const ForgetPassword = ({ navigation }: any) => {
                   placeholderTextColor="#856464"
                   autoCapitalize="none"
                   onChangeText={(text) => setemail(text)}
-/>
+                />
                 <View style={{ marginTop: 20 }}>
                   <Button
                     title="Next"

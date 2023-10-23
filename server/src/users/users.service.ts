@@ -96,6 +96,7 @@ export class UsersService {
               { id: userDto.userId },
               { citizenId: userDto.citizenId },
               { phoneNumber: userDto.phoneNumber },
+              { email: userDto.email }
             ]
           },
           include: {

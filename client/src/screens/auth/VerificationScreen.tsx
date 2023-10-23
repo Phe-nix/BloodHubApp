@@ -6,7 +6,12 @@ import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
 
-const VerificationScreen = ({ navigation, route }: any) => {
+interface VerificationScreenProps {
+  navigation: any;
+  route: any;
+}
+
+const VerificationScreen: React.FC<VerificationScreenProps> = ({ navigation, route }) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [pinReady, setPinReady] = useState(false);
   const [email, setemail] = useState("");
@@ -21,42 +26,36 @@ const VerificationScreen = ({ navigation, route }: any) => {
 
   useEffect(() => {
     if (pinReady) {
-      const otp = code.join('');
+      const otp = code.join("");
       const id = route.params.id;
-      console.log(id);
-
       (async () => {
         try {
           let apiEndpoint = "http://localhost:3000/otp/validate";
           if (route.params.source === "forgetPassword") {
-            apiEndpoint = "http://localhost:3000//otp/validate";
+            apiEndpoint = "http://localhost:3000/otp/validate";
             const { data: res } = await axios.post(apiEndpoint, {
-                email: email,
-                userId: id,
-                otp: otp,
-              });
-              console.log(res);
-              navigation.navigate("ForgetPassword",{email: email});
-          }
-
-          const { data: res } = await axios.post(apiEndpoint, {
-            userId: id,
-            otp: otp,
-          });
-
-          console.log(res);
-          Alert.alert(
-            "Account Created",
-            "You have successfully created an account!",
-            [
-              {
-                text: "OK",
-                onPress: () => {
-                  navigation.navigate("SignIn");
+              userId: id,
+              otp: otp,
+            });
+            navigation.navigate("CreateNewPassword", { email: email, id: id });
+          } else {
+            const { data: res } = await axios.post(apiEndpoint, {
+              userId: id,
+              otp: otp,
+            });
+            Alert.alert(
+              "Account Created",
+              "You have successfully created an account!",
+              [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    navigation.navigate("SignIn");
+                  },
                 },
-              },
-            ]
-          );
+              ]
+            );
+          }
         } catch (error) {
           console.log(error);
         }
