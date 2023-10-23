@@ -1,9 +1,10 @@
-import { Body, Controller, HttpException, HttpStatus, Post, Get, Delete, Param } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { Body, Controller, HttpException, HttpStatus, Post, Get, Delete, Param, UseInterceptors, UploadedFile } from "@nestjs/common";
+import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
 import { UserGetDto } from "./dto/users-get.dto";
 import { UsersService } from './users.service';
 import { UpdateUserDto } from "./dto/users-update.dto";
 import { DeleteUserDto } from "./dto/users-delete.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 
 @Controller('user')
@@ -31,11 +32,13 @@ export class UserController {
     }
   }
 
-  @Post()
-  async updateUser(@Body() data: UpdateUserDto): Promise<any> {
+  @Post('update')
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('profileImage'))
+  @ApiBody({type: UpdateUserDto})
+  async updateUser(@UploadedFile() profileImage: Express.Multer.File, @Body() data: UpdateUserDto): Promise<any> {
     try{
-      return this.userService.updateUser(data);
-
+      return this.userService.updateUser(profileImage, data);
     } catch(error){
       console.log(error);
       
@@ -49,7 +52,7 @@ export class UserController {
     }
   }
 
-  @Delete()
+  @Delete('delete')
   async deleteUser(@Body() data: DeleteUserDto): Promise<any> {
     try{
       return this.userService.deleteUser(data);
