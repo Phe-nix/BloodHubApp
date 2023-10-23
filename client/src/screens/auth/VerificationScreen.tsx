@@ -7,51 +7,47 @@ import { styles } from "./auth.styles";
 import axios from "axios";
 
 const VerificationScreen = ({ navigation, route }: any) => {
-  const [code, setCode] = useState(['', '', '', '', '', '']);
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [pinReady, setPinReady] = useState(false);
   const [id, setId] = useState("");
   const MAX_CODE_LENGTH = 6;
 
-  const header = 'ยืนยัน OTP';
-  const subheader = 'กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ';
+  const header = "ยืนยัน OTP";
+  const subheader = "กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ";
 
-  const verify = async () => {
+  useEffect(() => {
     try {
-      const { data: res } = await axios.post(
-      "http://localhost:3000/user/validate",
-      {
-
-      }
-    );
-    navigation.navigate("VerificationScreen");
-    console.log(res);
-  } catch (error) {
-    console.log(error);
-  }
-};
-  useEffect(() => {
-    if (route.params) {
-      setId(route.params.id);
-      console.log(route.params.id);
-    }
-  }
-  , [route.params]);
-
-  useEffect(() => {
-    if (pinReady) {
-      Alert.alert(
-        'Account Created',
-        'You have successfully created an account!',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              // Navigate to the SignIn screen
-              navigation.navigate('SignIn');
+      if (pinReady) {
+        async () => {
+          try {
+            const { data: res } = await axios.post(
+              "http://localhost:3000/otp/validate",
+              {
+                id: id,
+              }
+            );
+            navigation.navigate("VerificationScreen");
+            console.log(res);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        Alert.alert(
+          "Account Created",
+          "You have successfully created an account!",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                // Navigate to the SignIn screen
+                navigation.navigate("SignIn");
+              },
             },
-          },
-        ]
-      );
+          ]
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [pinReady]);
 
@@ -69,10 +65,10 @@ const VerificationScreen = ({ navigation, route }: any) => {
               MAX_CODE_LENGTH={MAX_CODE_LENGTH}
             />
           </View>
-          <View style={{ alignItems: 'center', marginTop: 30 }}>
+          <View style={{ alignItems: "center", marginTop: 30 }}>
             <Text style={styles.text}>
-              ไม่ได้รับรหัส OTP ?{' '}
-              <Text style={{ color: '#FF363C' }}>ส่งอีกครั้ง</Text>
+              ไม่ได้รับรหัส OTP ?{" "}
+              <Text style={{ color: "#FF363C" }}>ส่งอีกครั้ง</Text>
             </Text>
           </View>
         </SafeAreaView>
