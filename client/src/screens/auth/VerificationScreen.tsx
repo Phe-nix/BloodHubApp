@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Text, View, Alert } from "react-native"; // Import Alert
+import { SafeAreaView, Text, View, Alert } from "react-native";
 import AppHeader from "../../core/components/AppHeader";
 import OTPInputField from "../../core/components/OTPInputField";
 import Layer from "../../core/layouts/Layout";
@@ -9,6 +9,7 @@ import axios from "axios";
 const VerificationScreen = ({ navigation, route }: any) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [pinReady, setPinReady] = useState(false);
+  const [email, setemail] = useState("");
   const MAX_CODE_LENGTH = 6;
 
   const header = "ยืนยัน OTP";
@@ -23,30 +24,39 @@ const VerificationScreen = ({ navigation, route }: any) => {
       const otp = code.join('');
       const id = route.params.id;
       console.log(id);
-      
 
       (async () => {
         try {
-          const { data: res } = await axios.post(
-            "http://localhost:3000/otp/validate",
-            {
-              userId: id,
-              otp: otp,
-            }
-          );
+          let apiEndpoint = "http://localhost:3000/otp/validate";
+          if (route.params.source === "forgetPassword") {
+            apiEndpoint = "http://localhost:3000//otp/validate";
+            const { data: res } = await axios.post(apiEndpoint, {
+                email: email,
+                userId: id,
+                otp: otp,
+              });
+              console.log(res);
+              navigation.navigate("ForgetPassword",{email: email});
+          }
+
+          const { data: res } = await axios.post(apiEndpoint, {
+            userId: id,
+            otp: otp,
+          });
+
           console.log(res);
-		  Alert.alert(
-			          "Account Created",
-			          "You have successfully created an account!",
-			          [
-			            {
-			              text: "OK",
-			              onPress: () => {
-			                navigation.navigate("SignIn");
-			              },
-			            },
-			          ]
-			        );
+          Alert.alert(
+            "Account Created",
+            "You have successfully created an account!",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  navigation.navigate("SignIn");
+                },
+              },
+            ]
+          );
         } catch (error) {
           console.log(error);
         }
@@ -54,19 +64,18 @@ const VerificationScreen = ({ navigation, route }: any) => {
     }
   }, [pinReady]);
 
-
   return (
     <View style={styles.container}>
       <Layer>
         <SafeAreaView style={{ marginHorizontal: 20 }}>
           <AppHeader header={header} subheader={subheader} />
 
-           <View style={{ marginTop: 30 }}>
+          <View style={{ marginTop: 30 }}>
             <OTPInputField
               code={code}
               setCode={setCode}
               setPinReady={setPinReady}
-              onInputComplete={onOtpInputComplete} // Call the function on OTP input complete
+              onInputComplete={onOtpInputComplete}
               MAX_CODE_LENGTH={MAX_CODE_LENGTH}
             />
           </View>
