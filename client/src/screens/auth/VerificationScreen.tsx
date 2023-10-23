@@ -9,28 +9,29 @@ import axios from "axios";
 const VerificationScreen = ({ navigation, route }: any) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [pinReady, setPinReady] = useState(false);
-  const [id, setId] = useState("");
-  const [otp, setOtp] = useState("");
   const MAX_CODE_LENGTH = 6;
 
   const header = "ยืนยัน OTP";
   const subheader = "กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ";
 
   const onOtpInputComplete = () => {
-    // Set pinReady to true when OTP input is complete
     setPinReady(true);
   };
 
   useEffect(() => {
     if (pinReady) {
-      // Make the API call when pinReady is true
+      const otp = code.join('');
+      const id = route.params.id;
+      console.log(id);
+      
+
       (async () => {
         try {
           const { data: res } = await axios.post(
             "http://localhost:3000/otp/validate",
             {
-              id: id, // You need to define 'id'
-              otp: otp, // Use the entered OTP
+              userId: id,
+              otp: otp,
             }
           );
           console.log(res);
@@ -41,8 +42,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
 			            {
 			              text: "OK",
 			              onPress: () => {
-			                // Navigate to the SignIn screen
-			                navigation.navigate("SignIn");
+			                // navigation.navigate("SignIn");
 			              },
 			            },
 			          ]
@@ -52,7 +52,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
         }
       })();
     }
-  }, [pinReady, id, otp]);
+  }, [pinReady]);
 
 
   return (
@@ -65,8 +65,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
             <OTPInputField
               code={code}
               setCode={setCode}
-              value={otp}
-              onChangeText={setOtp}
+              setPinReady={setPinReady}
               onInputComplete={onOtpInputComplete} // Call the function on OTP input complete
               MAX_CODE_LENGTH={MAX_CODE_LENGTH}
             />
