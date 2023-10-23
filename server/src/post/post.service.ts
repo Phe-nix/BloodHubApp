@@ -110,7 +110,19 @@ export class PostService {
   }
 
   async getAllPost(userId: PostGetAllDto): Promise<any> {
-    const posts = await this.prisma.post.findMany();
+    const posts = await this.prisma.post.findMany(
+      {
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profileImage: true,
+            }
+          },
+        }
+      }
+    );
 
     if(!posts){
       throw new HttpException(
