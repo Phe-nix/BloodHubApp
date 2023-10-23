@@ -8,6 +8,7 @@ import { pickerSelectStyles } from "./auth.styles"; // Replace with the correct 
 import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNPickerSelect from "react-native-picker-select";
+import { format } from "date-fns"; // Import date-fns for date formatting
 
 const CreateAccountScreen = ({ navigation, route }: any) => {
   const header = "ลงทะเบียน";
@@ -24,15 +25,15 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
 
   const create = async () => {
     try {
-      const dobTimestamp = dob.getTime();
-      const { data: res } = await axios.post(
+        const dobFormatted = format(dob, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"); // Format the date
+        const { data: res } = await axios.post(
         "http://localhost:3000/auth/register",
         {
           prefix: prefix,
           firstName: firstName,
           lastName: lastName,
           password: password,
-          dob: dobTimestamp,
+          dob: dobFormatted,
           email: email,
           citizenId: citizenId,
           citizenBack: citizenBack,
@@ -130,12 +131,11 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   <Text style={{ marginTop: 10, color: "#856464" }}>
                     วันเดือนปีเกิด
                   </Text>
-
                   <TextInput
                     style={[styles.input]}
                     placeholder="..."
                     placeholderTextColor="#856464"
-                    value={dob.toDateString()} // Format the date as a string
+                    value={format(dob, "dd/MM/yyyy")} // Format the date as "dd/MM/yyyy"
                     onTouchStart={toggleDatePicker}
                   />
                   {showDatePicker && (

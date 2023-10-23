@@ -26,6 +26,7 @@
     "@types/react-native-datepicker": "^1.7.3",
     "@types/react-navigation": "^3.4.0",
     "axios": "^1.5.1",
+    "date-fns": "^2.30.0",
     "expo": "~49.0.7",
     "expo-image-manipulator": "^11.5.0",
     "expo-image-picker": "^14.5.0",
