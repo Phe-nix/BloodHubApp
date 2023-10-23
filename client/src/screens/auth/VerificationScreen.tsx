@@ -10,46 +10,50 @@ const VerificationScreen = ({ navigation, route }: any) => {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [pinReady, setPinReady] = useState(false);
   const [id, setId] = useState("");
+  const [otp, setOtp] = useState("");
   const MAX_CODE_LENGTH = 6;
 
   const header = "ยืนยัน OTP";
   const subheader = "กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ";
 
+  const onOtpInputComplete = () => {
+    // Set pinReady to true when OTP input is complete
+    setPinReady(true);
+  };
+
   useEffect(() => {
-    try {
-      if (pinReady) {
-        async () => {
-          try {
-            const { data: res } = await axios.post(
-              "http://localhost:3000/otp/validate",
-              {
-                id: id,
-              }
-            );
-            navigation.navigate("VerificationScreen");
-            console.log(res);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-        Alert.alert(
-          "Account Created",
-          "You have successfully created an account!",
-          [
+    if (pinReady) {
+      // Make the API call when pinReady is true
+      (async () => {
+        try {
+          const { data: res } = await axios.post(
+            "http://localhost:3000/otp/validate",
             {
-              text: "OK",
-              onPress: () => {
-                // Navigate to the SignIn screen
-                navigation.navigate("SignIn");
-              },
-            },
-          ]
-        );
-      }
-    } catch (error) {
-      console.log(error);
+              id: id, // You need to define 'id'
+              otp: otp, // Use the entered OTP
+            }
+          );
+          console.log(res);
+		  Alert.alert(
+			          "Account Created",
+			          "You have successfully created an account!",
+			          [
+			            {
+			              text: "OK",
+			              onPress: () => {
+			                // Navigate to the SignIn screen
+			                navigation.navigate("SignIn");
+			              },
+			            },
+			          ]
+			        );
+        } catch (error) {
+          console.log(error);
+        }
+      })();
     }
-  }, [pinReady]);
+  }, [pinReady, id, otp]);
+
 
   return (
     <View style={styles.container}>
@@ -57,11 +61,13 @@ const VerificationScreen = ({ navigation, route }: any) => {
         <SafeAreaView style={{ marginHorizontal: 20 }}>
           <AppHeader header={header} subheader={subheader} />
 
-          <View style={{ marginTop: 30 }}>
+           <View style={{ marginTop: 30 }}>
             <OTPInputField
               code={code}
               setCode={setCode}
-              setPinReady={setPinReady}
+              value={otp}
+              onChangeText={setOtp}
+              onInputComplete={onOtpInputComplete} // Call the function on OTP input complete
               MAX_CODE_LENGTH={MAX_CODE_LENGTH}
             />
           </View>

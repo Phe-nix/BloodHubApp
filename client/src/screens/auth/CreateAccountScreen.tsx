@@ -41,7 +41,6 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
       );
       
       navigation.navigate("VerificationScreen", {id: res.user.id});
-      console.log(res);
       console.log(res.user.id);
     } catch (error) {
       console.log(error);

@@ -51,14 +51,14 @@ const SignInScreen = ({ navigation }: any) => {
           <View style={styles.panel}>
             <View style={{ width: "85%" }}>
               <TextInput
-                style={styles.input}
+                style={[styles.input,{marginBottom: 10}]}
                 placeholder="รหัสบัตรประชาชน"
                 placeholderTextColor="#856464"
                 onChangeText={setCitizenId}
                 value={citizenId}
               />
               <TextInput
-                style={styles.input}
+                style={[styles.input,{marginBottom: 10}]}
                 placeholder="รหัสผ่าน"
                 placeholderTextColor="#856464"
                 secureTextEntry={true}
