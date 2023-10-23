@@ -102,14 +102,7 @@ export class AuthService {
 
     const user = await this.usersService.createUser({
       ...authDto,
-      prefix: authDto.prefix,
-      firstName: authDto.firstName,
-      lastName: authDto.lastName,
-      dob: authDto.dob,
-      email: authDto.email,
       password: hashedPassword,
-      citizenId: authDto.citizenId,
-      citizenBack: authDto.citizenBack,
     });
 
     const OTP = await this.otpService.generateOTP({
