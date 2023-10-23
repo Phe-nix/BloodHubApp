@@ -1,4 +1,4 @@
-import { BloodType, Gender, Prefix } from '@prisma/client';
+import { BloodType } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsDateString, IsObject, IsArray, IsNumber } from 'class-validator';
 
@@ -20,7 +20,7 @@ export class UpdateUserDto {
   @IsObject()
   @IsOptional()
   @ApiProperty({ description: 'Prefix information', example: { title: 'Mr.', abbreviation: 'Mr' } })
-  prefix?: Prefix;
+  prefix?: String;
 
   @IsString()
   @IsOptional()
@@ -65,7 +65,7 @@ export class UpdateUserDto {
   @IsObject()
   @IsOptional()
   @ApiProperty({ description: 'Gender', example: { type: 'Male' } })
-  gender?: Gender;
+  gender?: String;
 
   @IsNumber()
   @IsOptional()
