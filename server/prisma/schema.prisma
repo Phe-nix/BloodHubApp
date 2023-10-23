@@ -18,22 +18,11 @@ enum BloodType {
   AB_NEGATIVE
 }
 
-enum Prefix {
-  Mr
-  Ms
-  Mrs
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   citizenId     String    @unique
   citizenBack   String    @unique
-  prefix        Prefix
+  prefix        String
   firstName     String
   lastName      String
   phoneNumber   String?    @unique
@@ -42,7 +31,7 @@ model User {
   dob           DateTime
   profileImage  String?
   bloodType     BloodType?
-  gender        Gender?
+  gender        String?
   weight        Float?
   height        Float?
   disease       String?
