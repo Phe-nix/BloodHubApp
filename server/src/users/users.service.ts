@@ -70,13 +70,8 @@ export class UsersService {
         id: data.id
       },
       data: {
-        prefix: data.prefix,
-        firstName: data.firstName,
-        lastName: data.lastName,
         phoneNumber: data.phoneNumber,
-        dob: data.dob,
         profileImage: imagedto.originalname,
-        gender: data.gender,
         weight: data.weight,
         height: data.height,
         disease: data.disease,
