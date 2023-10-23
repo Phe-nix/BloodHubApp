@@ -16,7 +16,6 @@ export const SettingNavigation = ({ navigation }: any) => {
   return (
     <tab.Navigator
       screenOptions={{
-        headerShown: false,
         headerStyle: {
           backgroundColor: "#E99999",
         },
@@ -24,17 +23,6 @@ export const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen
         name="Setting"
         component={SettingScreen}
-        // screenOptions = {{
-        //   headerShown: true,
-        //   headerStyle: {
-        //     backgroundColor: "#E99999",
-        //   },
-        //   headerLeft: () => (
-        //     <TouchableOpacity onPress={() => navigation.goBack("")}>
-        //       <AntDesign name="left" size={24} color="black" />
-        //     </TouchableOpacity>
-        //   ),
-        // }}
       />
       <tab.Screen name="MyProfile" component={MyProfileScreen} />
       <tab.Screen name="EditAddress" component={EditAddressScreen} />

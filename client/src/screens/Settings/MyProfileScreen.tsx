@@ -14,6 +14,7 @@ import { styles } from "./style/MyProfileScreen.style";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios"; // Import Axios for making HTTP requests.
+import { set } from "date-fns";
 
 interface ProfileEditScreenProps {
   navigation: any;
@@ -43,6 +44,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           `http://localhost:3000/user/${userId}`
         );
         const userData = response.data;
+		setImage(userData.profileImage);
         setPrefix(userData.prefix);
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
@@ -94,6 +96,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         const { data: res } = await axios.post(
         "http://localhost:3000/user/update",
         {
+		  id: await AsyncStorage.getItem("userId"),
 		  image: image,
           weight: weight,
 		  height: height,
@@ -101,8 +104,6 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 		  phoneNumber: phoneNumber,
         }
       );
-      
-      navigation.navigate("VerificationScreen", {id: res.user.id});
     } catch (error) {
       console.log(error);
     }
@@ -129,6 +130,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={prefix}
         onChangeText={(text) => setPrefix(text)}
         placeholder={"Enter prefix"}
+		editable={false}
       />
 
       <TextInputWithLabel
@@ -136,6 +138,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={firstName}
         onChangeText={(text) => setFirstName(text)}
         placeholder="Enter first name"
+		editable={false}
       />
 
       <TextInputWithLabel
@@ -143,6 +146,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={lastName}
         onChangeText={(text) => setLastName(text)}
         placeholder="Enter last name"
+		editable={false}
       />
 
       <TextInputWithLabel
@@ -150,6 +154,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={email}
         onChangeText={(text) => setEmail(text)}
         placeholder="Enter email"
+		editable={false}
       />
 
       <TextInputWithLabel
@@ -164,6 +169,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={bloodType}
         onChangeText={(text) => setBloodType(text)}
         placeholder="Enter Blood Type"
+		editable={false}
       />
 	  
 	  <Text style={[{ fontWeight: "bold",fontSize: 16,flex:1, marginTop: 10, marginBottom:10, textAlign:"center"}]}>เพศ</Text>
@@ -199,6 +205,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={dob}
         onChangeText={(text) => setDob(text)}
         placeholder="YYYY-MM-DD" // Display the desired date format
+		editable={false}
       />
 
       <View style={styles.fieldContainer}>
