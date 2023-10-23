@@ -10,5 +10,8 @@ export class DonationCreateDto {
   status: DonationStatus;
 
   @ApiProperty({ type: 'string', description: 'User Id', example: '123456789' })
-  userId: string; // Make sure this is the correct type, e.g., 'string'
+  userId: string;
+
+  @ApiProperty({ type: 'string', example: '123123123123' })
+  postId: string
 }

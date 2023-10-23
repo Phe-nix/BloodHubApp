@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiProperty, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiProperty, ApiTags } from "@nestjs/swagger";
 import { OtpGenerateDto } from "./dto/otp-generate.dto";
 import { OtpValidateDto } from "./dto/otp-validate.dto";
 import { OTPService } from "./otp.service";
@@ -11,12 +11,8 @@ export class OtpController {
     private otpService: OTPService
   ){}
 
-  @Post()
-  async generateOTP(@Body() otpDto: OtpGenerateDto): Promise<any>{
-    return await this.otpService.generateOTP(otpDto)
-  }
-
-  @Post()
+  @Post('validate')
+  @ApiBody({type: OtpValidateDto})
   async validateOtp(@Body() otpDto: OtpValidateDto): Promise<boolean>{
     return await this.otpService.validateOTP(otpDto)
   }

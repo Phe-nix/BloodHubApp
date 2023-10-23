@@ -29,6 +29,14 @@ export class DonationService {
         )
       }
 
+      const donation = await this.prismaSerivce.donation.create({
+        data: {
+          postId: donationDto.postId,
+          userId: donationDto.userId,
+          status: donationDto.status,
+        }
+      })
+
       const donationHistory = await this.prismaSerivce.donationHistory.create({
         data: {
           blood_type: donationDto.blood_type,
@@ -39,7 +47,8 @@ export class DonationService {
       
       return {
         message: "Donation created successfully",
-        donation: donationHistory,
+        donation: donation,
+        donationHistory: donationHistory,
       };
     } catch (error) {
 
@@ -73,12 +82,16 @@ export class DonationService {
 
   async updateDonation(donationDto: DonationUpdateDto): Promise<any>{
     try {
-      const donationHistory = await this.prismaSerivce.donationHistory.findFirst({
+      const donation = await this.prismaSerivce.donation.update({
         where: {
           id: donationDto.id,
         },
+        data: {
+          status: donationDto.status
+        }
       });
-      if (!donationHistory){
+
+      if (!donation){
         throw new HttpException({
           status: HttpStatus.NOT_FOUND,
           error: 'DONATION NOT FOUND'
@@ -86,7 +99,7 @@ export class DonationService {
       }
       return {
         message: "Donation updated successfully",
-        donation: donationHistory,
+        donation: donation,
       }
     } catch (error) {
       console.log("Error updating donation:", error);
@@ -94,8 +107,8 @@ export class DonationService {
     }
   }
 
-  async getDonation(donationDto: DonationGetDto): Promise<any>{
-    const donation = await this.prismaSerivce.donationHistory.findMany({
+  async getlDonation(donationDto: DonationGetDto): Promise<any>{
+    const donation = await this.prismaSerivce.donation.findMany({
       where:{
         userId: donationDto.userId
       }
@@ -114,6 +127,29 @@ export class DonationService {
     return {
       message: "Donation found successfully",
       donation: donation
+    }
+  }
+
+  async getDonationHistory(donationDto: DonationGetDto): Promise<any>{
+    const donationHistory = await this.prismaSerivce.donationHistory.findMany({
+      where:{
+        userId: donationDto.userId
+      }
+    })
+
+    if(!donationHistory) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'DONATION NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    return {
+      message: "DonationHistory found successfully",
+      donation: donationHistory
     }
   }
 }

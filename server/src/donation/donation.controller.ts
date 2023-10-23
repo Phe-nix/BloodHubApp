@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { DonationService } from "./donation.service";
 import { DonationCreateDto } from "./dto/donation-create.dto";
@@ -12,10 +12,6 @@ export class DonationController {
   constructor(
     private donationService: DonationService
   ){}
-
-  async getDonation(donationDto: DonationGetDto): Promise<any>{
-    return await this.donationService.getDonation(donationDto);
-  }
 
   @Post("create")
   @ApiBody({type: DonationCreateDto})
@@ -35,5 +31,15 @@ export class DonationController {
     return await this.donationService.deleteDonation(donationDto);
   }
 
+  @Get('getDonation')
+  @ApiBody({type: DonationGetDto})
+  async getAllDonation(@Body() donationDto: DonationGetDto): Promise<any>{
+    return await this.donationService.getlDonation(donationDto);
+  }
 
+  @Get('getDonationHistory')
+  @ApiBody({type: DonationGetDto})
+  async getAllDonationHistory(@Body() donationDto: DonationGetDto): Promise<any>{
+    return await this.donationService.getDonationHistory(donationDto);
+  }
 }

@@ -80,6 +80,14 @@ export class OTPService {
         HttpStatus.UNAUTHORIZED,
       );
     }
+    const user = await this.prismaService.user.update({
+      where: {
+        id: otpDto.userId
+      },
+      data: {
+        verified: true
+      }
+    })
     
     const deleteOTP = await this.prismaService.verifications.delete({
       where:{
