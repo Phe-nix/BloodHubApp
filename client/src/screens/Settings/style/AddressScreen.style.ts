@@ -5,6 +5,23 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: "white",
     },
+    searchBar: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "#fff",
+      borderRadius: 30,
+      marginHorizontal: 20,
+      marginVertical: 10,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      width: "90%",
+    },
+    searchInput: {
+      flex: 1,
+      marginLeft: 12,
+      fontSize: 18,
+      color: "#000000",
+    },
     panel: {
       backgroundColor: "rgba(237, 128, 133, 0.5)", // Pink color with opacity
       width: "100%",

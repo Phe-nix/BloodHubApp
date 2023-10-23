@@ -50,9 +50,7 @@ model User {
 model Address {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   houseNo     String
-  moo         String
-  soi         String
-  subDistrict String?
+  mooSoi      String
   district    String?
   province    String?
   country     String?

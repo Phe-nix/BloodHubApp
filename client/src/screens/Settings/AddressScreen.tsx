@@ -18,6 +18,7 @@ interface LocationScreenProps {
 }
 
 const LocationScreen: React.FC<LocationScreenProps> = (props) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -57,18 +58,23 @@ const LocationScreen: React.FC<LocationScreenProps> = (props) => {
     // Handle form submission
   };
 
+  const handleSearch = () => {
+    // Handle form submission
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <View>
-        <TextInput style={styles.input} placeholder="Address" />
-        <TextInput style={styles.input} placeholder="House No. / Moo / Soi" />
-        <TextInput style={styles.input} placeholder="Sub-District / District" />
-        <TextInput
-          style={styles.input}
-          placeholder="Province / Country / Postal Code"
-        />
+      <View style={{ backgroundColor: "#E99999" }}>
+        <View style={styles.searchBar}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Location"
+            value={searchQuery}
+            onChangeText={(text) => setSearchQuery(text)}
+          />
+          <Button title="Search" onPress={handleSearch} />
+        </View>
       </View>
-
       <View style={styles.panel}>
         <View style={styles.panelContent}>
           <FontAwesome
@@ -98,10 +104,11 @@ const LocationScreen: React.FC<LocationScreenProps> = (props) => {
           />
         </MapView>
       )}
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
-      
+      <View style={{ paddingBottom: 20 }}>
+        <TouchableOpacity style={[styles.saveButton]} onPress={handleSave}>
+          <Text style={[styles.saveButtonText]}>Save</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
