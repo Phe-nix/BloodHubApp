@@ -26,6 +26,8 @@ export const SignUpScreen = ({ navigation }: any) => {
       citizenId: citizenId,
       password: password,
     });
+    console.log("citizenId", citizenId);
+    console.log("password", password);
   };
 
   return (
