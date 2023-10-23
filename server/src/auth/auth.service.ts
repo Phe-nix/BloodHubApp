@@ -145,6 +145,7 @@ export class AuthService {
     
     return {
       message: 'FORGOT PASSWORD!',
+      user: user.id,
     };
   }
 
