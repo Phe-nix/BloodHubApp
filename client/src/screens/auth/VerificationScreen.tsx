@@ -42,7 +42,7 @@ const VerificationScreen = ({ navigation, route }: any) => {
 			            {
 			              text: "OK",
 			              onPress: () => {
-			                // navigation.navigate("SignIn");
+			                navigation.navigate("SignIn");
 			              },
 			            },
 			          ]

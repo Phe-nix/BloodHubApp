@@ -21,7 +21,6 @@ const SignInScreen = ({ navigation }: any) => {
   const [password, setPassword] = React.useState("");
 
   const login = async () => {
-    console.log("login");
     try {
       const { data: res } = await axios.post(
         "http://localhost:3000/auth/login",
@@ -30,9 +29,8 @@ const SignInScreen = ({ navigation }: any) => {
           password: password,
         }
       );
-      
       await AsyncStorage.setItem("token", res.access_token);
-      await AsyncStorage.setItem("userId", res.access_token);
+      await AsyncStorage.setItem("userId", res.userId);
       navigation.navigate("App");
       console.log(res)
     } catch (error) {
@@ -64,6 +62,7 @@ const SignInScreen = ({ navigation }: any) => {
                 secureTextEntry={true}
                 onChangeText={setPassword}
                 value={password}
+                autoCapitalize="none" // Add this line to disable auto-capitalization
               />
               <TouchableOpacity
                 onPress={() => {

@@ -118,6 +118,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   placeholderTextColor="#856464"
                   value={firstName}
                   onChangeText={(text) => setFirstName(text)}
+                  autoCapitalize="none" // Add this line to disable auto-capitalization
                 />
                 <Text style={{ marginTop: 10, color: "#856464" }}>นามสกุล</Text>
 
@@ -127,6 +128,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   placeholderTextColor="#856464"
                   value={lastName}
                   onChangeText={(text) => setLastName(text)}
+                  autoCapitalize="none" // Add this line to disable auto-capitalization
                 />
                 <View>
                   <Text style={{ marginTop: 10, color: "#856464" }}>
@@ -200,6 +202,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   placeholderTextColor="#856464"
                   value={citizenBack}
                   onChangeText={(text) => setCitizenBack(text)}
+                  autoCapitalize="none" // Add this line to disable auto-capitalization
                 />
               </View>
             </View>

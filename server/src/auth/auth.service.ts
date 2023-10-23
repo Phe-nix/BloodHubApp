@@ -101,6 +101,7 @@ export class AuthService {
       .update(authDto.password)
       .digest('hex');
 
+
     const user = await this.usersService.createUser({
       ...authDto,
       prefix: authDto.prefix,
@@ -108,6 +109,7 @@ export class AuthService {
       lastName: authDto.lastName,
       dob: authDto.dob,
       email: authDto.email,
+      password: hashedPassword,
       citizenId: authDto.citizenId,
       citizenBack: authDto.citizenBack,
     });
