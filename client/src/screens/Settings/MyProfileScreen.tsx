@@ -92,7 +92,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
   const handleSave = async() => {
     try {
         const { data: res } = await axios.post(
-        "http://localhost:3000/user",
+        "http://localhost:3000/user/update",
         {
 		  image: image,
           weight: weight,
