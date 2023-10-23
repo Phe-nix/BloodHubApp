@@ -20,7 +20,6 @@ export const SignUpScreen = ({ navigation }: any) => {
       setPasswordError("รหัสผ่านไม่ตรงกัน");
       return;
     }
-
     // Pass citizenId and password as parameters to the next screen
     navigation.navigate("CreateAccount", {
       citizenId: citizenId,
