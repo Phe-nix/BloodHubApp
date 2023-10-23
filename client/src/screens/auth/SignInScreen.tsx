@@ -54,7 +54,7 @@ const SignInScreen = ({ navigation }: any) => {
                 style={styles.input}
                 placeholder="รหัสบัตรประชาชน"
                 placeholderTextColor="#856464"
-                onChangeText={setCitizenId}
+                 onChangeText={setCitizenId}
                 value={citizenId}
               />
               <TextInput
