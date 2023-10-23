@@ -148,13 +148,13 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   )}
                 </View>
                 <Text style={{ marginTop: 10, color: "#856464" }}>อีเมล</Text>
-
                 <TextInput
                   style={[styles.input]}
                   placeholder="..."
                   placeholderTextColor="#856464"
                   value={email}
                   onChangeText={(text) => setemail(text)}
+                  autoCapitalize="none" // Add this line to disable auto-capitalization
                 />
               </View>
             </View>
