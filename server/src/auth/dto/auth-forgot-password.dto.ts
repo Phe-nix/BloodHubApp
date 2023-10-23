@@ -15,4 +15,9 @@ export class ForgotPasswordDto {
   @MinLength(10)
   @ApiProperty({ type: 'string', description: 'phonenumber'})
   phoneNumber?: string;
+
+  @MaxLength(10)
+  @MinLength(10)
+  @ApiProperty({ type: 'string', description: 'email'})
+  email?: string;
 }

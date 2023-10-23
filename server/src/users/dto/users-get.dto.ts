@@ -10,4 +10,7 @@ export class UserGetDto {
 
   @ApiProperty({ type: 'string', description: 'phonenumber'})
   phoneNumber?: string;
+
+  @ApiProperty({ type: 'string', description: 'email'})
+  email?: string;
 }
