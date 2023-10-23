@@ -11,14 +11,12 @@ import { AuthRegisterDto } from './dto/auth-register.dto';
 import { ResetPasswordDto } from './dto/auth-reset-password.dto';
 import { PrismaService } from 'src/prisma.service';
 import { OTPService } from 'src/otp/otp.service';
-import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private mailerService: MailerService,
     private otpService: OTPService,
   ) {}
 
@@ -35,9 +33,9 @@ export class AuthService {
     }
     const validateDto = {userId, otp}
     const OTP = await this.otpService.validateOTP(validateDto)
+
     if(OTP) {
-      let userUpdate = {...user, verified: true}
-      const verifiedAccount = await this.usersService.updateUser(userUpdate)
+      const verifiedAccount = await this.usersService.userValidation(user.id)
       
       return {
         message: "ACCOUNT VERIFIED",

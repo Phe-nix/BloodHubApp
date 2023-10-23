@@ -1,19 +1,21 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Prisma, User } from '@prisma/client';
-import { AuthRegisterDto } from 'src/auth/dto/auth-register.dto';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { UserGetDto } from './dto/users-get.dto';
-import { UpdateUserDto } from './dto/users-update.dto';
 import { DeleteUserDto } from './dto/users-delete.dto';
+
+import fs from 'fs';
+import { ImagesService } from 'src/images/images.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private prisma: PrismaService,
+    private imageService: ImagesService,
+
   ){}
 
   async createUser(data: any): Promise<any> {
-    console.log(data)
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [
@@ -35,33 +37,71 @@ export class UsersService {
       );
     };
 
-    const newUser = await this.prisma.user.create({data});
-    return newUser;
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          ...data,
+          profileImage: 'default.png'
+        },
+      });
+      return newUser;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Failed to read and set profile image',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
-  async updateUser(data: any): Promise<any>{
+  async updateUser(image: Express.Multer.File, data: any): Promise<any>{
+    const imagedto = {
+      ...image,
+      originalname: `${Date.now()}`
+    }
+
     console.log(data);
     
-    return await this.prisma.user.update({
+
+    const user = await this.prisma.user.update({
       where: {
         id: data.id
       },
       data: {
-        citizenBack: data.citizenBack,
-        citizenId: data.citizenId,
         prefix: data.prefix,
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phoneNumber,
-        email: data.email,
-        password: data.password,
         dob: data.dob,
-        bloodType: data.bloodType,
+        profileImage: imagedto.originalname,
         gender: data.gender,
         weight: data.weight,
         height: data.height,
         disease: data.disease,
-        verified: data.verified,
+      }
+    })
+    if(user && user.profileImage !== 'default.png'){
+      await this.imageService.deleteImage(user.profileImage);
+      await this.imageService.uploadImage(imagedto);
+    } else {
+      await this.imageService.uploadImage(imagedto);
+    }
+
+    return {
+      message: 'USER UPDATED',
+      user: user
+    }
+  }
+
+  async userValidation(id: any) {
+    return await this.prisma.user.update({
+      where:{
+        id: id
+      },
+      data: {
+        verified: true
       }
     })
   }
@@ -78,7 +118,7 @@ export class UsersService {
   }
 
   async findByUserId(userId: string): Promise<User | null> {
-    return await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id: userId,
       },
@@ -86,6 +126,11 @@ export class UsersService {
         address: true,
       }
     })
+
+    return {
+      ...user,
+      profileImage: await this.imageService.getImage(user.profileImage)
+    }
   }
 
   async findOne(userDto: UserGetDto): Promise<User | null> {
@@ -114,7 +159,10 @@ export class UsersService {
           );
         }
 
-        return user; 
+        return {
+          ...user,
+          profileImage: await this.imageService.getImage(user.profileImage)
+        }; 
       } catch (error) {
         
         throw error;

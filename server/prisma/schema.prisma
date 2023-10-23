@@ -32,8 +32,8 @@ model User {
   profileImage  String?
   bloodType     BloodType?
   gender        String?
-  weight        Float?
-  height        Float?
+  weight        String?
+  height        String?
   disease       String?
   verified      Boolean   @default(false)
   created_at    DateTime   @default(now())
