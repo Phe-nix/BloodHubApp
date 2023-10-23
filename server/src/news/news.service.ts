@@ -75,6 +75,11 @@ export class NewsService {
   async getAllNews(): Promise<any>{
     try {
       const news = await this.prismaSerivce.news.findMany();
+      for (let i = 0; i < news.length; i++){
+        const firestoreImage = await this.imageService.getImage(news[i].image);
+        news[i].image = firestoreImage;
+      }
+
       return news;
     } catch (error) {
       console.log("Error getting news:", error);
