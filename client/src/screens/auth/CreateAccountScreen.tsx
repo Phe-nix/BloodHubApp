@@ -1,36 +1,48 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, ScrollView, Image, Platform } from "react-native";
+import { Text, TextInput, View, ScrollView, Image } from "react-native";
 import AppHeader from "../../core/components/AppHeader";
 import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { pickerSelectStyles } from "./auth.styles"; // Replace with the correct path to your styles file
+import axios from "axios";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import RNPickerSelect from "react-native-picker-select";
 
 const CreateAccountScreen = ({ navigation, route }: any) => {
   const header = "ลงทะเบียน";
   const subheader = "กรุณากรอกข้อมูลด้านล่างเพื่อเข้าใช้งานแอปพลิเคชั่น";
 
   const { citizenId, password } = route.params || {};
-  const [prefix, setPrefix] = useState("");
+  const [prefix, setPrefix] = useState("คำนำหน้า"); // Default value
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState(new Date());
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setemail] = useState("");
   const [citizenBack, setCitizenBack] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const create = async () => {
-    const dobTimestamp = dob.getTime();
-      navigation.navigate("VerificationScreen", {
-        prefix: prefix,
-        firstName: firstName,
-        lastName: lastName,
-        password: password,
-        dob: dobTimestamp,
-        phoneNumber: phoneNumber,
-        citizenId: citizenId,
-        citizenBack: citizenBack,
-      });
+    try {
+      const dobTimestamp = dob.getTime();
+      const { data: res } = await axios.post(
+        "http://localhost:3000/auth/register",
+        {
+          prefix: prefix,
+          firstName: firstName,
+          lastName: lastName,
+          password: password,
+          dob: dobTimestamp,
+          email: email,
+          citizenId: citizenId,
+          citizenBack: citizenBack,
+        }
+      );
+      navigation.navigate("VerificationScreen");
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const toggleDatePicker = () => {
@@ -47,7 +59,10 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
   return (
     <View style={styles.container}>
       <Layer>
-        <ScrollView showsVerticalScrollIndicator={false} style={{ marginVertical: 50 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ marginVertical: 50 }}
+        >
           <View style={{ marginHorizontal: 20, flex: 1 }}>
             <View style={{ flex: 1, justifyContent: "center" }}>
               <AppHeader header={header} subheader={subheader} />
@@ -65,31 +80,60 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
               ]}
             >
               <View style={{ width: "85%", paddingTop: 10, paddingBottom: 20 }}>
+                <View
+                  style={{
+                    marginTop: 5,
+                    borderBottomWidth: 1,
+                    borderColor: "#856464",
+                    paddingVertical: 10,
+                  }}
+                >
+                  <Text style={{ marginBottom: 10, color: "#856464" }}>
+                    คำนำหน้า
+                  </Text>
+                  <RNPickerSelect
+                    onValueChange={(value) => {
+                      // Check if the selected value is not "คำนำหน้า"
+                      if (value !== "คำนำหน้า") {
+                        setPrefix(value);
+                      }
+                    }}
+                    items={[
+                      { label: "นาย", value: "นาย" },
+                      { label: "นาง", value: "นาง" },
+                      { label: "นางสาว", value: "นางสาว" },
+                    ]}
+                    value={prefix}
+                    style={pickerSelectStyles}
+                  />
+                </View>
+                <Text style={{ marginTop: 10, color: "#856464" }}>
+                  ชื่อจริง
+                </Text>
                 <TextInput
                   style={[styles.input]}
-                  placeholder="คำนำหน้า"
-                  placeholderTextColor="#856464"
-                  value={prefix}
-                  onChangeText={(text) => setPrefix(text)}
-                />
-                <TextInput
-                  style={[styles.input, { marginTop: 20 }]}
-                  placeholder="ชื่อ"
+                  placeholder="..."
                   placeholderTextColor="#856464"
                   value={firstName}
                   onChangeText={(text) => setFirstName(text)}
                 />
+                <Text style={{ marginTop: 10, color: "#856464" }}>นามสกุล</Text>
+
                 <TextInput
-                  style={[styles.input, { marginTop: 20 }]}
-                  placeholder="นามสกุล"
+                  style={[styles.input]}
+                  placeholder="..."
                   placeholderTextColor="#856464"
                   value={lastName}
                   onChangeText={(text) => setLastName(text)}
                 />
                 <View>
+                  <Text style={{ marginTop: 10, color: "#856464" }}>
+                    วันเดือนปีเกิด
+                  </Text>
+
                   <TextInput
-                    style={[styles.input, { marginTop: 10 }]}
-                    placeholder="วัน/เดือน/ปี เกิด"
+                    style={[styles.input]}
+                    placeholder="..."
                     placeholderTextColor="#856464"
                     value={dob.toDateString()} // Format the date as a string
                     onTouchStart={toggleDatePicker}
@@ -103,12 +147,14 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                     />
                   )}
                 </View>
+                <Text style={{ marginTop: 10, color: "#856464" }}>อีเมล</Text>
+
                 <TextInput
-                  style={[styles.input, { marginTop: 20 }]}
-                  placeholder="หมายเลขโทรศัพท์"
+                  style={[styles.input]}
+                  placeholder="..."
                   placeholderTextColor="#856464"
-                  value={phoneNumber}
-                  onChangeText={(text) => setPhoneNumber(text)}
+                  value={email}
+                  onChangeText={(text) => setemail(text)}
                 />
               </View>
             </View>
@@ -158,7 +204,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
             </View>
             <View style={{ marginTop: 20 }}>
               <Button
-                title="Next"
+                title="Create"
                 onPress={create}
                 buttonWidth={100}
                 buttonHeight={10}

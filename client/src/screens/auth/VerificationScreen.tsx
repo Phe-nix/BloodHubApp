@@ -11,7 +11,7 @@ const VerificationScreen = ({ navigation }: any) => {
   const MAX_CODE_LENGTH = 6;
 
   const header = 'ยืนยัน OTP';
-  const subheader = 'กรอกรหัสยืนยันตัวตน ที่ส่งไปยังหมายเลข xxx-xxx-xxxx';
+  const subheader = 'กรอกรหัสยืนยันตัวตน ที่ส่งไปยังอีเมลของคุณ';
 
   useEffect(() => {
     if (pinReady) {
