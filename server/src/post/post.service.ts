@@ -142,7 +142,7 @@ export class PostService {
       }
     }));
 
-    const bookmark = await this.prisma.bookmark.findMany({
+    const bookmark = await this.prisma.bookmarkPost.findMany({
       where: {
         userId: userId.id
       }

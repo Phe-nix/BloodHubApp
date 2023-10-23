@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from 'src/prisma.service';
-import { bookMarkDto } from "./dto/bookmark-add-dto";
+import { bookMarkPostDto } from "./dto/bookmark-post.dto";
+import { bookMarkNewsDto } from "./dto/bookmark-news.dto";
 
 
 @Injectable()
@@ -9,7 +10,7 @@ export class BookmarkService {
     private prismaService: PrismaService,
   ){}
 
-  async createBookmark(bookMarkDto: any): Promise<any> {
+  async createBookmarkPost(bookMarkDto: bookMarkPostDto): Promise<any> {
     try{
       const post = await this.prismaService.post.findUnique({
         where: {
@@ -43,7 +44,7 @@ export class BookmarkService {
         );
       }
 
-      const bookmark = await this.prismaService.bookmark.create({
+      const bookmark = await this.prismaService.bookmarkPost.create({
         data: {
           userId: bookMarkDto.userId,
           postId: bookMarkDto.postId,
@@ -60,9 +61,9 @@ export class BookmarkService {
     }
   }
 
-  async deleteBookmark(bookMarkDto: bookMarkDto): Promise<any> {
+  async deleteBookmarkPost(bookMarkDto: bookMarkPostDto): Promise<any> {
     try{
-      const bookmark = await this.prismaService.bookmark.findFirst({
+      const bookmark = await this.prismaService.bookmarkPost.findFirst({
         where:{
           AND: [
             {
@@ -85,7 +86,7 @@ export class BookmarkService {
         );
       }
 
-      const deleteBookmark = await this.prismaService.bookmark.delete({
+      const deleteBookmark = await this.prismaService.bookmarkNews.delete({
         where:{
           id: bookmark.id
         }
@@ -99,4 +100,96 @@ export class BookmarkService {
     }
   }
 
+  async createBookmarkNew(bookMarkDto: bookMarkNewsDto): Promise<any>{
+    try{
+      const news = await this.prismaService.news.findUnique({
+        where:{
+          id: bookMarkDto.newId,
+        }
+      });
+
+      if(!news){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'NEWS NOT FOUND'
+          },
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      const user = await this.prismaService.user.findUnique({
+        where:{
+          id: bookMarkDto.userId,
+        }
+      });
+
+      if(!user){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'USER NOT FOUND'
+          },
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      const bookmark = await this.prismaService.bookmarkNews.create({
+        data:{
+          userId: user.id,
+          newId: news.id
+        }
+      });
+
+      return {
+        message: 'BOOKMARK CREATED',
+        bookmark: bookmark
+      }
+    } catch(error){
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async deleteBookmarkNew(bookMarkDto: bookMarkNewsDto){
+    try{
+      const bookmark = await this.prismaService.bookmarkNews.findFirst({
+        where:{
+          AND: [
+            {
+              userId: bookMarkDto.userId,
+            },
+            {
+              newId: bookMarkDto.newId,
+            }
+          ]
+        }
+
+      })
+
+      if(!bookmark){
+        throw new HttpException(
+          {
+            status: HttpStatus.BAD_REQUEST,
+            error: 'BOOKMARK NOT FOUND'
+          },
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      const deleteBookMark = await this.prismaService.bookmarkNews.delete({
+        where:{
+          id: bookmark.id
+        }
+      });
+
+      return {
+        message: 'BOOKMARK DELETED',
+        bookmark: deleteBookMark
+      }
+
+    } catch (err) {
+
+    }
+  }
 }

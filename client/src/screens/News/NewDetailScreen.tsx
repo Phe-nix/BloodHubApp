@@ -1,20 +1,55 @@
-import { StyleSheet, Text, View, Image} from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
 import {styles} from "./NewDetailScreen.style"
 import bookmark from "../../../assets/icon/icon_bookmark.png"
-import Profile from "../../../assets/picture/kitten.png"
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { set } from 'date-fns'
 
-const NewDetailScreen = () => {
+const NewDetailScreen = ({route} : any) => {
+  const { post } = route.params
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+
+  useEffect(() => {
+    if(route.params.post.isBookmarked){
+      setIsBookmarked(true)
+    }
+  }, [])
+
   return (
     <View style={styles.background}>
         <View style={styles.container}>
             <View style={{marginTop:10}}>
-                <Text style={styles.title}>Black Cat</Text>
+                <Text style={styles.title}>{post.title}</Text>
                 <View style={styles.timeAndBookmark}>
-                    <Text style={styles.time}>22 พ.ค. 2546 · สุราษฎร์ธานี</Text>
-                    <Image style={styles.bookmarkIcon} source={bookmark}/>
+                    <Text style={styles.time}>{post.createdAt}</Text>
+                    <TouchableOpacity onPress={ async ()=>{
+                      if(isBookmarked){
+                        await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
+                          params: {
+                            userId: await AsyncStorage.getItem("userId"),
+                            newId: post.id,
+                          }
+                        })
+                        .then((res)=>{
+                          setIsBookmarked(false)
+                        })
+                      } else {
+                        await axios.post(`http://localhost:3000/bookmark/news/add`,
+                        {
+                          newId: post.id,
+                          userId: await AsyncStorage.getItem("userId")
+                        })
+                        .then((res)=>{
+                          setIsBookmarked(true)
+                        })
+                      }
+                    }}>
+                      <Image style={styles.bookmarkIcon} source={isBookmarked ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
+                    </TouchableOpacity>
                 </View>
-                <Image style={styles.newsPicture} source={Profile}/>
-                <Text style={styles.description}>Black cats are well known for their association with Halloween, witchcraft, and bad luck. However, despite their reputation, they are unique felines that are thought to bring good luck in some countries, and they have a rich history dating all the way back to the Middle Ages. Of course, other than the color of their fur, black cats are really no different from any other feline; the difference is in how people think about them.</Text>
+                <Image style={styles.newsPicture} source={{uri: post.image}}/>
+                <Text style={styles.description}>{post.description}</Text>
             </View>
         </View>
     </View>
