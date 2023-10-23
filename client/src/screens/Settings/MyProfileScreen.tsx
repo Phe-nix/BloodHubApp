@@ -1,13 +1,5 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Image,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
@@ -15,6 +7,8 @@ import { styles, pickerSelectStyles } from "./style/MyProfileScreen.style";
 import RNPickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios"; // Import Axios for making HTTP requests.
+
 
 interface ProfileEditScreenProps {
   navigation: any;
