@@ -16,6 +16,8 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
 
   const { citizenId, password } = route.params || {};
   const [prefix, setPrefix] = useState("คำนำหน้า"); // Default value
+  const [bloodType, setbloodType] = useState("กรุ๊ปเลือด"); // Default value
+  const [gender, setGender] = useState("เพศ"); // Default value
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState(new Date());
@@ -30,6 +32,8 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
         "http://localhost:3000/auth/register",
         {
           prefix: prefix,
+          bloodType: bloodType,
+          gender:gender,
           firstName: firstName,
           lastName: lastName,
           password: password,
@@ -108,6 +112,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                     style={pickerSelectStyles}
                   />
                 </View>
+                
                 <Text style={{ marginTop: 10, color: "#856464" }}>
                   ชื่อจริง
                 </Text>
@@ -149,6 +154,66 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                     />
                   )}
                 </View>
+
+                <View
+                  style={{
+                    marginTop: 5,
+                    borderBottomWidth: 1,
+                    borderColor: "#856464",
+                    paddingVertical: 10,
+                  }}
+                >
+                  <Text style={{ marginBottom: 10, color: "#856464" }}>
+                    เพศ
+                  </Text>
+                  <RNPickerSelect
+                    onValueChange={(value) => {
+                      // Check if the selected value is not "คำนำหน้า"
+                      if (value !== "เพศ") {
+                        setGender(value);
+                      }
+                    }}
+                    items={[
+                      { label: "ชาย", value: "ชาย" },
+                      { label: "หญิง", value: "หญิง" },
+                    ]}
+                    value={gender}
+                    style={pickerSelectStyles}
+                  />
+
+                </View>
+                <View
+                  style={{
+                    marginTop: 5,
+                    borderBottomWidth: 1,
+                    borderColor: "#856464",
+                    paddingVertical: 10,
+                  }}
+                >
+                  <Text style={{ marginBottom: 10, color: "#856464" }}>
+                    กรุ๊ปเลือด
+                  </Text>
+                  <RNPickerSelect
+                    onValueChange={(value) => {
+                      // Check if the selected value is not "คำนำหน้า"
+                      if (value !== "กรุ๊ปเลือด") {
+                        setbloodType(value);
+                      }
+                    }}
+                    items={[
+                      { label: "A+", value: "A+" },
+                      { label: "B+", value: "B+" },
+                      { label: "AB+", value: "AB+" },
+                      { label: "O+", value: "O+" },
+                      { label: "A-", value: "A-" },
+                      { label: "B-", value: "B-" },
+                      { label: "AB-", value: "AB-" },
+                      { label: "O-", value: "O-" },
+                    ]}
+                    value={bloodType}
+                    style={pickerSelectStyles}
+                  />
+                </View>
                 <Text style={{ marginTop: 10, color: "#856464" }}>อีเมล</Text>
                 <TextInput
                   style={[styles.input]}
@@ -158,6 +223,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                   onChangeText={(text) => setemail(text)}
                   autoCapitalize="none" // Add this line to disable auto-capitalization
                 />
+
               </View>
             </View>
 

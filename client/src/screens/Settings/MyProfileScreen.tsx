@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, ScrollView, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  Image,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
@@ -8,7 +15,6 @@ import RNPickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios"; // Import Axios for making HTTP requests.
-
 
 interface ProfileEditScreenProps {
   navigation: any;
@@ -19,17 +25,51 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 }) => {
   const [image, setImage] = useState(String);
   const [prefix, setPrefix] = useState("");
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [bloodGroup, setBloodGroup] = useState("");
+  const [bloodType, setBloodType] = useState("");
   const [gender, setGender] = useState("");
-  const [dob, setdob] = useState("");
+  const [dob, setDob] = useState(""); // Store DoB as a string
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
-  const [congenitalDisease, setCongenitalDisease] = useState("");
+  const [disease, setDisease] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = await AsyncStorage.getItem("userId");
+        const response = await axios.get(
+          `http://localhost:3000/user/${userId}`
+        );
+        const userData = response.data;
+        setPrefix(userData.prefix);
+        setFirstName(userData.firstName);
+        setLastName(userData.lastName);
+        setEmail(userData.email);
+        setPhoneNumber(userData.phoneNumber);
+        setBloodType(userData.bloodType);
+        setGender(userData.gender);
+        setDob(formatDob(userData.dob)); // Format DoB
+        setWeight(userData.weight);
+        setHeight(userData.height);
+        setDisease(userData.disease);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Call the function to fetch user data
+    fetchUserData();
+  }, []);
+
+  // Function to format DoB as "YYYY-MM-DD"
+  const formatDob = (dob:string) => {
+    const date = new Date(dob);
+    return date.toISOString().split('T')[0];
+  };
+
 
   const logout = () => {
     try {
@@ -48,7 +88,6 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -56,18 +95,11 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 
   const handleSave = () => {
     const userData = {
-      prefix,
-      name,
-      surname,
-      email,
+      image,
       phoneNumber,
-      password,
-      bloodGroup,
-      gender,
-      dob,
       weight,
       height,
-      congenitalDisease,
+      disease,
     };
     console.log("User Data to be saved:", userData);
   };
@@ -89,17 +121,24 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       </TouchableOpacity>
 
       <TextInputWithLabel
-        label="Name"
-        value={name}
-        onChangeText={(text) => setName(text)}
-        placeholder="Enter name"
+        label="Prefix"
+        value={prefix}
+        onChangeText={(text) => setPrefix(text)}
+        placeholder={"Enter prefix"}
       />
 
       <TextInputWithLabel
-        label="Surname"
-        value={surname}
-        onChangeText={(text) => setSurname(text)}
-        placeholder="Enter surname"
+        label="First Name"
+        value={firstName}
+        onChangeText={(text) => setFirstName(text)}
+        placeholder="Enter first name"
+      />
+
+      <TextInputWithLabel
+        label="Last Name"
+        value={lastName}
+        onChangeText={(text) => setLastName(text)}
+        placeholder="Enter last name"
       />
 
       <TextInputWithLabel
@@ -116,21 +155,13 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         placeholder="Enter phone number"
       />
 
-      <TextInputWithLabel
-        label="Password"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Enter password"
-        secureTextEntry={true}
-      />
-
       <View style={styles.fieldContainer}>
         <Text style={styles.fieldTitle}>Blood Type</Text>
         <View style={styles.pickerContainer}>
           <RNPickerSelect
             style={pickerSelectStyles}
-            value={bloodGroup}
-            onValueChange={(value) => setBloodGroup(value)}
+            value={bloodType}
+            onValueChange={(value) => setBloodType(value)}
             items={[
               { label: "A+", value: "A+" },
               { label: "B+", value: "B+" },
@@ -145,9 +176,10 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         </View>
       </View>
       <View style={styles.genderTitleContainer}>
-        <Text style={[styles.fieldTitle]}>Gender</Text>
+        <Text style={[styles.fieldTitle, {marginTop:10}]}>Gender</Text>
       </View>
-      <View style={[styles.genderContainer, { marginBottom: 16 }]}>
+	  
+      <View style={[styles.genderContainer, { marginBottom: 16}]}>
         <TouchableOpacity
           style={[
             styles.genderButton,
@@ -169,7 +201,6 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
             Male
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[
             styles.genderButton,
@@ -196,8 +227,8 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       <TextInputWithLabel
         label="DoB"
         value={dob}
-        onChangeText={(text) => setdob(text)}
-        placeholder="Enter date of birth"
+        onChangeText={(text) => setDob(text)}
+        placeholder="YYYY-MM-DD" // Display the desired date format
       />
 
       <View style={styles.fieldContainer}>
@@ -213,7 +244,9 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         </View>
       </View>
 
-      <View style={styles.fieldContainer}>
+      <View
+        style={[styles.fieldContainer, { marginTop: 10, marginBottom: 10 }]}
+      >
         <Text style={styles.fieldTitle}>Height</Text>
         <View style={styles.inputWithUnit}>
           <TextInput
@@ -228,8 +261,8 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 
       <TextInputWithLabel
         label="Congenital Disease"
-        value={congenitalDisease}
-        onChangeText={(text) => setCongenitalDisease(text)}
+        value={disease}
+        onChangeText={(text) => setDisease(text)}
         placeholder="Enter congenital disease"
       />
 
@@ -241,7 +274,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           title="Logout"
           buttonWidth={30}
           buttonHeight={15}
-          onPress={()=>logout()}
+          onPress={() => logout()}
         />
       </View>
     </ScrollView>
