@@ -7,6 +7,7 @@ interface TextInputWithLabelProps {
   onChangeText: (text: string) => void;
   placeholder: string;
   secureTextEntry?: boolean; // Make secureTextEntry optional
+  editable?: boolean; // Add an editable prop
 }
 
 const TextInputWithLabel: React.FC<TextInputWithLabelProps> = ({
@@ -15,6 +16,7 @@ const TextInputWithLabel: React.FC<TextInputWithLabelProps> = ({
   onChangeText,
   placeholder,
   secureTextEntry = false, // Default value is false
+  editable = true, // Set a default value
 }) => {
   return (
     <View style={styles.fieldContainer}>
@@ -25,6 +27,7 @@ const TextInputWithLabel: React.FC<TextInputWithLabelProps> = ({
         onChangeText={onChangeText}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry} // Use the secureTextEntry prop
+        editable={editable} // Apply the editable prop
       />
     </View>
   );

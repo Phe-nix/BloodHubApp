@@ -105,7 +105,8 @@ const AppNavigation = ({ route }: any) => {
       />
       <Tab.Screen name="Settings" component={SettingNavigation} 
         options={{
-          title: 'ตั้งค่า'
+          title: 'ตั้งค่า',
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
