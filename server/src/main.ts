@@ -26,13 +26,12 @@ async function bootstrap() {
 
   // Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyA0UHw2-5jVwBF7x0ymg9rZ_gXI96J8DMk",
-    authDomain: "bloodhub-864b9.firebaseapp.com",
-    databaseURL: "https://bloodhub-864b9-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "bloodhub-864b9",
-    storageBucket: "bloodhub-864b9.appspot.com",
-    messagingSenderId: "404999362264",
-    appId: "1:404999362264:web:99bf48e78b41a4faade9ad"
+    apiKey: "AIzaSyCRY2Pr5pUY7V7XA9M7Hc6-Wyl2qs_paZE",
+    authDomain: "pure-highlander-401409.firebaseapp.com",
+    projectId: "pure-highlander-401409",
+    storageBucket: "pure-highlander-401409.appspot.com",
+    messagingSenderId: "543294479126",
+    appId: "1:543294479126:web:2536c1a1864e1ccf92ce37"
   };
   
   const firebase = initializeApp(firebaseConfig);

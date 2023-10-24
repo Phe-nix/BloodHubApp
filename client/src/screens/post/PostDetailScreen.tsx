@@ -8,8 +8,6 @@ import { useEffect, useState } from 'react';
 const PostDetailScreen = ({route}: any) => {
   const { post } = route.params;
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
-  console.log(post.isBookmarked);
-  
 
   useEffect(() => {
     if(post.isBookmarked){
