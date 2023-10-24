@@ -5,11 +5,8 @@ import { styles } from "./style/HelpCenterScreen.style";
 
 // Sample data for help resources
 const helpResources = [
-  { id: "1", title: "What popular resource" },
-  { id: "2", title: "What popular resource" },
-  { id: "3", title: "What popular resource" },
-  { id: "4", title: "What popular resource" },
-  { id: "5", title: "What popular resource" },
+  { id: "1", title: "คุณสมบัติการบริจาคเลือด" },
+
 ];
 
 const HelpCenterScreen = () => {

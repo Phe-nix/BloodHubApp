@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
       fontSize: 16,
     },
     map: {
-      height: 400,
+      height: 550,
       marginBottom: 15,
     },
     saveButton: {
