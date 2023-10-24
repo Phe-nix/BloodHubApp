@@ -26,19 +26,21 @@ const Post = (props: any, { navigation }: any) => {
                 <View>
                 <TouchableOpacity onPress={ async ()=>{
                       if(item.isBookmarked){
-                        await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
+                        console.log("delete");
+                        
+                        await axios.delete(`http://localhost:3000/bookmark/post/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
-                            newId: item.id,
+                            postId: item.id,
                           }
                         })
                         .then((res)=>{
                           props.getPost();
                         })
                       } else {
-                        await axios.post(`http://localhost:3000/bookmark/news/add`,
+                        await axios.post(`http://localhost:3000/bookmark/post/add`,
                         {
-                          newId: item.id,
+                          postId: item.id,
                           userId: await AsyncStorage.getItem("userId")
                         })
                         .then((res)=>{

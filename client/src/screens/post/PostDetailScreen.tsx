@@ -1,11 +1,21 @@
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './PostDetailScreen.style';
 import User from './components/User';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
 
 const PostDetailScreen = ({route}: any) => {
   const { post } = route.params;
-  console.log(post.image);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  console.log(post.isBookmarked);
   
+
+  useEffect(() => {
+    if(post.isBookmarked){
+      setIsBookmarked(true)
+    }
+  }, [])
 
   return(
     <View style={styles.container}>
@@ -13,6 +23,30 @@ const PostDetailScreen = ({route}: any) => {
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
         <Text>Post Name</Text>
+        <TouchableOpacity onPress={ async ()=>{
+          if(isBookmarked){
+            await axios.delete(`http://localhost:3000/bookmark/post/delete`, {
+              params: {
+                userId: await AsyncStorage.getItem("userId"),
+                postId: post.id,
+              }
+            })
+            .then((res)=>{
+              setIsBookmarked(false)
+            })
+          } else {
+            await axios.post(`http://localhost:3000/bookmark/post/add`,
+            {
+              postId: post.id,
+              userId: await AsyncStorage.getItem("userId")
+            })
+            .then((res)=>{
+              setIsBookmarked(true)
+            })
+          }
+        }}>
+          <Image style={{width: 18, height:20}} source={isBookmarked ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
+        </TouchableOpacity>
       </View>
       <Image source={{uri: post.image}} style={{height: '30%'}}/>
       <View style={styles.underline} />
@@ -35,7 +69,12 @@ const PostDetailScreen = ({route}: any) => {
             <Text style={{flex:1}}>{post.phone_number}</Text>
           </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={async ()=>{
+          await axios.post(`http://localhost:3000/donate/add`,
+          {
+            
+          })
+        }}>
           <View style={styles.button}>
             <Text style={styles.text}>บริจาคเลือด</Text>
           </View>

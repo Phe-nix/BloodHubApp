@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BloodType } from '@prisma/client';
 import { MinLength, Validate } from 'class-validator';
-import { Blood } from 'src/blood/dto/blood-create-dto';
 import { IsNotExist } from 'src/utils/validators/is-not-exists.validator';
 
 export class AuthRegisterDto {

@@ -8,6 +8,7 @@ import { PostModule } from './post/post.module';
 import { UsersModule } from './users/users.module';
 import { BloodModule } from './blood/blood.module';
 import { OTPModule } from './otp/otp.module';
+import { HospitalModule } from './hospital/hospital.module';
 @Module({
   imports: [
     UsersModule,
@@ -19,7 +20,8 @@ import { OTPModule } from './otp/otp.module';
     DonationModule,
     NewsModule,
     BloodModule,
-    OTPModule
+    OTPModule,
+    HospitalModule
   ],
 })
 export class AppModule {}

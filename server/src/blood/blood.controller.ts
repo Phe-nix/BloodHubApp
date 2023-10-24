@@ -2,27 +2,30 @@ import { Body, Controller, Delete, Get, Param, Post, UploadedFile, UseIntercepto
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { HospitalService } from './blood.service'
-import { HospitalCreateDto } from './dto/blood-create-dto';
-import { HospitalUpdateDto } from './dto/blood-update-dto';
-import { HospitalDeleteDto } from './dto/blood-delete-dto';
+import { BloodCreateDto } from './dto/blood-create-dto';
+import { BloodUpdateDto } from './dto/blood-update-dto';
 
-@Controller('hospital')
-@ApiTags('Hospital')
+@Controller('blood')
+@ApiTags('blood')
 export class HospitalController {
-    constructor(
-        private hospitalService: HospitalService
-    ) { }
+  constructor(
+    private hospitalService: HospitalService
+  ) {}
 
-    @Post('create')
-  @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('hospitalImg'))
-  @ApiBody({type: HospitalCreateDto})
-  async createPost(@UploadedFile() image: Express.Multer.File, @Body() hospitalDto: HospitalCreateDto): Promise<any> {
-    try {
-        
-        return await this.hospitalService.createHospital(image, hospitalDto);
-    } catch (error) {
-      throw error;
-    }
+  @Post('create')
+  @ApiBody({type: BloodCreateDto})
+  async createPost(@Body() hospitalDto: BloodCreateDto): Promise<any> {
+    return await this.hospitalService.createBlood(hospitalDto);
+  }
+
+  @Post('update')
+  @ApiBody({type: BloodCreateDto})
+  async updatePost(@Body() hospitalDto: BloodUpdateDto): Promise<any> {
+    return await this.hospitalService.updateBlood(hospitalDto);
+  }
+
+  @Get()
+  async getPost(): Promise<any> {
+    return await this.hospitalService.getBlood();
   }
 }

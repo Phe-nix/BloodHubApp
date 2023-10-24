@@ -39,7 +39,6 @@ export class DonationService {
 
       const donationHistory = await this.prismaSerivce.donationHistory.create({
         data: {
-          blood_type: donationDto.blood_type,
           status: donationDto.status,
           userId: donationDto.userId,
         },

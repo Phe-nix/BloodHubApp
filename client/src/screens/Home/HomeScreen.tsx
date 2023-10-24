@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }: any) => {
   useEffect(() => {
     getUser();
     getPost();
-  }, []);
+  }, [user, post]);
 
   const getUser = async () => {
     try {
@@ -110,7 +110,7 @@ const HomeScreen = ({ navigation }: any) => {
               post?.map((item: any, index: any, key: any) => {
                 return(
                   <TouchableOpacity key={item.id} onPress={()=>{
-                    navigation.navigate("PostDetail", { post: item })
+                    navigation.navigate("PostDetail", { post: item})
                   }}>
                     <Post
                       key={item.id}

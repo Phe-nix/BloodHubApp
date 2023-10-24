@@ -86,7 +86,7 @@ export class BookmarkService {
         );
       }
 
-      const deleteBookmark = await this.prismaService.bookmarkNews.delete({
+      const deleteBookmark = await this.prismaService.bookmarkPost.delete({
         where:{
           id: bookmark.id
         }

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class Blood {
+export class BloodCreateDto {
     @ApiProperty({ type: 'number', description: "A Positive Need", example: 10800 })
     aPositiveNeed: number;
 
@@ -38,14 +38,4 @@ export class Blood {
     abNegativeNeed: number;
 }
 
-export class HospitalCreateDto {
-    @ApiProperty({ type: 'string', description: "Hospital name", example: "Siriraj Hospital" })
-    hospitalName: string;
-
-    @ApiProperty({ type: 'string', format: 'binary', description: 'Image file' })
-    hospitalImg: any;
-
-    @ApiProperty({ type: Blood })
-    blood: Blood;
-}
 
