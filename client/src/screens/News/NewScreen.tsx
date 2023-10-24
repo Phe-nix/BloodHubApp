@@ -47,8 +47,6 @@ const NewScreen = ({ navigation }: any) => {
       <Text style={styles.lastestNews}>ข่าวสารล่าสุด</Text>
       {
         news?.map((item: any, index: any, key: any) => {
-          console.log(item);
-          
           if (index === 0) {
             const daysAgo = differenceInDays(new Date(), new Date(item.createdAt))
 
