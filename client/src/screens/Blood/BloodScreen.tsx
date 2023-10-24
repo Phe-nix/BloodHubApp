@@ -2,6 +2,7 @@ import React from "react";
 import { SafeAreaView, Text, View, ScrollView, Image, ViewStyle } from "react-native";
 import Swiper from "react-native-swiper";
 import { styles } from "./BloodScreen.style";
+import axios from "axios";
 
 import Siriraj from "../../../assets/hospital/Siriraj.png";
 import aType from "../../../assets/hospital/Blood_A.png";
