@@ -22,10 +22,10 @@ const NewScreen = ({ navigation }: any) => {
         `http://localhost:3000/news/getAllNews/${userId}`,
       )
       setNews(res.news);
-      setRefreshing(false); // Stop the refreshing animation
+      setRefreshing(false);
     } catch (error) {
       console.log(error);
-      setRefreshing(false); // Stop the refreshing animation in case of an error
+      setRefreshing(false);
     }
   }
 
@@ -47,11 +47,13 @@ const NewScreen = ({ navigation }: any) => {
       <Text style={styles.lastestNews}>ข่าวสารล่าสุด</Text>
       {
         news?.map((item: any, index: any, key: any) => {
+          console.log(item);
+          
           if (index === 0) {
             const daysAgo = differenceInDays(new Date(), new Date(item.createdAt))
 
             return(
-              <TouchableOpacity key={key} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
+              <TouchableOpacity key={item.id} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
                 <View style={{marginBottom:10}}>
                   <Image style={styles.lastestNewsPicture} source={{uri: item.image}} />
                   <Text style={styles.title}>{item.title}</Text>
@@ -68,7 +70,9 @@ const NewScreen = ({ navigation }: any) => {
                     )}
                   </Text>
                   <View style={styles.timeAndBookmark}>
-                    <Text style={styles.lastestTimeNews}>{daysAgo} days ago</Text>
+                    <Text style={styles.lastestTimeNews}>
+                      {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`} 
+                    </Text>
                     <TouchableOpacity onPress={ async ()=>{
                       if(item.isBookmarked){
                         await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
@@ -99,8 +103,8 @@ const NewScreen = ({ navigation }: any) => {
             );
           }
           return (
-          <TouchableOpacity key={key} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
-            <New image={item.image} title={item.title} description={item.description} time={item.createdAt}/>
+          <TouchableOpacity key={item.id} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
+            <New item={item}/>
           </TouchableOpacity>
           )
         })

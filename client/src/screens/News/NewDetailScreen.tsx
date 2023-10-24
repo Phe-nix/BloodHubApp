@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView} from 'react-native'
 import {styles} from "./NewDetailScreen.style"
 import bookmark from "../../../assets/icon/icon_bookmark.png"
 import { useEffect, useState } from 'react'
@@ -18,12 +18,14 @@ const NewDetailScreen = ({route} : any) => {
   }, [])
 
   return (
-    <View style={styles.background}>
+    <ScrollView style={styles.background}>
         <View style={styles.container}>
             <View style={{marginTop:10}}>
                 <Text style={styles.title}>{post.title}</Text>
                 <View style={styles.timeAndBookmark}>
-                    <Text style={styles.time}>{daysAgo} days ago</Text>
+                    <Text style={styles.time}>
+                      {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`} 
+                    </Text>
                     <TouchableOpacity onPress={ async ()=>{
                       if(isBookmarked){
                         await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
@@ -53,7 +55,7 @@ const NewDetailScreen = ({route} : any) => {
                 <Text style={styles.description}>{post.description}</Text>
             </View>
         </View>
-    </View>
+    </ScrollView>
   )
 }
 
