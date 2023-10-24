@@ -2,12 +2,11 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     background: {
-        backgroundColor: '#E99999'
+        flex: 1,
+        backgroundColor: 'white'
     },
     container: {
-        backgroundColor: 'white',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        flex: 1,
         padding: 20
     },
     lastestRequest: {

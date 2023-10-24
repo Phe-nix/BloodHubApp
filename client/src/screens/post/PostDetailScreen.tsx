@@ -17,6 +17,9 @@ const PostDetailScreen = ({route, navigation}: any) => {
     })();
   }, []);
 
+  console.log(route.params.source);
+  
+
   return(
     <View style={styles.container}>
       <User image={post.user.profileImage}userName={`${post.user.firstName} ${post.user.lastName}`} time={post.createdAt} />
@@ -70,21 +73,33 @@ const PostDetailScreen = ({route, navigation}: any) => {
           </View>
         </View>
 
-            <TouchableOpacity onPress={async ()=>{
-              await axios.post(`http://localhost:3000/donation/create`,
+            
               {
-                status: "PENDING",
-                userId: await AsyncStorage.getItem("userId"),
-                postId: post.id
-              }).then((res)=>{
-
-                navigation.navigate("Home")
-              })
-            }}>
-              <View style={styles.button}>
-                <Text style={styles.text}>บริจาคเลือด</Text>
-              </View>
-            </TouchableOpacity>
+                route.params.source !== "appointment" ? 
+                (
+                  <TouchableOpacity onPress={async ()=>{
+                    await axios.post(`http://localhost:3000/donation/create`,
+                    {
+                      status: "PENDING",
+                      userId: await AsyncStorage.getItem("userId"),
+                      postId: post.id
+                    }).then((res)=>{
+      
+                      navigation.navigate("Home")
+                    })
+                  }}>
+                    <View style={styles.button}>
+                      <Text style={styles.text}>บริจาคเลือด</Text>
+                    </View>
+                  </TouchableOpacity>
+                )
+                : 
+                (
+                  <View style={{backgroundColor: '#E1E1E1', paddingVertical: 10, margin: 5, borderRadius: 100}}>
+                    <Text style={{color: '#D8666B', fontSize: 20, justifyContent: 'center', alignItems: 'center', textAlign: 'center'}}>ยืนยันแล้ว</Text>
+                  </View>
+                )
+              }
       </View>
     </View>
   );

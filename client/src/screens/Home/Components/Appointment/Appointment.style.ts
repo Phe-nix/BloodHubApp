@@ -10,13 +10,13 @@ export const styles = StyleSheet.create({
         marginBottom: 10
     },
     picture: {
-        width: '30%',
+        width: '45%',
         borderTopLeftRadius: 30,
         borderBottomLeftRadius: 30,
-        height: 110
+        height: 120
     },
     box: {
-        width:'70%',
+        width:'55%',
         backgroundColor: 'white',
         borderTopRightRadius: 30,
         borderBottomRightRadius: 30,

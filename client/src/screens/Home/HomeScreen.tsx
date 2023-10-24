@@ -1,11 +1,10 @@
 import { Text, View, ScrollView, TouchableOpacity, RefreshControl } from "react-native";
-import { styles } from "./HomeStyle/HomeScreen.style";
+import { styles } from "./HomeScreen.style";
 import Button from "./Components/Button";
 import appointment from "../../../assets/button/Appointment.png";
 import Request from "../../../assets/button/Request.png";
 import Location from "../../../assets/button/Location.png";
 import Post from "./Components/Post";
-import picture from "../../../assets/picture/kitten.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -110,7 +109,7 @@ const HomeScreen = ({ navigation }: any) => {
               post?.map((item: any, index: any, key: any) => {
                 return(
                   <TouchableOpacity key={item.id} onPress={()=>{
-                    navigation.navigate("PostDetail", { post: item})
+                    navigation.navigate("PostDetail", { post: item, source: "home"})
                   }}>
                     <Post
                       key={item.id}
