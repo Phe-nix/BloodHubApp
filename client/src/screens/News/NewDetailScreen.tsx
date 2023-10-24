@@ -4,11 +4,12 @@ import bookmark from "../../../assets/icon/icon_bookmark.png"
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { set } from 'date-fns'
+import { set, differenceInDays } from 'date-fns'
 
 const NewDetailScreen = ({route} : any) => {
   const { post } = route.params
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
+  const daysAgo = differenceInDays(new Date(), new Date(post.createdAt))
 
   useEffect(() => {
     if(route.params.post.isBookmarked){
@@ -22,7 +23,7 @@ const NewDetailScreen = ({route} : any) => {
             <View style={{marginTop:10}}>
                 <Text style={styles.title}>{post.title}</Text>
                 <View style={styles.timeAndBookmark}>
-                    <Text style={styles.time}>{post.createdAt}</Text>
+                    <Text style={styles.time}>{daysAgo} days ago</Text>
                     <TouchableOpacity onPress={ async ()=>{
                       if(isBookmarked){
                         await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
