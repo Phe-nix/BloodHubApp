@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, Text, View, ScrollView, Image, ViewStyle } from "react-native";
 import Swiper from "react-native-swiper";
 import { styles } from "./BloodScreen.style";
@@ -26,12 +26,52 @@ const BloodScreen = () => {
     { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
   ];
 
+
   const _renderItem = (item: Hospital, index: number) => (
     <View style={{ alignItems: "center" }} key={index}>
       <Image source={item.image} style={{ width: 300, height: 200 }} />
       <Text style={styles.hospitalName}>{item.name}</Text>
     </View>
   );
+  const [a_positiveneed, seta_positive] = useState("");
+  const [b_positiveneed, setb_positive ] = useState("");
+  const [o_positiveneed, seto_positive] = useState("");
+  const [ab_positiveneed, setab_positive] = useState("");
+  const [a_negative, seta_negative] = useState("");
+  const [b_negative, setb_negative] = useState("");
+  const [o_negative, seto_negative] = useState("");
+  const [ab_negative, setab_negative] = useState("");
+  const [a_positiveReceive, seta_positiveReceive] = useState("");
+  const [b_positiveReceive, setb_positiveReceive] = useState("");
+  const [o_positiveReceive, seto_positiveReceive] = useState("");
+  const [ab_positiveReceive, setab_positiveReceive] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/blood"
+        );
+        const blood = response.data;
+        seta_positive(blood.aPositiveNeed);
+        setb_positive(blood.bPositiveNeed);
+        seto_positive(blood.oPositiveNeed);
+        setab_positive(blood.abPositiveNeed);
+        seta_negative(blood.aNegativeNeed);
+        setb_negative(blood.bNegativeNeed);
+        seto_negative(blood.oNegativeNeed);
+        setab_negative(blood.abNegativeNeed);
+        seta_positiveReceive(blood.aPositiveReceive);
+        setb_positiveReceive(blood.bPositiveReceive);
+        seto_positiveReceive(blood.oPositiveReceive);
+        setab_positiveReceive(blood.abPositiveReceive);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
 
   return (
     <View style={styles.container}>
@@ -78,10 +118,10 @@ const BloodScreen = () => {
               marginTop: 20,
             }}
           >
-            <Card unit={"1,000"} image={aType} recieve={"20%"} />
-            <Card unit={"1,000"} image={bType} recieve={"20%"} />
-            <Card unit={"1,000"} image={oType} recieve={"20%"} />
-            <Card unit={"1,000"} image={abType} recieve={"20%"} />
+            <Card unit={a_positiveneed} image={aType} recieve={a_positiveReceive} />
+            <Card unit={b_positiveneed} image={bType} recieve={b_positiveReceive} />
+            <Card unit={o_positiveneed} image={oType} recieve={o_positiveReceive} />
+            <Card unit={ab_positiveneed} image={abType} recieve={ab_positiveReceive} />
           </View>
           <View style={{ alignItems: "center", marginTop: 20 }}>
             <Text>กรุ๊ปเลือดพิเศษที่ต้องการ</Text>
@@ -95,10 +135,10 @@ const BloodScreen = () => {
               marginBottom: 20,
             }}
           >
-            <Label bloodType={"A-"} unit={"1,000 unit"} />
-            <Label bloodType={"B-"} unit={"1,000 unit"} />
-            <Label bloodType={"O-"} unit={"1,000 unit"} />
-            <Label bloodType={"AB-"} unit={"1,000 unit"} />
+            <Label bloodType={"A-"} unit={a_negative} />
+            <Label bloodType={"B-"} unit={b_negative} />
+            <Label bloodType={"O-"} unit={o_negative} />
+            <Label bloodType={"AB-"} unit={ab_negative} />
           </View>
         </ScrollView>
       </SafeAreaView>

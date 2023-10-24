@@ -44,7 +44,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           `http://localhost:3000/user/${userId}`
         );
         const userData = response.data;
-		setImage(userData.profileImage);
+		    setImage(userData.profileImage);
         setPrefix(userData.prefix);
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
