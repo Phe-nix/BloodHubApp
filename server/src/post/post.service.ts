@@ -115,6 +115,7 @@ export class PostService {
         include: {
           user: {
             select: {
+              id: true,
               firstName: true,
               lastName: true,
               profileImage: true,
@@ -134,7 +135,9 @@ export class PostService {
       );
     }
 
-    const postsWithImages = await Promise.all(posts.map(async (post) => {
+    const filteredPosts = posts.filter((post) => post.userId !== post.user.id);
+
+    const postsWithImages = await Promise.all(filteredPosts.map(async (post) => {
       const firestoreImage = await this.imageService.getImage(post.image);
       return {
         ...post,

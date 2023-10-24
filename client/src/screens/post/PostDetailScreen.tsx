@@ -5,15 +5,17 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 
-const PostDetailScreen = ({route}: any) => {
+const PostDetailScreen = ({route, navigation}: any) => {
   const { post } = route.params;
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
 
   useEffect(() => {
-    if(post.isBookmarked){
-      setIsBookmarked(true)
-    }
-  }, [])
+    (async () => {
+      if (post.isBookmarked) {
+        setIsBookmarked(true);
+      }
+    })();
+  }, []);
 
   return(
     <View style={styles.container}>
@@ -67,16 +69,22 @@ const PostDetailScreen = ({route}: any) => {
             <Text style={{flex:1}}>{post.phone_number}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={async ()=>{
-          await axios.post(`http://localhost:3000/donate/add`,
-          {
-            
-          })
-        }}>
-          <View style={styles.button}>
-            <Text style={styles.text}>บริจาคเลือด</Text>
-          </View>
-        </TouchableOpacity>
+
+            <TouchableOpacity onPress={async ()=>{
+              await axios.post(`http://localhost:3000/donation/create`,
+              {
+                status: "PENDING",
+                userId: await AsyncStorage.getItem("userId"),
+                postId: post.id
+              }).then((res)=>{
+
+                navigation.navigate("Home")
+              })
+            }}>
+              <View style={styles.button}>
+                <Text style={styles.text}>บริจาคเลือด</Text>
+              </View>
+            </TouchableOpacity>
       </View>
     </View>
   );
