@@ -4,8 +4,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Text,
-  ScrollView,
-  FlatList,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
@@ -65,7 +63,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
       "http://localhost:3000/address/add",
       {
         userId: userId,
-        address: JSON.parse(name),
+        address: name,
         latitude: latestMarker?.latitude,
         longitude: latestMarker?.longitude,
       }
@@ -92,24 +90,16 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   console.log(name);
   console.log(latestMarker);
   
-  const sanitizeLocationName = (name:any) => {
-    // Replace any non-alphanumeric characters with spaces
-    return name.replace(/[^a-zA-Z0-9\s]/g, ' ');
-  };
-  
-  const handleMapPress = async (event: any) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    setLatestMarker({ latitude, longitude });
-  
-    // Reverse geocode the coordinates to get the name
-    const locationName = await reverseGeocode(latitude, longitude);
-  
-    // Sanitize the location name before setting it
-    const sanitizedName = sanitizeLocationName(locationName);
-  
-    // Set the name in the search bar
-    setName(sanitizedName);
-  };
+    const handleMapPress = async (event: any) => {
+      const { latitude, longitude } = event.nativeEvent.coordinate;
+      setLatestMarker({ latitude, longitude });
+    
+      // Reverse geocode the coordinates to get the name
+      const locationName = await reverseGeocode(latitude, longitude);
+    
+      // Set the name in the search bar
+      setName(locationName);
+    };
 
   const reverseGeocode = async (latitude: number, longitude: number) => {
     try {
