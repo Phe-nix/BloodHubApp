@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }: any) => {
   useEffect(() => {
     getUser();
     getPost();
-  }, [user]);
+  }, []);
 
   const getUser = async () => {
     try {

@@ -26,12 +26,12 @@ async function bootstrap() {
 
   // Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyBcaBU8xRI8xfEwQL-DOcbren-FHPm_Ml4",
-    authDomain: "bloodbuh-64ed1.firebaseapp.com",
-    projectId: "bloodbuh-64ed1",
-    storageBucket: "bloodbuh-64ed1.appspot.com",
-    messagingSenderId: "816592382446",
-    appId: "1:816592382446:web:eebfb289e189acb72446ff"
+    apiKey: "AIzaSyBFakmWIECI3o1VFtsdQ33ANYBHbFB9HbE",
+    authDomain: "bloodbbuh.firebaseapp.com",
+    projectId: "bloodbbuh",
+    storageBucket: "bloodbbuh.appspot.com",
+    messagingSenderId: "124405952342",
+    appId: "1:124405952342:web:060a949edaac417d1570f7"
   };
   
   const firebase = initializeApp(firebaseConfig);
