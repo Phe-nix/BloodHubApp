@@ -1,6 +1,6 @@
 import React from "react";
-import { SafeAreaView, Text, View, ScrollView, Image } from "react-native";
-import Carousel from "react-native-snap-carousel"; // Import Carousel
+import { SafeAreaView, Text, View, ScrollView, Image, ViewStyle } from "react-native";
+import Swiper from "react-native-swiper";
 import { styles } from "./BloodScreen.style";
 
 import Siriraj from "../../../assets/hospital/Siriraj.png";
@@ -11,15 +11,23 @@ import abType from "../../../assets/hospital/Blood_AB.png";
 import Card from "./components/Card";
 import Label from "./components/Label";
 
+interface Hospital {
+  image: any; // Update the type accordingly
+  name: string;
+}
+
 const BloodScreen = () => {
-  const hospitals = [
+  const hospitals: Hospital[] = [
     { image: Siriraj, name: "โรงพยาบาลศิริราช" },
+    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
+    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
+    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
     { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
   ];
 
-  const _renderItem = ({ item, index }: any) => (
-    <View style={{ alignItems: "center" }}>
-      <Image source={item.image} />
+  const _renderItem = (item: Hospital, index: number) => (
+    <View style={{ alignItems: "center" }} key={index}>
+      <Image source={item.image} style={{ width: 300, height: 200 }} />
       <Text style={styles.hospitalName}>{item.name}</Text>
     </View>
   );
@@ -35,13 +43,12 @@ const BloodScreen = () => {
             <View style={[styles.underLine_1, { marginBottom: 25 }]} />
           </View>
           <View style={{ alignContent: "center", alignItems: "center" }}>
-            <Carousel
-              data={hospitals}
-              renderItem={_renderItem}
-              sliderWidth={300}
-              itemWidth={300}
-              layout={"default"}
-            />
+            <Swiper style={{ height: 280}} showsButtons={false}
+             dotStyle={{ width: 10, height: 10, borderRadius: 5, marginHorizontal: 5, backgroundColor: 'rgba(0,0,0,.2)' }}
+             activeDotStyle={{ width: 30, height: 12, borderRadius: 6, marginHorizontal: 5, backgroundColor: '#F0888C' }}
+              >
+              {hospitals.map((item: Hospital, index: number) => _renderItem(item, index))}
+            </Swiper>
           </View>
           <View style={styles.underLine_2} />
           <View style={styles.title}>
@@ -50,7 +57,7 @@ const BloodScreen = () => {
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "space-between", // Make sure it's "space-between"
               marginTop: 20,
               marginHorizontal: 20,
             }}
