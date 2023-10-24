@@ -48,8 +48,8 @@ export class PostController {
   }
 
 
-  @Get('getAllPosts/:id')
-  async getAllPosts(@Param('id') userId: PostGetAllDto): Promise<any> {
+  @Get('getAllPosts/:userId') // Update the parameter name to 'userId'
+  async getAllPosts(@Param('userId') userId: PostGetAllDto): Promise<any> {
     try {
       return await this.postService.getAllPost(userId);
     } catch (error) {
@@ -57,4 +57,5 @@ export class PostController {
       throw error;
     }
   }
+
 }
