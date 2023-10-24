@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     button: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginVertical: 30
+        marginVertical: 20
     },
     buttonText: {
         fontSize: 15

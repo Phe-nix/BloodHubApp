@@ -142,13 +142,24 @@ export class PostService {
       }
     }));
 
+    const postsWithUser = await Promise.all(postsWithImages.map(async (post) => {
+      const firestoreImage = await this.imageService.getImage(post.user.profileImage);
+      return {
+        ...post,
+        user:{
+          ...post.user,
+          profileImage: firestoreImage
+        }
+      }
+    }));
+
     const bookmark = await this.prisma.bookmarkPost.findMany({
       where: {
         userId: userId.id
       }
     });
 
-    const updatedPostsWithImages = postsWithImages.map((post) => {
+    const updatedPostsWithImages = postsWithUser.map((post) => {
       const isBookmarked = bookmark.some((book) => post.id === book.postId);
     
       return {

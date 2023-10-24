@@ -2,36 +2,37 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './PostDetailScreen.style';
 import User from './components/User';
 
-const PostDetailScreen = () => {
+const PostDetailScreen = ({route}: any) => {
+  const { post } = route.params;
+  console.log(post.image);
+  
+
   return(
     <View style={styles.container}>
-      <User userName="Norrapat Srimoonnoi" subHeader="test" />
+      <User image={post.user.profileImage}userName={`${post.user.firstName} ${post.user.lastName}`} time={post.createdAt} />
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
         <Text>Post Name</Text>
-        <Text>Post Name</Text>
       </View>
-      <View style={{borderWidth: 1, height: '30%'}}>
-        <Image source={require('../../../assets/citizen1.png')}/>
-      </View>
+      <Image source={{uri: post.image}} style={{height: '30%'}}/>
       <View style={styles.underline} />
       <View style={{gap: 20}}>
-        <View>
+        <View style={{gap: 10}}>
             <Text style={{fontWeight: 'bold'}}>รายละเอียด</Text>
-            <Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum possimus in officiis est, animi expedita dolor a quae iusto deleniti!</Text>
+            <Text>{post.description}</Text>
         </View>
         <View style={{gap: 10}}>
           <View style={{flexDirection: 'row'}}>
             <Text style={{flex:1, color: "#856464"}}>กรุ๊ปเลือด</Text>
-            <Text style={{flex:1}}>AB</Text>
+            <Text style={{flex:1}}>{post.bloodType}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={{flex:1, color: "#856464"}}>เคส</Text>
-            <Text style={{flex:1}}>AB</Text>
+            <Text style={{flex:1}}>{post.case}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={{flex:1, color: "#856464"}}>เบอร์ติดต่อ</Text>
-            <Text style={{flex:1}}>AB</Text>
+            <Text style={{flex:1}}>{post.phone_number}</Text>
           </View>
         </View>
         <TouchableOpacity>

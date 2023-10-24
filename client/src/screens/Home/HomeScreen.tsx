@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, ScrollView, TouchableOpacity, RefreshControl } from "react-native";
 import { styles } from "./HomeStyle/HomeScreen.style";
 import Button from "./Components/Button";
 import appointment from "../../../assets/button/Appointment.png";
@@ -12,11 +12,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
-  const [firstName, setFirstName] = useState<any>(null);
-  const [lastName, setLastName] = useState<any>(null);
+  const [post, setPost] = useState<any>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     getUser();
+    getPost();
   }, []);
 
   const getUser = async () => {
@@ -30,20 +31,52 @@ const HomeScreen = ({ navigation }: any) => {
           },
         }
       );
-      console.log(res);
+      setUser(res);
+      setRefreshing(false);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getPost = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const { data: res } = await axios.get(
+        `http://localhost:3000/posts/getAllPosts/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+          },
+        }
+      );
+      setPost(res.posts);
+      setRefreshing(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getPost();
+    getUser();
+  }
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+    >
       <View>
         <View style={{ padding: 20 }}>
           <Text style={styles.welcome}>ยินดีต้อนรับ,</Text>
-          <Text style={styles.userName}>firstName LastNmae</Text>
+          <Text style={styles.userName}>{user?.firstName} {user?.lastName}</Text>
         </View>
-        <View style={styles.underLine} />
+        <View style={styles.underLine_0} />
         <View style={styles.button}>
           <TouchableOpacity
             onPress={() => {
@@ -67,26 +100,32 @@ const HomeScreen = ({ navigation }: any) => {
             <Button image={Location} text={"ค้นหา"} text_0={"สถานพยาบาล"} />
           </TouchableOpacity>
         </View>
-        <View>
-          <View style={styles.underLine_0} />
+        <View style={{borderWidth: 2, borderBottomWidth: 0, borderTopRightRadius: 20, borderTopLeftRadius: 20, borderColor: '#FF6D6E'}}>
           <Text style={styles.postFeed}>ฟีดโพสต์</Text>
-          <View style={{ borderWidth: 1, borderColor: "grey" }} />
+          <View style={{ borderWidth: 1, borderColor: "#D9D9D9" }} />
         </View>
         <View>
-          <Post
-            profile={picture}
-            name={"ศุภณัฐ อนุมาตร"}
-            time={"22 พ.ค. 2546 · สุราษฎร์ธานี"}
-            Image={picture}
-            description={"ฉันรักแมว"}
-          />
-          <Post
-            profile={picture}
-            name={"ศุภณัฐ อนุมาตร"}
-            time={"22 พ.ค. 2546 · สุราษฎร์ธานี"}
-            Image={picture}
-            description={"ฉันรักแมว"}
-          />
+          { post ?
+            (
+              post?.map((item: any, index: any, key: any) => {
+                return(
+                  <TouchableOpacity key={item.id} onPress={()=>{
+                    navigation.navigate("PostDetail", { post: item })
+                  }}>
+                    <Post
+                      key={item.id}
+                      item={item}
+                      getPost={getPost}
+                    />
+                  </TouchableOpacity>
+                );
+              })
+            )
+            :
+            (
+              <Text>ไม่มีโพสต์</Text>
+            )
+          }
         </View>
       </View>
     </ScrollView>

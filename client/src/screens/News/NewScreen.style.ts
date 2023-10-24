@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     },
     bookmarkIcon:{
         width: 18,
-         height: 20
+        height: 20
     }
 
 })

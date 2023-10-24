@@ -1,12 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { differenceInDays } from "date-fns";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 const User = (props: any) => {
+  const daysAgo = differenceInDays(new Date(), new Date(props.time));
+
   return (
     <View style={styles.profile}>
-      <View style={styles.profileImage} />
+      <Image source={{uri: props.image}} style={styles.profileImage}/>
       <View>
-        <Text style={styles.userName}>Norrapat Srimoonnoi</Text>
-        <Text style={styles.subHeader}>โพสต์เมื่อ 14 กค 2555 | กรุงเทพ</Text>
+        <Text style={styles.userName}>{props.userName}</Text>
+        <Text style={styles.subHeader}>{daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}</Text>
       </View>
     </View>
   );
@@ -22,8 +25,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 50,
-    borderWidth: 1,
-    borderColor: 'red',
     marginRight: 10,
   },
   userName: {

@@ -3,7 +3,7 @@ import Home from "../screens/home/HomeScreen";
 import DonateRequestScreen from "../screens/home/DonateRequestScreen/DonateRequestScreen"
 import MyAppointmentScreen from "../screens/home/MyAppointmentScreen/MyAppointmentScreen";
 import FindHealthUnitScreen from "../screens/home/FindHealthUnitScreen";
-import PostDetailScreen from "../screens/home/PostDetailScreen";
+import PostDetailScreen from "../screens/post/PostDetailScreen";
 
 const Tab = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ export const HomeNavigation = () => {
             <Tab.Screen name="Donate Request" component={DonateRequestScreen} />
             <Tab.Screen name="My Appointment" component={MyAppointmentScreen} />
             <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} />
-            <Tab.Screen name="PostDeatil" component={PostDetailScreen} />
+            <Tab.Screen name="PostDetail" component={PostDetailScreen} />
 
         </Tab.Navigator>
     );

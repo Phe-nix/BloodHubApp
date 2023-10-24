@@ -30,7 +30,7 @@ const NewScreen = ({ navigation }: any) => {
   }
 
   const onRefresh = () => {
-    setRefreshing(true); // Start the refreshing animation
+    setRefreshing(true);
     getNews();
   }
 
