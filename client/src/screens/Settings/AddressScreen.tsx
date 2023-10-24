@@ -59,12 +59,13 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   }, []);
 
   const handleSave = async() => {
+    const userId = await AsyncStorage.getItem("userId");
     try {
       const { data: res } = await axios.post(
-      "http://localhost:3000/user/update",
+      "http://localhost:3000/address/add",
       {
-        id: await AsyncStorage.getItem("userId"),
-        name: name,
+        userId: userId,
+        address: JSON.parse(name),
         latitude: latestMarker?.latitude,
         longitude: latestMarker?.longitude,
       }
@@ -73,6 +74,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
     console.log(error);
   }
   };
+
 
   const handleSelectLocation = (data: any, details: any) => {
     const { lat, lng } = details.geometry.location;
@@ -90,18 +92,24 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   console.log(name);
   console.log(latestMarker);
   
+  const sanitizeLocationName = (name:any) => {
+    // Replace any non-alphanumeric characters with spaces
+    return name.replace(/[^a-zA-Z0-9\s]/g, ' ');
+  };
+  
   const handleMapPress = async (event: any) => {
-    // When the user taps on the map, you can place a marker at the tapped location
     const { latitude, longitude } = event.nativeEvent.coordinate;
     setLatestMarker({ latitude, longitude });
-
+  
     // Reverse geocode the coordinates to get the name
     const locationName = await reverseGeocode(latitude, longitude);
-
+  
+    // Sanitize the location name before setting it
+    const sanitizedName = sanitizeLocationName(locationName);
+  
     // Set the name in the search bar
-    setName(locationName);
+    setName(sanitizedName);
   };
-
 
   const reverseGeocode = async (latitude: number, longitude: number) => {
     try {
