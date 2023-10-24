@@ -34,7 +34,6 @@ export const styles = StyleSheet.create({
     underLine_2: {
         borderColor: 'grey',
         borderBottomWidth: 1,
-        marginTop: 20
     },
     underLine_3: {
         borderColor: '#F0888C',
