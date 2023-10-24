@@ -1,9 +1,10 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { AddressService } from "./address.service";
 import { AddressCreateDto } from "./dto/address-create.dto";
 import { AddressDeleteDto } from "./dto/address-delete.dto";
 import { AddressUpdateDto } from "./dto/address-update.dto";
+import { AddressGetDto } from "./dto/address-get-dto";
 
 @Controller('address')
 @ApiTags('address')
@@ -57,6 +58,23 @@ export class AddressController {
     try{
       
       return await this.addressService.deleteAddress(data);
+    } catch(error){
+      console.log(error);
+      
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'INTERNAL SERVER ERROR'
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  @Get(':id')
+  async getAddress(@Param('id') id: string): Promise<any> {
+    try{
+      return await this.addressService.getAddress(id);
     } catch(error){
       console.log(error);
       
