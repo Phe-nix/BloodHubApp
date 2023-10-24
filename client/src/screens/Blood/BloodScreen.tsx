@@ -53,6 +53,7 @@ const BloodScreen = () => {
           "http://localhost:3000/blood"
         );
         const blood = response.data;
+        console.log(blood);
         seta_positive(blood.aPositiveNeed);
         setb_positive(blood.bPositiveNeed);
         seto_positive(blood.oPositiveNeed);
