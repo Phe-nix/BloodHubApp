@@ -65,7 +65,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
       "http://localhost:3000/address/add",
       {
         userId: userId,
-        address: JSON.parse(name),
+        address: name,
         latitude: latestMarker?.latitude,
         longitude: latestMarker?.longitude,
       }

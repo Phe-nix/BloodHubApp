@@ -1,6 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class AddressDetailsDto {
+export class AddressCreateDto {
+  @ApiProperty({ type: 'string', description: 'user id', example: '1234567890' })
+  userId: string;
 
   @ApiProperty({type: 'number', description: 'latitude', example: 10.1234567890})
   latitude: number;
@@ -10,14 +12,6 @@ export class AddressDetailsDto {
 
   @ApiProperty({type: 'string', description: 'address', example: '1234567890'})
   address: string;
-}
-
-export class AddressCreateDto {
-  @ApiProperty({ type: 'string', description: 'user id', example: '1234567890' })
-  userId: string;
-
-  @ApiProperty({ type: AddressDetailsDto, description: 'address' })
-  address: AddressDetailsDto;
 }
 
 
