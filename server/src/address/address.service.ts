@@ -67,7 +67,7 @@ export class AddressService {
         userId: adddessDto.userId
       },
       data: {
-        ...adddessDto.address
+        ...adddessDto
       }
     })
 
@@ -106,10 +106,10 @@ export class AddressService {
     }
   }
 
-  async getAddress(addressDto: AddressGetDto): Promise<any> {
+  async getAddress(addressDto: string): Promise<any> {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: addressDto.userId
+        id: addressDto
       }
     })
 
@@ -125,7 +125,7 @@ export class AddressService {
 
     const address = await this.prisma.address.findUnique({
       where: {
-        userId: addressDto.userId
+        userId: addressDto
       }
     })
 

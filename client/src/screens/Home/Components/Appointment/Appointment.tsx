@@ -1,25 +1,30 @@
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, TouchableOpacity } from "react-native";
 import { styles } from "./Appointment.style";
-import cross from "../../../../../assets/icon/MyAppointment/cross.png"
+import { differenceInDays } from "date-fns";
 
-const Appointment = (props: any) => {
+const Appointment = ({item, navigation}: any) => {
+    const daysAgo = differenceInDays(new Date(), new Date(item.createdAt));
+
     return (
         <View style={styles.appointMent}>
-            <Image style={styles.picture} source={props.picture} />
-            <View style={styles.box}>
-                <View style={styles.profileAndCross}>
-                    <View style={styles.profile}>
-                    <Image style={styles.pictureProfile} source={props.pictureProfile} />
-                    <View style={styles.detail}>
-                        <Text style={styles.nameProfile}>{props.nameProfile}</Text>
-                        <Text style={styles.postTime}>{props.date}</Text>
+            <TouchableOpacity key={item.id} style={{flexDirection: 'row'}} onPress={()=> {
+                navigation.navigate("PostDetail", {post: item.post, source: "appointment"})
+            }}>
+                <Image style={styles.picture} source={{uri: item.post.image}} />
+                <View style={styles.box}>
+                    <View style={styles.profileAndCross}>
+                        <View style={styles.profile}>
+                        <Image style={styles.pictureProfile} source={{uri: item.post.user.profileImage}} />
+                        <View style={styles.detail}>
+                            <Text style={styles.nameProfile}>{`${item.post.user.firstName} ${item.post.user.lastName}`}</Text>
+                            <Text style={styles.postTime}>{daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}</Text>
+                        </View>
+                        </View>
                     </View>
-                    </View>
-                    <Image style={styles.cross} source={cross} />      
+                    <Text style={styles.description}>{item.post.description}</Text>
+                    <Text style={styles.pending}>{item.status}</Text>
                 </View>
-                <Text style={styles.description}>{props.description}</Text>
-                <Text style={styles.pending}>{props.status}</Text>
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }

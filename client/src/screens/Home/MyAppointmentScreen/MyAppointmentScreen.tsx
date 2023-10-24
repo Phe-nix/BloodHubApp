@@ -1,18 +1,46 @@
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import picture from "../../../../assets/picture/kitten.png"
 import Appointment from "../Components/Appointment/Appointment"
 import { styles } from "./MyAppointmentScreen.style"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
-const MyAppointmentScreen = () => {
+const MyAppointmentScreen = ({navigation}: any) => {
+    const [donation, setDonation] = useState<any>([])
+
+    useEffect(()=>{
+        (async ()=> {
+            const user = await AsyncStorage.getItem("userId")
+            await axios.get(`http://localhost:3000/donation/getDonation/${{user}}`)
+                .then((res) => {
+                    setDonation(res.data.donation)
+                })
+        })()
+    }, [])
+
     return (
         <View style={styles.background}>
             <View style={styles.container}>
-                <Appointment picture={picture} pictureProfile={picture} nameProfile={"ศุภณัฐ อนุมาตร"} date={"22 พ.ค. 2546 · สุราษฎร์ธานี"} description={"ฉันรักแมว"} status={"· รออนุมัติ "} />
+                {   
+                    donation.length === 0 ? 
+                    (   
+                        <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
+                            <Text>ไม่มีการนัดหมาย</Text>
+                        </View>
+                    )
+                    :
+                    (
+                        donation.map((item: any) => {
+                            
+                            return (
+                                <Appointment key={item.id} item={item} navigation={navigation} />
+                            )
+                        })
+                    )
+                }
             </View>
-
         </View>
-
-
     )
 }
 

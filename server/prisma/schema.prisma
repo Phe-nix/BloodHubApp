@@ -45,17 +45,16 @@ model User {
   bookmarkPost      BookmarkPost[]
   bookmarkNews      BookmarkNews[]
   posts          Post[]
+  donations      Donation[]
   donationHistory DonationHistory[]
+  reservationSlot ReservationSlot[]
 }
 
 model Address {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  houseNo     String?
-  mooSoi      String?
-  district    String?
-  province    String?
-  country     String?
-  postcode    String?
+  latitude    Float
+  longitude   Float
+  address     String?
   userId      String   @unique @db.ObjectId
   user        User     @relation(fields: [userId], references: [id])
 }
@@ -86,6 +85,9 @@ model Post {
   user          User        @relation(fields: [userId], references: [id])
   appointments  Appointment[]
   bookmarks     BookmarkPost[]
+  donation      Donation[]
+  donationHistory DonationHistory[]
+  reservationSlot ReservationSlot[]
 }
 
 model BookmarkPost {
@@ -149,6 +151,22 @@ model BloodNeed {
   updatedAt         DateTime @updatedAt
 }
 
+model ReservationSlot {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  postId    String @db.ObjectId
+  donationId String @db.ObjectId
+  donationHistoryId String @db.ObjectId
+  status    DonationStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  donation Donation @relation(fields: [donationId], references: [id])
+  donationHistory DonationHistory @relation(fields: [donationHistoryId], references: [id])
+}
+
 enum DonationStatus {
   PENDING
   APPOINTED
@@ -157,19 +175,27 @@ enum DonationStatus {
 
 model Donation {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  status    DonationStatus
+  status    DonationStatus @default(PENDING)
   postId    String @db.ObjectId
   userId    String @db.ObjectId
-  createdAt DateTime @default(now())
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  reservationSlot ReservationSlot[]
 }
 
 model DonationHistory {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
-  status     DonationStatus
+  status     DonationStatus @default(PENDING)
   userId     String  @db.ObjectId
+  postId     String  @db.ObjectId
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
+  post       Post    @relation(fields: [postId], references: [id])
   user       User    @relation(fields: [userId], references: [id])
+  reservationSlot ReservationSlot[]
 }
 
 model Verifications {

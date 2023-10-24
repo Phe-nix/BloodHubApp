@@ -4,10 +4,12 @@ import { DonationCreateDto } from "./dto/donation-create.dto";
 import { DonationDeleteDto } from "./dto/donation-delete.dto";
 import { DonationGetDto } from "./dto/donation-get-donation.dto";
 import { DonationUpdateDto } from "./dto/donation-update.dto";
+import { ImagesService } from "src/images/images.service";
 
 @Injectable()
 export class DonationService {
   constructor(
+    private imageService: ImagesService,
     private prismaSerivce: PrismaService,
   ){}
 
@@ -28,24 +30,33 @@ export class DonationService {
           HttpStatus.NOT_FOUND
         )
       }
-
+      
       const donation = await this.prismaSerivce.donation.create({
         data: {
           postId: donationDto.postId,
           userId: donationDto.userId,
-          status: donationDto.status,
         }
       })
 
       const donationHistory = await this.prismaSerivce.donationHistory.create({
         data: {
-          status: donationDto.status,
+          postId: donationDto.postId,
           userId: donationDto.userId,
         },
       });
       
+      const reservation = await this.prismaSerivce.reservationSlot.create({
+        data: {
+          userId: donationDto.userId,
+          postId: donationDto.postId,
+          donationId: donation.id,
+          donationHistoryId: donationHistory.id,
+        }
+      })
+      
       return {
         message: "Donation created successfully",
+        reservation: reservation,
         donation: donation,
         donationHistory: donationHistory,
       };
@@ -79,30 +90,101 @@ export class DonationService {
     }
   }
 
-  async updateDonation(donationDto: DonationUpdateDto): Promise<any>{
+  async updateDonation(donationDto: any): Promise<any>{
     try {
+      const reservation = await this.prismaSerivce.reservationSlot.delete({
+        where: {
+          id: donationDto.reservationId,
+        }
+      })
+
+      if(!reservation) {
+        throw new HttpException(
+          {
+            status: HttpStatus.NOT_FOUND,
+            error: 'RESERVATION NOT FOUND'
+          },
+          HttpStatus.NOT_FOUND
+        )
+      }
+
       const donation = await this.prismaSerivce.donation.update({
         where: {
-          id: donationDto.id,
+          id: donationDto.donationId,
         },
         data: {
-          status: donationDto.status
+          status: donationDto.status,
         }
-      });
+      })
 
-      if (!donation){
-        throw new HttpException({
-          status: HttpStatus.NOT_FOUND,
-          error: 'DONATION NOT FOUND'
-        }, HttpStatus.NOT_FOUND)
-      }
+      const donationHistory = await this.prismaSerivce.donationHistory.update({
+        where: {
+          id: donationDto.donationHistoryId,
+        },
+        data: {
+          status: donationDto.status,
+        }
+      })
+
       return {
         message: "Donation updated successfully",
+        reservation: reservation,
         donation: donation,
-      }
+        donationHistory: donationHistory,
+      };
+
+
     } catch (error) {
       console.log("Error updating donation:", error);
       throw error;
+    }
+  }
+
+  async getReservation(donationDto: DonationGetDto): Promise<any>{
+    const reservation = await this.prismaSerivce.reservationSlot.findMany({
+      where: {
+        userId: donationDto.userId
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profileImage: true,
+            bloodType: true,
+            phoneNumber: true,
+            dob: true,
+            disease: true,
+          }
+        },
+      }
+    })
+
+    if(!reservation) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'RESERVATION NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    const reservationFireStore = await Promise.all(reservation.map(async (item) => {
+      const firestoreImage = await this.imageService.getImage(item.user.profileImage);
+      return {
+        ...item,
+        user: {
+          ...item.user,
+          profileImage: firestoreImage,
+        }
+      }
+    }))
+
+    return {
+      message: "Reservation found successfully",
+      reservation: reservationFireStore
     }
   }
 
@@ -110,6 +192,27 @@ export class DonationService {
     const donation = await this.prismaSerivce.donation.findMany({
       where:{
         userId: donationDto.userId
+      },
+      include: {
+        post: {
+          select: {
+            id: true,
+            description: true,
+            bloodType: true,
+            image: true,
+            createdAt: true,
+            case: true,
+            phone_number: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                profileImage: true,
+              }
+            }
+          }
+        }
       }
     })
 
@@ -123,9 +226,34 @@ export class DonationService {
       )
     }
 
+    const donationFireStore = await Promise.all(donation.map(async (item) => {
+      const firestoreImage = await this.imageService.getImage(item.post.image);
+      return {
+        ...item,
+        post: {
+          ...item.post,
+          image: firestoreImage,
+        }
+      }
+    }))
+
+    const donationUpdate = await Promise.all(donationFireStore.map(async (item) => {
+      const firestoreImage = await this.imageService.getImage(item.post.user.profileImage);
+      return {
+        ...item,
+        post: {
+          ...item.post,
+          user: {
+            ...item.post.user,
+            profileImage: firestoreImage,
+          }
+        }
+      }
+    }))
+
     return {
       message: "Donation found successfully",
-      donation: donation
+      donation: donationUpdate
     }
   }
 

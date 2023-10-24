@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { DonationService } from "./donation.service";
 import { DonationCreateDto } from "./dto/donation-create.dto";
@@ -28,18 +28,21 @@ export class DonationController {
   @Put("update")
   @ApiBody({type: DonationUpdateDto})
   async updateDonation(@Body() donationDto: DonationUpdateDto): Promise<any>{
-    return await this.donationService.deleteDonation(donationDto);
+    return await this.donationService.updateDonation(donationDto);
   }
 
-  @Get('getDonation')
-  @ApiBody({type: DonationGetDto})
-  async getAllDonation(@Body() donationDto: DonationGetDto): Promise<any>{
+  @Get('getReservation/:id')
+  async getAllReservation(@Param('id') donationDto: DonationGetDto): Promise<any>{
+    return await this.donationService.getReservation(donationDto);
+  }
+
+  @Get('getDonation/:id')
+  async getAllDonation(@Param('id') donationDto: DonationGetDto): Promise<any>{
     return await this.donationService.getlDonation(donationDto);
   }
 
-  @Get('getDonationHistory')
-  @ApiBody({type: DonationGetDto})
-  async getAllDonationHistory(@Body() donationDto: DonationGetDto): Promise<any>{
+  @Get('getDonationHistory/:id')
+  async getAllDonationHistory(@Param('id') donationDto: DonationGetDto): Promise<any>{
     return await this.donationService.getDonationHistory(donationDto);
   }
 }

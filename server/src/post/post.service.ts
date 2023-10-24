@@ -134,7 +134,6 @@ export class PostService {
         HttpStatus.BAD_REQUEST
       );
     }
-    
 
     const filteredPosts = posts.filter((post) => {
 
