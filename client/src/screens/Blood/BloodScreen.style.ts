@@ -44,6 +44,11 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 15
     },
-
+    unit: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginLeft: 20,
+        color: 'your_color_here', // Add the color property with your desired text color
+    },
 
 })
