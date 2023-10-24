@@ -109,7 +109,7 @@ export class PostService {
     }
   }
 
-  async getAllPost(userId: PostGetAllDto): Promise<any> {
+  async getAllPost(userId: any): Promise<any> {
     const posts = await this.prisma.post.findMany(
       {
         include: {
@@ -134,8 +134,14 @@ export class PostService {
         HttpStatus.BAD_REQUEST
       );
     }
+    
 
-    const filteredPosts = posts.filter((post) => post.userId !== post.user.id);
+    const filteredPosts = posts.filter((post) => {
+
+      if(post.userId !== userId){
+        return post;
+      }
+    });
 
     const postsWithImages = await Promise.all(filteredPosts.map(async (post) => {
       const firestoreImage = await this.imageService.getImage(post.image);
@@ -158,7 +164,7 @@ export class PostService {
 
     const bookmark = await this.prisma.bookmarkPost.findMany({
       where: {
-        userId: userId.id
+        userId: userId
       }
     });
 
