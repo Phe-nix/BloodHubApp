@@ -51,7 +51,7 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
                 />
                 <View style={{ marginTop: 20 }}>
                   <Button
-                    title="Next"
+                    title="ถัดไป"
                     onPress={() => forget()}
                     buttonWidth={100}
                     buttonHeight={10}

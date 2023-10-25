@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { styles } from "./style/HelpCenterScreen.style";
@@ -11,10 +11,16 @@ const helpResources = [
   { id: "3", title: "ฉันจะขอรับบริจาคเลือดได้อย่างไร", page: "How to make request" },
   { id: "4", title: "ฉันจะขอรับบริจาคเลือดแบบฉุกเฉินได้อย่างไร", page: "How to make emergency request" },
   { id: "5", title: "ฉันจะเปลี่ยนรหัสของฉันได้อย่างไร", page: "How to change password" },
-
+  
 ];
 
 const HelpCenterScreen = ({ navigation }: any) => {
+  const [searchText, setSearchText] = useState('');
+
+  const filteredResources = helpResources.filter((item) => {
+    return item.title.toLowerCase().includes(searchText.toLowerCase());
+  });
+  
   return (
     <View style={styles.container}>
       {/* Search Bar */}
@@ -24,13 +30,15 @@ const HelpCenterScreen = ({ navigation }: any) => {
           style={styles.searchInput}
           placeholder="Search Help"
           placeholderTextColor="#B8B8B8"
+          onChangeText={(text) => setSearchText(text)}
+          value={searchText}
         />
       </View>
 
       {/* White Container */}
       <View style={styles.whitecontainer}>
         <Text style={styles.title}>คำถามยอดฮิต</Text>
-        {helpResources.map((item) => (
+        {filteredResources.map((item) => (
           <TouchableOpacity style={styles.resourceItem} key={item.id} onPress={() => navigation.navigate(item.page)}>
             <View >
               <View style={styles.iconCircle}>

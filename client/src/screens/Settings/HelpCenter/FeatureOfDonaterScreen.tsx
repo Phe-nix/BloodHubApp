@@ -1,11 +1,13 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Image, SafeAreaView, ScrollView} from "react-native";
 
 const FeatureOfDonaterScreen = () => {
     return (
-        <View>
-
-        </View>
+        <SafeAreaView style={{flex:1, alignItems:'center'}}>
+            <ScrollView style={{flex:1}}>
+            <Image style={{width:440, height:600, flex:1}} source={require("../../../../assets/picture/Feature.png")} />
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
