@@ -8,12 +8,12 @@ import { set, differenceInDays } from 'date-fns'
 import Constants from 'expo-constants'
 
 const NewDetailScreen = ({route} : any) => {
-  const { post } = route.params
+  const { news } = route.params
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
-  const daysAgo = differenceInDays(new Date(), new Date(post.createdAt))
+  const daysAgo = differenceInDays(new Date(), new Date(news.createdAt))
 
   useEffect(() => {
-    if(route.params.post.isBookmarked){
+    if(news.isBookmark){
       setIsBookmarked(true)
     }
   }, [])
@@ -22,7 +22,7 @@ const NewDetailScreen = ({route} : any) => {
     <ScrollView style={styles.background}>
         <View style={styles.container}>
             <View style={{marginTop:10}}>
-                <Text style={styles.title}>{post.title}</Text>
+                <Text style={styles.title}>{news.title}</Text>
                 <View style={styles.timeAndBookmark}>
                     <Text style={styles.time}>
                       {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`} 
@@ -32,7 +32,7 @@ const NewDetailScreen = ({route} : any) => {
                         await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
-                            newId: post.id,
+                            newId: news.id,
                           }
                         })
                         .then((res)=>{
@@ -41,7 +41,7 @@ const NewDetailScreen = ({route} : any) => {
                       } else {
                         await axios.post(`http://localhost:3000/bookmark/news/add`,
                         {
-                          newId: post.id,
+                          newId: news.id,
                           userId: await AsyncStorage.getItem("userId")
                         })
                         .then((res)=>{
@@ -52,8 +52,8 @@ const NewDetailScreen = ({route} : any) => {
                       <Image style={styles.bookmarkIcon} source={isBookmarked ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
                     </TouchableOpacity>
                 </View>
-                <Image style={styles.newsPicture} source={{uri: post.image}}/>
-                <Text style={styles.description}>{post.description}</Text>
+                <Image style={styles.newsPicture} source={{uri: news.image}}/>
+                <Text style={styles.description}>{news.description}</Text>
             </View>
         </View>
     </ScrollView>

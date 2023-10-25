@@ -32,17 +32,17 @@ export class DonationController {
   }
 
   @Get('getReservation/:id')
-  async getAllReservation(@Param('id') donationDto: DonationGetDto): Promise<any>{
-    return await this.donationService.getReservation(donationDto);
+  async getAllReservation(@Param('id') id: string): Promise<any>{
+    return await this.donationService.getReservation(id);
   }
 
   @Get('getDonation/:id')
-  async getAllDonation(@Param('id') donationDto: DonationGetDto): Promise<any>{
-    return await this.donationService.getlDonation(donationDto);
+  async getAllDonation(@Param('id') id: string): Promise<any>{
+    return await this.donationService.getlDonation(id);
   }
 
   @Get('getDonationHistory/:id')
-  async getAllDonationHistory(@Param('id') donationDto: DonationGetDto): Promise<any>{
-    return await this.donationService.getDonationHistory(donationDto);
+  async getAllDonationHistory(@Param('id') id: string): Promise<any>{
+    return await this.donationService.getDonationHistory(id);
   }
 }

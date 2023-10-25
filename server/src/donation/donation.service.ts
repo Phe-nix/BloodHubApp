@@ -34,14 +34,14 @@ export class DonationService {
       const donation = await this.prismaSerivce.donation.create({
         data: {
           postId: donationDto.postId,
-          userId: donationDto.userId,
+          userId: donationDto.donatorId,
         }
       })
 
       const donationHistory = await this.prismaSerivce.donationHistory.create({
         data: {
           postId: donationDto.postId,
-          userId: donationDto.userId,
+          userId: donationDto.donatorId,
         },
       });
       
@@ -141,10 +141,10 @@ export class DonationService {
     }
   }
 
-  async getReservation(donationDto: DonationGetDto): Promise<any>{
+  async getReservation(id: string): Promise<any>{
     const reservation = await this.prismaSerivce.reservationSlot.findMany({
       where: {
-        userId: donationDto.userId
+        userId: id
       },
       include: {
         user: {
@@ -173,7 +173,7 @@ export class DonationService {
     }
 
     const reservationFilter = reservation.filter((item) => (
-      item.donationId != donationDto.userId
+      id !== item.donatorId
     ))
 
     const reservationFireStore = await Promise.all(reservationFilter.map(async (item) => {
@@ -193,15 +193,16 @@ export class DonationService {
     }
   }
 
-  async getlDonation(donationDto: DonationGetDto): Promise<any>{
+  async getlDonation(id: string): Promise<any>{
     const donation = await this.prismaSerivce.donation.findMany({
       where:{
-        userId: donationDto.userId
+        userId: id
       },
       include: {
         post: {
           select: {
             id: true,
+            title: true,
             image: true,
             description: true,
             phoneNumber: true,
@@ -263,10 +264,10 @@ export class DonationService {
     }
   }
 
-  async getDonationHistory(donationDto: DonationGetDto): Promise<any>{
+  async getDonationHistory(id: string): Promise<any>{
     const donationHistory = await this.prismaSerivce.donationHistory.findMany({
       where:{
-        userId: donationDto.userId
+        userId: id
       }
     })
 

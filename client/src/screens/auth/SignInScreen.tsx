@@ -22,9 +22,6 @@ const SignInScreen = ({ navigation }: any) => {
   const [password, setPassword] = React.useState("");
 
   const login = async () => {
-    console.log(`${Constants.expoConfig?.extra?.API_URL}/auth/login`);
-    
-    
     try {
       const { data: res } = await axios.post(
         `${Constants.expoConfig?.extra?.API_URL}/auth/login`,

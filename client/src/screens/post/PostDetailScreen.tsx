@@ -5,6 +5,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import Constants from 'expo-constants';
+import { item } from '../../mock/getStart';
 
 const PostDetailScreen = ({route, navigation}: any) => {
   const { post } = route.params;
@@ -12,21 +13,17 @@ const PostDetailScreen = ({route, navigation}: any) => {
 
   useEffect(() => {
     (async () => {
-      if (post.isBookmarked) {
+      if (post.isBookmark) {
         setIsBookmarked(true);
       }
     })();
   }, []);
 
-  console.log(route.params.source);
-  
-
   return(
     <View style={styles.container}>
       <User image={post.user.profileImage}userName={`${post.user.firstName} ${post.user.lastName}`} time={post.createdAt} />
-      
       <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
-        <Text>Post Name</Text>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>{post.title}</Text>
         <TouchableOpacity onPress={ async ()=>{
           if(isBookmarked){
             await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
@@ -70,7 +67,7 @@ const PostDetailScreen = ({route, navigation}: any) => {
           </View>
           <View style={{flexDirection: 'row'}}>
             <Text style={{flex:1, color: "#856464"}}>เบอร์ติดต่อ</Text>
-            <Text style={{flex:1}}>{post.phone_number}</Text>
+            <Text style={{flex:1}}>{post.phoneNumber}</Text>
           </View>
         </View>
 
@@ -82,8 +79,8 @@ const PostDetailScreen = ({route, navigation}: any) => {
                     await axios.post(`${Constants.expoConfig?.extra?.API_URL}/donation/create`,
                     {
                       status: "PENDING",
-                      userId: await AsyncStorage.getItem("userId"),
-                      donatorId: post.user.id,
+                      userId: post.user.id,
+                      donatorId: await AsyncStorage.getItem("userId"),
                       postId: post.id
                     }).then((res)=>{
       

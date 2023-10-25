@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { ApiBody, ApiTags } from "@nestjs/swagger";
 import { BookmarkService } from "./bookmark.service";
 import { bookMarkPostDto } from "./dto/bookmark-post.dto";
 import { bookMarkNewsDto } from "./dto/bookmark-news.dto";
@@ -50,5 +50,15 @@ export class BookMarkController {
       console.error(error);
       throw error;
     }
+  }
+
+  @Get('post/:id')
+  async getBookMarkGet(@Param('id') id: string): Promise<any>{
+    return await this.bookmarkService.getBookmarkPost(id);
+  }
+
+  @Get('news/:id')
+  async getBookMarkNews(@Param('id') id: string): Promise<any>{
+    return await this.bookmarkService.getBookmarkNew(id);
   }
 }

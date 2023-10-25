@@ -1,57 +1,61 @@
-import React, { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { differenceInDays } from "date-fns";
+import Constants from "expo-constants";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface PostProps {
-  onDelete: () => void; // Callback function for handling post deletion
+interface SmallNewsBoxProps {
+  isVisible: boolean;
+  onBookmarkPress: () => void;
 }
 
-const SmallPostBox: React.FC<PostProps> = ({ onDelete }) => {
-  const [isCircleVisible, setCircleVisible] = useState(false);
-
-  const handlerLongClick = () => {
-    // Toggle the visibility of the circle
-    setCircleVisible(!isCircleVisible);
-  };
-
-  const handleCirclePress = () => {
-    // Check if the circle is visible before handling the click event
-    if (isCircleVisible) {
-      onDelete(); // Trigger the onDelete callback
-    }
-  };
+const SmallPostBox: React.FC<any> = ({ item, fetch, navigation }) => {
+  const post = item.post
+  const daysAgo = differenceInDays(new Date(), new Date(post.createdAt));
 
   return (
-    <TouchableOpacity style={styles.container} onLongPress={handlerLongClick}>
-      <View style={styles.leftContainer}>
-        {/* Image */}
-        <Image
-          source={require("../../../assets/citizen1.png")}
-          style={styles.image}
-          resizeMode="cover"
-        />
-      </View>
-
-      <View style={styles.rightContainer}>
-        <View style={styles.textRight}>
-          <Text style={styles.name}>Suphanat Anumat</Text>
-          {isCircleVisible && (
-            <TouchableOpacity 
-            onPress={handleCirclePress}>
-              <View style={styles.circle} />
+    <TouchableOpacity style={styles.bgcolor} onPress={() => {
+      navigation.navigate('Home', {
+        screen: 'PostDetail',
+        params: { post: post },
+      });
+    }}>
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            {/* Image */}
+            <Image
+              source={{uri: post.image}}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={styles.rightContainer}>
+            <View style={styles.textRight}>
+              <Text style={styles.name}>{post.title.slice(0,40) + "..."}</Text>
+              <TouchableOpacity onPress={ async ()=>{
+                await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
+                  params: {
+                    userId: await AsyncStorage.getItem("userId"),
+                    postId: item.id,
+                  }
+                })
+                .then((res)=>{
+                  fetch();
+                })
+              
+            }}>
+              <Image style={{width: 18, height:20, position: 'absolute', top: 0, right: 20}} source={post.isBookmark ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
             </TouchableOpacity>
-          )}
+            </View>
+            <Text style={styles.date}>
+              {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}
+            </Text>
+            <Text style={styles.description}>{post.description.slice(0,60) + "..."}</Text>
+          </View>
         </View>
-        <Text style={styles.date}>Date, City</Text>
-        {/* Description */}
-        <Text style={styles.description}>Description of the post goes here.</Text>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
   );
 };
 
@@ -59,35 +63,33 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignSelf: "center",
-    width: "85%",
+    width: "95%",
     marginTop: 15,
-    backgroundColor: "#FDE8E9",
     borderRadius: 20,
-    shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.34,
-        shadowRadius: 6.27,
-        elevation: 10,
+    borderBottomWidth: 1,
+    borderColor: "#ED8085",
+    paddingBottom: 15,
+  },
+  bgcolor: {
+    backgroundColor: "white",
+    flex: 1,
   },
   textRight: {
     flexDirection: "row",
   },
   leftContainer: {
     flex: 4,
-    paddingRight: 5,
+    paddingLeft: 15,
   },
   rightContainer: {
     flex: 5,
-    paddingLeft: 5,
-    paddingTop: 15,
+    paddingTop: 5,
+    paddingLeft: 10,
   },
   image: {
+    height: 100,
     width: "100%",
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderRadius: 20,
   },
   circle: {
     position: "absolute",
@@ -100,13 +102,16 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "bold",
+    paddingRight: 45,
   },
   date: {
     fontSize: 12,
+    marginTop: 2,
+    marginBottom: 5,
     color: "gray",
   },
   description: {
-    marginTop: 10,
+    marginTop: 5,
     fontSize: 14,
   },
 });

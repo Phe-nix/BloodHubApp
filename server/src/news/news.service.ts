@@ -88,11 +88,11 @@ export class NewsService {
       })
 
       const updatedNews = news.map((item) => {
-        const isBookmarked = bookmark.some((bookmark) => bookmark.newId === item.id);
+        const isBookmark = bookmark.some((bookmark) => bookmark.newId === item.id);
 
         return {
           ...item,
-          isBookmarked: isBookmarked
+          isBookmark: isBookmark
         }
       })
 
