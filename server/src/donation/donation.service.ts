@@ -295,13 +295,10 @@ export class DonationService {
     })
 
     if(!donationHistory) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'DONATION NOT FOUND'
-        },
-        HttpStatus.NOT_FOUND
-      )
+      return {
+        message: "DonationHistory Empty",
+        donation: []
+      }
     }
 
     const donationHistoryFireStore = await Promise.all(donationHistory.map(async (item) => {
