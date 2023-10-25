@@ -1,26 +1,49 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
 import SmallNewsBox from "../../../core/components/SmallNewsBox";
+import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
-const News: React.FC = () => {
-  const [isVisibleArray, setIsVisibleArray] = useState([true, true, true]); // Initialize with three components visible
+const News: React.FC = ({navigation} : any) => {
+  const [news, setNews] = useState<any>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const handleBookmark = (index: number) => {
-    // Hide the SmallNewsBox component at the specified index when the bookmark icon is clicked
-    const updatedVisibility = [...isVisibleArray];
-    updatedVisibility[index] = false;
-    setIsVisibleArray(updatedVisibility);
-  };
+  useEffect(() => {
+    fetch();
+  }, [])
+
+  const fetch = async () => {
+    const userId = await AsyncStorage.getItem("userId");
+    await axios.get(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/${userId}`)
+      .then((res) => {
+        setNews(res.data.bookmark)
+        setRefreshing(false);
+      })
+  }
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetch();
+  }
 
   return (
-    <ScrollView style={styles.bgcolor}>
-      {isVisibleArray.map((isVisible, index) => (
-        <SmallNewsBox
-          key={index}
-          isVisible={isVisible}
-          onBookmarkPress={() => handleBookmark(index)}
+    <ScrollView 
+      style={styles.bgcolor}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
         />
-      ))}
+      }
+    >
+      {
+        news.map((item: any) => {
+          return (
+              <SmallNewsBox key={item.id} item={item} fetch={fetch} navigation={navigation}/>
+          )
+        })
+      }
     </ScrollView>
   );
 };

@@ -28,7 +28,11 @@ export const RootNavigator = () => {
           }}
         >
           <Root.Screen name="Auth" component={AuthNaivgation} />
-          <Root.Screen name="App" component={AppNavigation} />
+          <Root.Screen name="App" component={AppNavigation}
+            options={{
+              gestureEnabled: false,
+            }}
+          />
         </Root.Navigator>
       ) : (
         <Root.Navigator
@@ -38,7 +42,11 @@ export const RootNavigator = () => {
           }}
         >
           <Root.Screen name="Auth" component={AuthNaivgation} />
-          <Root.Screen name="App" component={AppNavigation} />
+          <Root.Screen name="App" component={AppNavigation} 
+            options={{
+              gestureEnabled: false,
+            }}
+          />
         </Root.Navigator>
       )}
     </NavigationContainer>

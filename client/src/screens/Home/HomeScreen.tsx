@@ -8,6 +8,7 @@ import Post from "./Components/Post";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 const HomeScreen = ({ navigation }: any) => {
   const [user, setUser] = useState<any>(null);
@@ -23,7 +24,7 @@ const HomeScreen = ({ navigation }: any) => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const { data: res } = await axios.get(
-        `http://localhost:3000/user/${userId}`,
+        `${Constants.expoConfig?.extra?.API_URL}/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
@@ -41,7 +42,7 @@ const HomeScreen = ({ navigation }: any) => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const { data: res } = await axios.get(
-        `http://localhost:3000/posts/getAllPosts/${userId}`,
+        `${Constants.expoConfig?.extra?.API_URL}/posts/getAllPosts/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,

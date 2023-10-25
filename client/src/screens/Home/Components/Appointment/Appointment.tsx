@@ -21,7 +21,7 @@ const Appointment = ({item, navigation}: any) => {
                         </View>
                         </View>
                     </View>
-                    <Text style={styles.description}>{item.post.description.slice(0, 50) + '...'}</Text>
+                    <Text style={styles.description}>{item.post.title.slice(0, 50) + '...'}</Text>
                     <Text style={styles.pending}>{item.status}</Text>
                 </View>
             </TouchableOpacity>
