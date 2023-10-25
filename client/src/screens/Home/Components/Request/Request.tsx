@@ -6,6 +6,7 @@ import age from "../../../../../assets/icon/DonateRequest/age.png"
 import disease from "../../../../../assets/icon/DonateRequest/disease.png"
 import { differenceInDays, differenceInYears } from 'date-fns';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 const Request = (props: any) => {
     const { item } = props;
