@@ -25,7 +25,7 @@ const PostScreen = ({navigation} : any) => {
 
   const [description, setDescription] = useState<string>('');
   const [contact, setContact] = useState<string>('');
-  const [bloodType, setBloodType] = useState<string>('');
+  const [bloodType, setBloodType] = useState<string>('กรุ๊ปเลือด');
   const [cases, setCases] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   
@@ -141,6 +141,7 @@ const PostScreen = ({navigation} : any) => {
             value={contact}
             onChangeText={setContact}
           />
+          
           <View style={styles.input}>
             <RNPickerSelect
               placeholder={{ label: "-- กรุ๊ปเลือด --", value: "กรุ๊ปเลือด"}}
@@ -163,11 +164,12 @@ const PostScreen = ({navigation} : any) => {
               style={pickerSelectStyles}
             />    
           </View>
+
           <View style={styles.input}>
             <RNPickerSelect
               placeholder={{ label: "-- ความต้องการ --"}}
               onValueChange={(value) => {
-                if (value) {
+                if (value !== "-- ความต้องการ --") {
                   setCases(value);
                 }
               }}
@@ -175,7 +177,7 @@ const PostScreen = ({navigation} : any) => {
                 { label: "ทั่วไป", value: "NORMAL" },
                 { label: "ฉุกเฉิน", value: "EMERGENCY" },
               ]}
-              value={bloodType}
+              value={cases}
               style={pickerSelectStyles}
             />    
           </View>
