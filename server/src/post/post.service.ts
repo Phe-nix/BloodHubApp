@@ -182,4 +182,50 @@ export class PostService {
       posts: updatedPostsWithImages
     };
   }
+
+  async getPostByUser (userId: string): Promise<any> {
+    const posts = await this.prisma.post.findMany({
+      where:{
+        userId: userId
+      },
+      include: {
+        user: true,
+      }
+    });
+
+    if(!posts){
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'POST NOT FOUND'
+        },
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    const postsFireStore = await Promise.all(posts.map(async (post) => {
+      const firestoreImage = await this.imageService.getImage(post.image);
+      return {
+        ...post,
+        image: firestoreImage
+      }
+    }
+    ));
+
+    const postsUpdate = await Promise.all(postsFireStore.map(async (post) => {
+      const firestoreImage = await this.imageService.getImage(post.user.profileImage);
+      return {
+        ...post,
+        user:{
+          ...post.user,
+          profileImage: firestoreImage
+        }
+      }
+    }));
+
+    return {
+      message: 'GET ALL POSTS',
+      posts: postsUpdate
+    };
+  }
 }
