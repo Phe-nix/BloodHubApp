@@ -35,9 +35,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   notification: {
+    marginBottom: 10,
     backgroundColor: "#fff",
-    padding: 10,
     borderRadius: 5,
+    borderWidth: 1
   },
   notificationText: {
     fontSize: 18,
