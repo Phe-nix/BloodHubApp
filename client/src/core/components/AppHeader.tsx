@@ -21,9 +21,10 @@ const styles = StyleSheet.create({
   img: {
     width: 180,
     height: 180,
+    marginTop: 30
   },
   header: {
-    fontSize: 48,
+    fontSize: 44,
     fontWeight: 'bold',
     color: '#333',
     marginVertical: 10

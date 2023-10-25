@@ -25,29 +25,29 @@ type SettingOptionProps = {
   source: string;
 };
 
-const SettingScreen: React.FC = ({navigation}:any) => {
+const SettingScreen: React.FC = ({ navigation }: any) => {
   return (
     <ScrollView style={styles.container}>
       <SectionHeader title="ข้อมูลทั่วไป" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="โปรไฟล์" icon="user" navigation={navigation} to ="MyProfile" source="profile"/>
-          <SettingOption title="ที่อยู่" icon="home" navigation={navigation} to ="EditAddress" source="address"/>
-          <SettingOption title="แจ้้งเตือน" icon="bell" navigation={navigation} to ="EditNotification" source="noti"/>
+          <SettingOption title="โปรไฟล์" icon="user" navigation={navigation} to="MyProfile" source="profile" />
+          <SettingOption title="ที่อยู่" icon="home" navigation={navigation} to="EditAddress" source="address" />
+          <SettingOption title="แจ้งเตือน" icon="bell" navigation={navigation} to="EditNotification" source="noti" />
         </View>
       </View>
       <SectionHeader title="ข้อมูลเพิ่มเติม" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="ประวัติ" icon="history" navigation={navigation} to ="History" source="history"/>
-          <SettingOption title="บุ๊กมาร์ก" icon="bookmark" navigation={navigation} to ="Bookmark" source="bookmark"/>
+          <SettingOption title="ประวัติ" icon="history" navigation={navigation} to="History" source="history" />
+          <SettingOption title="บุ๊คมาร์ค" icon="bookmark" navigation={navigation} to="Bookmark" source="bookmark" />
         </View>
       </View>
       <SectionHeader title="ช่วยเหลือ" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="ศูนย์ช่วยเหลือ" icon="question-circle" navigation={navigation} to ="HelpCenter" source="helpCenter"/>
-          <SettingOption title="เกี่ยวกับเรา" icon="info-circle" navigation={navigation} to ="About" source="about"/>
+          <SettingOption title="ศูนย์ช่วยเหลือ" icon="question-circle" navigation={navigation} to="HelpCenter" source="helpCenter" />
+          <SettingOption title="เกี่ยวกับเรา" icon="info-circle" navigation={navigation} to="About" source="about" />
         </View>
       </View>
     </ScrollView>
@@ -60,8 +60,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title }) => (
   </View>
 );
 
-const SettingOption: React.FC<SettingOptionProps> = ({ title, icon, navigation, to, source } : any) => (
-  <TouchableOpacity style={styles.settingOption} onPress={()=>{navigation.navigate(to, {source: source})}} >
+const SettingOption: React.FC<SettingOptionProps> = ({ title, icon, navigation, to, source }: any) => (
+  <TouchableOpacity style={styles.settingOption} onPress={() => { navigation.navigate(to, { source: source }) }} >
     <View style={styles.settingTextContainer}>
       {renderIcon(icon)}
       <Text style={styles.settingOptionText}>{title}</Text>
