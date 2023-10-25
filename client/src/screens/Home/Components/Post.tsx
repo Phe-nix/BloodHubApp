@@ -13,10 +13,10 @@ const Post = (props: any, { navigation }: any) => {
     
     return (
         <View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20, marginVertical: 15 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginVertical: 10 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Image style={{ width: 50, height: 50, borderRadius: 25}} source={{uri : item.user.profileImage }} />
-                    <View style={{marginLeft:20}}>
+                    <View style={{marginLeft: 20}}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{`${item.user.firstName} ${item.user.lastName}`}</Text>
                         <Text>
                             {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}
@@ -27,8 +27,6 @@ const Post = (props: any, { navigation }: any) => {
                 <View>
                 <TouchableOpacity onPress={ async ()=>{
                       if(item.isBookmarked){
-                        console.log("delete");
-                        
                         await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
@@ -53,6 +51,7 @@ const Post = (props: any, { navigation }: any) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Text style={{fontWeight: 'bold', fontSize: 16, marginBottom: 10}}>{item.title.length > 100 ? item.title.slice(0, 100) + "..." : "..."}</Text>
             <Image style={{ width: 'auto', height: 300 }} source={{uri: item.image}} />
             <View style={{ marginLeft: 20, marginTop: 10}}>
                 <Text style={{ fontSize: 15 }}>

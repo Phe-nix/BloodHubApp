@@ -30,7 +30,7 @@ export class AddressService {
     const address = await this.prisma.address.create({
       data: {
         ...adddessDto,
-        address: JSON.parse(adddessDto.address)
+        address: adddessDto.address
       }
     });
 
@@ -63,7 +63,7 @@ export class AddressService {
       },
       data: {
         ...adddessDto,
-        address: JSON.stringify(adddessDto.address)
+        address: adddessDto.address
       }
     })
 

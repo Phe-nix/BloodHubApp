@@ -21,6 +21,7 @@ export class PostService {
 
       const post = await this.prisma.post.create({
         data: {
+          title: postDto.title,
           image: imagedto.originalname,
           description: postDto.description,
           phoneNumber: postDto.phoneNumber,
@@ -111,9 +112,6 @@ export class PostService {
   }
 
   async getAllPost(userId: string): Promise<any> {
-    console.log(userId);
-    
-
     const posts = await this.prisma.post.findMany(
       {
         include: {
@@ -140,7 +138,6 @@ export class PostService {
     }
 
     const filteredPosts = posts.filter((post) => {
-
       if(post.userId !== userId){
         return post;
       }

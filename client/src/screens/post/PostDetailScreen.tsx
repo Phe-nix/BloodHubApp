@@ -83,6 +83,7 @@ const PostDetailScreen = ({route, navigation}: any) => {
                     {
                       status: "PENDING",
                       userId: await AsyncStorage.getItem("userId"),
+                      donatorId: post.user.id,
                       postId: post.id
                     }).then((res)=>{
       

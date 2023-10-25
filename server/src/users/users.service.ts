@@ -45,7 +45,10 @@ export class UsersService {
         },
       });
       return newUser;
+
     } catch (error) {
+      console.log(error);
+      
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,

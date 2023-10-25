@@ -48,6 +48,7 @@ export class DonationService {
       const reservation = await this.prismaSerivce.reservationSlot.create({
         data: {
           userId: donationDto.userId,
+          donatorId: donationDto.donatorId,
           postId: donationDto.postId,
           donationId: donation.id,
           donationHistoryId: donationHistory.id,
@@ -171,7 +172,11 @@ export class DonationService {
       )
     }
 
-    const reservationFireStore = await Promise.all(reservation.map(async (item) => {
+    const reservationFilter = reservation.filter((item) => (
+      item.donationId != donationDto.userId
+    ))
+
+    const reservationFireStore = await Promise.all(reservationFilter.map(async (item) => {
       const firestoreImage = await this.imageService.getImage(item.user.profileImage);
       return {
         ...item,

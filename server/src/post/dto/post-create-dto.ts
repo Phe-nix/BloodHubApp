@@ -18,6 +18,9 @@ enum CaseType {
 }
 
 export class PostCreateDto {
+  @ApiProperty({type: 'string', description: 'Post title', example: 'This is a sample post title'})
+  title: string;
+
   @ApiProperty({ type: 'string', format: 'binary', description: 'Image file'})
   image?: any;
 

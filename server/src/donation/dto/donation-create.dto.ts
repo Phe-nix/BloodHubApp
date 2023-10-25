@@ -9,6 +9,9 @@ export class DonationCreateDto {
   @ApiProperty({ type: 'string', description: 'User Id', example: '123456789' })
   userId: string;
 
+  @ApiProperty({ type: 'string', description: 'Donator Id', example: '123456789' })
+  donatorId: string;
+
   @ApiProperty({ type: 'string', example: '123123123123' })
   postId: string
 }

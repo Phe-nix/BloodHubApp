@@ -80,6 +80,7 @@ model News {
 
 model Post {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
   image         String?
   description   String
   phoneNumber   String
@@ -159,7 +160,8 @@ model BloodNeed {
 
 model ReservationSlot {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String @db.ObjectId
+  userId    String @db.ObjectId // ผู้รับบริจาค
+  donatorId String @db.ObjectId // ผู้บริจาค
   postId    String @db.ObjectId
   donationId String @db.ObjectId
   donationHistoryId String @db.ObjectId

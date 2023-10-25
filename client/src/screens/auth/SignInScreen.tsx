@@ -32,12 +32,6 @@ const SignInScreen = ({ navigation }: any) => {
           citizenId: citizenId,
           password: password,
         },
-        {
-          headers: {
-            Accept: 'application/json',
-           'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        }
       );
       await AsyncStorage.setItem("token", res.access_token);
       await AsyncStorage.setItem("userId", res.userId);
