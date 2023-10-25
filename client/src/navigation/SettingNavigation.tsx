@@ -9,6 +9,7 @@ import MyProfileScreen from "../screens/settings/MyProfileScreen";
 import SettingScreen from "../screens/settings/SettingScreen";
 import BookMarkNavigation from "./BookMarkNavigation";
 import HistoryNavigation from "./HistoryNavigation";
+import HelpCenterNavigation from "./HelpCenterNavigation";
 
 const tab = createNativeStackNavigator();
 
@@ -29,7 +30,13 @@ export const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="EditNotification" component={EditNotificationScreen} />
       <tab.Screen name="History" component={HistoryNavigation} />
       <tab.Screen name="Bookmark" component={BookMarkNavigation} />
+<<<<<<< Updated upstream
       <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
+=======
+
+      
+      <tab.Screen name="HelpCenter" component={HelpCenterNavigation} />
+>>>>>>> Stashed changes
       <tab.Screen name="About" component={AboutScreen} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
     </tab.Navigator>
