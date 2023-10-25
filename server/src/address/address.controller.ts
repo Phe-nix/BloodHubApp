@@ -17,8 +17,6 @@ export class AddressController {
   @ApiBody({type: AddressCreateDto})
   async addAddress(@Body() data: AddressCreateDto): Promise<any> {
     try{
-      console.log(data);
-      
       return await this.addressService.addAddress(data);
     } catch(error){
       console.log(error);

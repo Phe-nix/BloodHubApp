@@ -4,10 +4,10 @@ import { Button } from "../../core/components/Button";
 import { styles } from "./style/EditAddressScreen.style";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { add } from "date-fns";
 
 const EditAddressScreen = ({ navigation }: any) => {
-  const [name, setName] = useState(""); // State to store the name
-  const [locationSet, setLocationSet] = useState(false);
+  const [address, setAddress] = useState<any>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
@@ -20,17 +20,19 @@ const EditAddressScreen = ({ navigation }: any) => {
       const response = await axios.get(
         `http://localhost:3000/address/${userId}`
       );
-      const address = response.data.address.address;
-      setName(address);
-      setLocationSet(true); // Set locationSet to true if a location is found
+      const address = response.data.address;
+      setAddress(address);
+      setRefreshing(false);
     } catch (err) {
-      setLocationSet(false); // Set locationSet to false if no location is found
-      console.log("No location found");
+      setRefreshing(false);
+      console.log(err);
+      
     }
   };
 
   const onRefresh = () => {
     setRefreshing(true);
+    fetchUserData();
   };
 
   return (
@@ -41,14 +43,14 @@ const EditAddressScreen = ({ navigation }: any) => {
       style={styles.container}
       contentContainerStyle={{ alignItems: "center" }}
     >
-      {locationSet ? (
+      {address.length !== 0 ? (
         <View>
           <View style={styles.border}>
-            <Text style={styles.title}>Current location</Text>
-            <Text style={styles.address}>{name}</Text>
+            <Text style={styles.title}>สถานที่ปัจจุบัน</Text>
+            <Text style={styles.address}>{address.address}</Text>
           </View>
           <Button
-            title="Change Location"
+            title="เปลี่ยนสถานที่"
             buttonWidth={70}
             buttonHeight={15}
             to="Edit My Address"
@@ -56,10 +58,10 @@ const EditAddressScreen = ({ navigation }: any) => {
           />
         </View>
       ) : (
-        <View style={{ alignItems: "center" }}>
-          <Text style={styles.title}>กรุณาเลือกที่อยู่ของคุณ</Text>
+        <View style={{ alignItems: "center", gap: 20}}>
+          <Text style={styles.title}>ยังไม่มีที่อยู่</Text>
           <Button
-            title="Change Location"
+            title="เพิ่มสถานที่อยู่ของคุณ"
             buttonWidth={70}
             buttonHeight={15}
             to="Edit My Address"

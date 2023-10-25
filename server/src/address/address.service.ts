@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma.service";
 import { AddressCreateDto } from "./dto/address-create.dto";
 import { AddressDeleteDto } from "./dto/address-delete.dto";
-import { AddressGetDto } from "./dto/address-get-dto";
 import { AddressUpdateDto } from "./dto/address-update.dto";
 
 @Injectable()
@@ -31,6 +30,7 @@ export class AddressService {
     const address = await this.prisma.address.create({
       data: {
         ...adddessDto,
+        address: JSON.parse(adddessDto.address)
       }
     });
 
@@ -63,7 +63,7 @@ export class AddressService {
       },
       data: {
         ...adddessDto,
-        address: JSON.parse(adddessDto.address)
+        address: JSON.stringify(adddessDto.address)
       }
     })
 
@@ -124,6 +124,13 @@ export class AddressService {
         userId: addressDto
       }
     })
+
+    if(!address) {
+      return {
+        message: "ADDRESS NOT FOUND",
+        address: []
+      }  
+    }
 
     return {
       message: "ADDRESS FOUND",

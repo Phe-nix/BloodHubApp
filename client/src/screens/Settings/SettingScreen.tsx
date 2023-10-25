@@ -27,26 +27,26 @@ type SettingOptionProps = {
 const SettingScreen: React.FC = ({navigation}:any) => {
   return (
     <ScrollView style={styles.container}>
-      <SectionHeader title="General Settings" />
+      <SectionHeader title="ข้อมูลทั่วไป" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="My Profile" icon="user" navigation={navigation} to ="MyProfile"/>
-          <SettingOption title="My Address" icon="home" navigation={navigation} to ="EditAddress"/>
-          <SettingOption title="Notifications" icon="bell" navigation={navigation} to ="EditNotification"/>
+          <SettingOption title="โปรไฟล์" icon="user" navigation={navigation} to ="MyProfile"/>
+          <SettingOption title="ที่อยู่" icon="home" navigation={navigation} to ="EditAddress"/>
+          <SettingOption title="แจ้้งเตือน" icon="bell" navigation={navigation} to ="EditNotification"/>
         </View>
       </View>
-      <SectionHeader title="Information" />
+      <SectionHeader title="ข้อมูลเพิ่มเติม" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="History" icon="history" navigation={navigation} to ="History"/>
-          <SettingOption title="Bookmarks" icon="bookmark" navigation={navigation} to ="Bookmark"/>
+          <SettingOption title="ประวัติ" icon="history" navigation={navigation} to ="History"/>
+          <SettingOption title="บุ๊กมาร์ก" icon="bookmark" navigation={navigation} to ="Bookmark"/>
         </View>
       </View>
-      <SectionHeader title="Support" />
+      <SectionHeader title="ช่วยเหลือ" />
       <View style={styles.settingGroup}>
         <View style={styles.groupContainer}>
-          <SettingOption title="Help Center" icon="question-circle" navigation={navigation} to ="HelpCenter"/>
-          <SettingOption title="About" icon="info-circle" navigation={navigation} to ="About"/>
+          <SettingOption title="ศูนย์ช่วยเหลือ" icon="question-circle" navigation={navigation} to ="HelpCenter"/>
+          <SettingOption title="เกี่ยวกับเรา" icon="info-circle" navigation={navigation} to ="About"/>
         </View>
       </View>
     </ScrollView>

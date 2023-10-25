@@ -19,7 +19,9 @@ export class PostController {
   @ApiBody({type: PostCreateDto})
   async createPost(@UploadedFile() image: Express.Multer.File, @Body() postDto: PostCreateDto): Promise<any> {
     try {
-      return await this.postService.createPost(image, postDto);
+      console.log(image);
+      
+      // return await this.postService.createPost(image, postDto);
     } catch (error) {
       console.error(error);
       throw error;
@@ -48,7 +50,7 @@ export class PostController {
   }
 
 
-  @Get('getAllPosts/:userId') // Update the parameter name to 'userId'
+  @Get('getAllPosts/:userId')
   async getAllPosts(@Param('userId') userId: PostGetAllDto): Promise<any> {
     try {
       return await this.postService.getAllPost(userId);
