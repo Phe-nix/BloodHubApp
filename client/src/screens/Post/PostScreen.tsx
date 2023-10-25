@@ -20,6 +20,7 @@ const pickerSelectStyles = {
 };
 
 const PostScreen = ({navigation} : any) => {
+  const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<string[]>([]);
   const [showImagePicker, setShowImagePicker] = useState(true);
 
@@ -68,7 +69,7 @@ const PostScreen = ({navigation} : any) => {
           type: `image/${fileType}`,
         });
       });
-
+      formData.append('title', title);
       formData.append('description', description);
       formData.append('phoneNumber', contact);
       formData.append('bloodType', bloodType);
@@ -79,13 +80,15 @@ const PostScreen = ({navigation} : any) => {
       console.log(formData);
       
 
-      const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
+      await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+      }).then((res) => {
+        navigation.navigate('Home');
       });
 
-      console.log('Upload response:', response.data);
+
     } catch (error) {
       console.error('Error uploading images:', error);
     }
@@ -127,6 +130,13 @@ const PostScreen = ({navigation} : any) => {
         <View style={styles.underline}></View>
 
         <View>
+        <TextInput
+            style={styles.input}
+            placeholder='ชื่อโพสต์'
+            placeholderTextColor={'#505050'}
+            value={title}
+            onChangeText={setTitle}
+          />
           <TextInput
             style={styles.input}
             placeholder='คำบรรยาย'
