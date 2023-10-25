@@ -1,11 +1,11 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Home from "../screens/Home/HomeScreen";
-import DonateRequestScreen from "../screens/Home/DonateRequestScreen/DonateRequestScreen"
-import MyAppointmentScreen from "../screens/Home/MyAppointmentScreen/MyAppointmentScreen";
-import FindHealthUnitScreen from "../screens/Home/FindHealthUnitScreen";
-import PostDetailScreen from "../screens/Post/PostDetailScreen";
-import NotificationScreen from "../screens/Home/Notification";
+import Home from "../screens/home/HomeScreen";
+import DonateRequestScreen from "../screens/home/DonateRequestScreen/DonateRequestScreen"
+import MyAppointmentScreen from "../screens/home/MyAppointmentScreen/MyAppointmentScreen";
+import FindHealthUnitScreen from "../screens/home/FindHealthUnitScreen";
+import PostDetailScreen from "../screens/post/PostDetailScreen";
+import NotificationScreen from "../screens/home/Notification";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -21,9 +21,10 @@ export const HomeNavigation = ({ navigation }: any) => {
       }}
     >
       <Tab.Screen
-        name="HomePage"
+        name="Home Page"
         component={Home}
         options={{
+          headerTitle: "หน้าหลัก",
           headerRight: () => {
             return (
               <TouchableOpacity
@@ -32,7 +33,7 @@ export const HomeNavigation = ({ navigation }: any) => {
                 }}
               >
                 <View
-                  style={[{ backgroundColor: "#E99999", borderRadius: 50 }]}
+                  style={[{ backgroundColor: "#E99999" }]}
                 >
                   <Ionicons
                     name="notifications-outline"
@@ -45,11 +46,11 @@ export const HomeNavigation = ({ navigation }: any) => {
           },
         }}
       />
-      <Tab.Screen name="Notification" component={NotificationScreen} />
-      <Tab.Screen name="Donate Request" component={DonateRequestScreen} />
-      <Tab.Screen name="My Appointment" component={MyAppointmentScreen} />
-      <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} />
-      <Tab.Screen name="PostDetail" component={PostDetailScreen} />
+      <Tab.Screen name="Notification" component={NotificationScreen} options={{ headerTitle: "การแจ้งเตือน" }} />
+      <Tab.Screen name="Donate Request" component={DonateRequestScreen} options={{ headerTitle: "คำขอบริจาค" }} />
+      <Tab.Screen name="My Appointment" component={MyAppointmentScreen} options={{ headerTitle: "การนัดหมายของฉัน" }} />
+      <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} options={{ headerTitle: "ค้นหาสถานพยาบาล" }} />
+      <Tab.Screen name="PostDetail" component={PostDetailScreen} options={{ headerTitle: "รายละเอียดโพสต์" }} />
     </Tab.Navigator>
   );
 };

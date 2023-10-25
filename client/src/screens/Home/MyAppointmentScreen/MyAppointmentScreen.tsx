@@ -12,6 +12,8 @@ const MyAppointmentScreen = ({navigation}: any) => {
     const [donation, setDonation] = useState<any>([])
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
+    const source = "MyAppointment"
+
 
     useEffect(()=>{
         fetch();
@@ -53,7 +55,7 @@ const MyAppointmentScreen = ({navigation}: any) => {
                     (
                         donation.map((item: any) => {
                             return (
-                                <Appointment key={item.id} item={item} navigation={navigation} />
+                                <Appointment key={item.id} item={item} navigation={navigation} source={source} />
                             )
                         })
                     )

@@ -8,15 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 const New = (props: any) => {
     const { item } = props
     
-    const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
     const daysAgo = differenceInDays(new Date(), new Date(item.createdAt))
 
-    useEffect(() => {
-        if(item.isBookmarked){
-          setIsBookmarked(true)
-        }
-      }, [])
-    
     return (
         <View>
             <View style={styles.underLine} />
@@ -33,15 +26,15 @@ const New = (props: any) => {
                         </Text>
 
                         <TouchableOpacity onPress={ async ()=>{
-                        if(isBookmarked){
+                        if(item.isBookmark){
                             await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
                             params: {
                                 userId: await AsyncStorage.getItem("userId"),
                                 newId: item.id,
                             }
                             })
-                            .then((res)=>{
-                            setIsBookmarked(false)
+                            .then(async (res)=>{
+                                await props.getNews();
                             })
                         } else {
                             await axios.post(`http://localhost:3000/bookmark/news/add`,
@@ -49,12 +42,12 @@ const New = (props: any) => {
                             newId: item.id,
                             userId: await AsyncStorage.getItem("userId")
                             })
-                            .then((res)=>{
-                            setIsBookmarked(true)
+                            .then(async (res)=>{
+                                await props.getNews();
                             })
                         }
                         }}>
-                        <Image style={styles.bookmarkIcon} source={isBookmarked ? require('../../../../assets/icon/icon_bookmarked.png') : require('../../../../assets/icon/icon_bookmark.png')} />
+                        <Image style={styles.bookmarkIcon} source={item.isBookmark ? require('../../../../assets/icon/icon_bookmarked.png') : require('../../../../assets/icon/icon_bookmark.png')} />
                         </TouchableOpacity>
                     </View>
                 </View>

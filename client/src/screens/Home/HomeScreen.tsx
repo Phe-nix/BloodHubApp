@@ -15,6 +15,8 @@ const HomeScreen = ({ navigation }: any) => {
   const [post, setPost] = useState<any>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
+  const source = "Home";
+
   useEffect(() => {
     getUser();
     getPost();
@@ -110,7 +112,7 @@ const HomeScreen = ({ navigation }: any) => {
               post?.map((item: any, index: any, key: any) => {
                 return(
                   <TouchableOpacity key={item.id} onPress={()=>{
-                    navigation.navigate("PostDetail", { post: item, source: "home"})
+                    navigation.navigate("PostDetail", { post: item, source: source})
                   }}>
                     <Post
                       key={item.id}

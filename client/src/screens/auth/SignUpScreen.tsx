@@ -75,7 +75,7 @@ export const SignUpScreen = ({ navigation }: any) => {
               <Button
                 title={"สมัครสมาชิก"}
                 onPress={create}
-                buttonWidth={120}
+                buttonWidth={100}
                 buttonHeight={10}
               />
               <View

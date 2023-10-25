@@ -20,12 +20,13 @@ const pickerSelectStyles = {
 };
 
 const PostScreen = ({navigation} : any) => {
+  const [title, setTitle] = useState<string>('');
   const [image, setImage] = useState<string[]>([]);
   const [showImagePicker, setShowImagePicker] = useState(true);
 
   const [description, setDescription] = useState<string>('');
   const [contact, setContact] = useState<string>('');
-  const [bloodType, setBloodType] = useState<string>('');
+  const [bloodType, setBloodType] = useState<string>('กรุ๊ปเลือด');
   const [cases, setCases] = useState<string>('');
   const [location, setLocation] = useState<string>('');
   
@@ -68,7 +69,7 @@ const PostScreen = ({navigation} : any) => {
           type: `image/${fileType}`,
         });
       });
-
+      formData.append('title', title);
       formData.append('description', description);
       formData.append('phoneNumber', contact);
       formData.append('bloodType', bloodType);
@@ -79,13 +80,15 @@ const PostScreen = ({navigation} : any) => {
       console.log(formData);
       
 
-      const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
+      await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+      }).then((res) => {
+        navigation.navigate('Home');
       });
 
-      console.log('Upload response:', response.data);
+
     } catch (error) {
       console.error('Error uploading images:', error);
     }
@@ -127,6 +130,13 @@ const PostScreen = ({navigation} : any) => {
         <View style={styles.underline}></View>
 
         <View>
+        <TextInput
+            style={styles.input}
+            placeholder='ชื่อโพสต์'
+            placeholderTextColor={'#505050'}
+            value={title}
+            onChangeText={setTitle}
+          />
           <TextInput
             style={styles.input}
             placeholder='คำบรรยาย'
@@ -141,6 +151,7 @@ const PostScreen = ({navigation} : any) => {
             value={contact}
             onChangeText={setContact}
           />
+          
           <View style={styles.input}>
             <RNPickerSelect
               placeholder={{ label: "-- กรุ๊ปเลือด --", value: "กรุ๊ปเลือด"}}
@@ -163,11 +174,12 @@ const PostScreen = ({navigation} : any) => {
               style={pickerSelectStyles}
             />    
           </View>
+
           <View style={styles.input}>
             <RNPickerSelect
               placeholder={{ label: "-- ความต้องการ --"}}
               onValueChange={(value) => {
-                if (value) {
+                if (value !== "-- ความต้องการ --") {
                   setCases(value);
                 }
               }}
@@ -175,7 +187,7 @@ const PostScreen = ({navigation} : any) => {
                 { label: "ทั่วไป", value: "NORMAL" },
                 { label: "ฉุกเฉิน", value: "EMERGENCY" },
               ]}
-              value={bloodType}
+              value={cases}
               style={pickerSelectStyles}
             />    
           </View>

@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SmallNewsBox from "../../../core/components/SmallNewsBox";
 
-const App = ({navigation} : any) => {
+const App = ({navigation, route} : any) => {
   const [posts, setPosts] = useState<any>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -15,19 +15,27 @@ const App = ({navigation} : any) => {
   }, [])
 
   const fetch = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    await axios.get(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/${userId}`)
-      .then((res) => {
-        setPosts(res.data.bookmark)
-        setRefreshing(false);
-      })
+    if(route.params.source === "history"){
+      const userId = await AsyncStorage.getItem("userId");
+      await axios.get(`${Constants.expoConfig?.extra?.API_URL}/posts/getPostByUser/${userId}`)
+        .then((res) => {
+          setPosts(res.data.posts)
+          setRefreshing(false);
+        })
+    } else if (route.params.source === "bookmark") {
+      const userId = await AsyncStorage.getItem("userId");
+      await axios.get(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/${userId}`)
+        .then((res) => {
+          setPosts(res.data.bookmark)
+          setRefreshing(false);
+        })
+    }
   }
 
   const onRefresh = () => {
     setRefreshing(true);
     fetch();
   }
-
 
   return (
     <ScrollView 
@@ -41,9 +49,15 @@ const App = ({navigation} : any) => {
     >
       {
         posts.map((item: any) => {
-          return (
-            <SmallPostBox key={item.id} item={item} fetch={fetch} navigation={navigation}/>
-          )
+          if(route.params.source === "history"){
+            return (
+              <SmallPostBox key={item.id} item={item} fetch={fetch} navigation={navigation} source={route.params.source}/>
+            )
+          } else if (route.params.source === "bookmark") {
+            return (
+              <SmallPostBox key={item.id} item={item.post} fetch={fetch} navigation={navigation} source={route.params.source}/>
+            )
+          }
         })
       }
     </ScrollView>

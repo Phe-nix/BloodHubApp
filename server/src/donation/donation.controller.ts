@@ -45,4 +45,9 @@ export class DonationController {
   async getAllDonationHistory(@Param('id') id: string): Promise<any>{
     return await this.donationService.getDonationHistory(id);
   }
+
+  @Get('getPostDonator/:id')
+  async getAllPostDonator(@Param('id') id: string): Promise<any>{
+    return await this.donationService.getPostDonator(id);
+  }
 }

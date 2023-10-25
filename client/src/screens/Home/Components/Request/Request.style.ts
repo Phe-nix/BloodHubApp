@@ -17,7 +17,8 @@ export const styles = StyleSheet.create({
     },
     profileName: {
         fontSize: 15,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 7
     },
     requestTime: {
         fontSize: 10

@@ -8,20 +8,20 @@ export type initItems = {
 export const item: Array<initItems> = [
   {
     id: 1,
-    title: 'ไอหน้าหี',
-    content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi excepturi, modi, ratione soluta rem quibusdam voluptate natus voluptas maiores numquam laboriosam libero laborum eum perspiciatis quia eos atque qui dolorum.',
+    title: 'BloodHub',
+    content: 'BloodHub เป็นแอปพลิเคชันสำหรับการบริจาคโลหิต ตั้งแต่การนัดหมายบริจาค การบริจาคโลหิต ข่าวสารการรับบริจาคโลหิตของโรงพยาบาลต่างๆ รวมไปถึงการสอบถามหาผู้ประสงค์บริจาคเลือดตามหมู่เลือด',
     img: require("../../assets/Logo.png"),
   },
   {
     id: 2,
-    title: 'ดูแต่มาลี',
-    content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi excepturi, modi, ratione soluta rem quibusdam voluptate natus voluptas maiores numquam laboriosam libero laborum eum perspiciatis quia eos atque qui dolorum.',
+    title: 'วิธีการใช้งาน',
+    content: 'การใช้งานแอปพลิเคชันของเรานั้นไม่ยากเลย ทุกอย่างถูกรวบรวมไว้ให้คุณแล้ว หากคุณสนใจบริการด้านใด คุณสามารถกดปุ่มเพื่อเข้าไปดูรายละเอียดต่างๆ เพียงไม่กี่ขั้นตอนได้ในทันที',
     img: require("../../assets/Logo.png"),
   },
   {
     id: 3,
-    title: 'เปรม',
-    content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eligendi excepturi, modi, ratione soluta rem quibusdam voluptate natus voluptas maiores numquam laboriosam libero laborum eum perspiciatis quia eos atque qui dolorum.',
+    title: 'มีข้อสงสัย?',
+    content: 'หากคุณมีข้อสงสัยหรือพบความผิดพลาดภายในแอปพลิเคชันของเรา สามารถติดต่อสอบถามได้หลายช่องทาง ได้แก่ เพจ Facebook : BloodHub หรือ เบอร์ : 1256',
     img: require("../../assets/Logo.png"),
   },
 ];

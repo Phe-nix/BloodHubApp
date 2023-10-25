@@ -11,7 +11,7 @@ const Card = (props: any) => {
           borderRadius: 10,
           backgroundColor: "#E5E5E5",
           marginTop: 10,
-          padding: 2,
+          padding: 4,
         }}
       >
         <Text style={{ fontSize: 10 }}>เลือดที่ต้องการ</Text>
@@ -26,7 +26,7 @@ const Card = (props: any) => {
           borderColor: "red",
           backgroundColor: "pink",
           marginTop: 10,
-          padding: 2,
+          padding: 4,
         }}
       >
         <Text style={{ fontSize: 10 }}>เลือดที่ได้รับ</Text>
@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 10,
-    paddingVertical: 5,
+    paddingTop: 5,
+    paddingBottom: 10
   },
 });
 export default Card;

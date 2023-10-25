@@ -3,8 +3,8 @@ import { getFocusedRouteNameFromRoute, useFocusEffect } from '@react-navigation/
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import BloodScreen from '../screens/Blood/BloodScreen';
-import PostScreen from '../screens/Post/PostScreen';
+import BloodScreen from '../screens/blood/BloodScreen';
+import PostScreen from '../screens/post/PostScreen';
 import IconBlood from '../../assets/icon/icon_blood.png';
 import IconHome from '../../assets/icon/icon_home.png';
 import IconNew from '../../assets/icon/icon_news.png';
@@ -36,17 +36,12 @@ const AppNavigation = ({ route }: any) => {
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
-          borderBottomWidth: 5,
         },
         tabBarActiveTintColor: 'orange',
         tabBarLabelStyle: {
           fontWeight: 'bold',
           fontSize: 12,
           marginBottom: -10,
-        },
-        headerBackgroundContainerStyle: {
-          borderBottomWidth: 5,
-          borderBottomColor: '#D9D9D9',
         },
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
@@ -75,7 +70,7 @@ const AppNavigation = ({ route }: any) => {
       
           return (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image source={iconSource} style={{ tintColor }} />
+              <Image source={iconSource} style={{ tintColor, height: 27, width: 27 }} />
             </View>
           );
         },

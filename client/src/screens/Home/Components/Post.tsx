@@ -12,7 +12,7 @@ const Post = (props: any, { navigation }: any) => {
     const daysAgo = differenceInDays(new Date(), new Date(item.createdAt));
     
     return (
-        <View>
+        <View style={{borderWidth: 1, padding: 12, borderColor: "#D9D9D9", borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: 20}}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginVertical: 10 }}>
                 <View style={{ flexDirection: 'row' }}>
                     <Image style={{ width: 50, height: 50, borderRadius: 25}} source={{uri : item.user.profileImage }} />
@@ -59,14 +59,13 @@ const Post = (props: any, { navigation }: any) => {
                 </Text>
                 {item.description.length > 100 && (
                     <Text
-                        style={{ color: '#FA9598' }}
+                        style={{ color: '#FA9598', marginTop: 10, marginBottom: 5 }}
                         onPress={() => setExpandedText(!expandedText)}
                     >
                         {" " + (expandedText ? "Read less" : "Read more")}
                     </Text>
                 )}
             </View>
-            <View style={{ borderWidth: 1, borderColor: 'grey', marginTop: 20 }} />
         </View>
     )
 }

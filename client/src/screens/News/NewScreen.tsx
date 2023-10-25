@@ -6,6 +6,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { differenceInDays } from "date-fns";
 import Constants from "expo-constants";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const NewScreen = ({ navigation }: any) => {
   const [news, setNews] = useState<any>([]);
@@ -13,7 +14,9 @@ const NewScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    getNews();
+    setTimeout(() => {
+      getNews();
+    }, 1000)
   }, []);
 
   const getNews = async () => {
@@ -29,6 +32,28 @@ const NewScreen = ({ navigation }: any) => {
       setRefreshing(false);
     }
   }
+
+  const toggleBookmark = async (item: any) => {
+    try {
+      if (item.isBookmark) {
+        await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/delete`, {
+          params: {
+            userId: await AsyncStorage.getItem("userId"),
+            newId: item.id,
+          },
+        });
+      } else {
+        await axios.post(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/add`, {
+          newId: item.id,
+          userId: await AsyncStorage.getItem("userId"),
+        });
+      }
+
+      getNews();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -52,7 +77,7 @@ const NewScreen = ({ navigation }: any) => {
             const daysAgo = differenceInDays(new Date(), new Date(item.createdAt))
 
             return(
-              <TouchableOpacity key={item.id} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
+              <TouchableOpacity key={item.id} onPress={() => { navigation.navigate('NewDetail', { news: item })}}>
                 <View style={{marginBottom:10}}>
                   <Image style={styles.lastestNewsPicture} source={{uri: item.image}} />
                   <Text style={styles.title}>{item.title}</Text>
@@ -72,29 +97,11 @@ const NewScreen = ({ navigation }: any) => {
                     <Text style={styles.lastestTimeNews}>
                       {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`} 
                     </Text>
-                    <TouchableOpacity onPress={ async ()=>{
-                      if(item.isBookmarked){
-                        await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/delete`, {
-                          params: {
-                            userId: await AsyncStorage.getItem("userId"),
-                            newId: item.id,
-                          }
-                        })
-                        .then((res)=>{
-                          getNews();
-                        })
-                      } else {
-                        await axios.post(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/add`,
-                        {
-                          newId: item.id,
-                          userId: await AsyncStorage.getItem("userId")
-                        })
-                        .then((res)=>{
-                          getNews();
-                        })
-                      }
-                    }}>
-                      <Image style={styles.bookmarkIcon} source={item.isBookmarked ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
+                    <TouchableOpacity onPress={() => toggleBookmark(item)}>
+                      <Image
+                        style={styles.bookmarkIcon}
+                        source={item.isBookmark ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -102,10 +109,12 @@ const NewScreen = ({ navigation }: any) => {
             );
           }
           return (
-          <TouchableOpacity key={item.id} onPress={() => { navigation.navigate('NewDetail', { post: item })}}>
-            <New item={item}/>
-          </TouchableOpacity>
-          )
+          <View key={item.id}>
+            <TouchableOpacity onPress={() => { navigation.navigate('NewDetail', { news: item })}}>
+              <New item={item} getNews={getNews}/>
+            </TouchableOpacity>
+          </View>
+        )
         })
       }
     </ScrollView>

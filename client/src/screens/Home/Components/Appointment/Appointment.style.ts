@@ -11,8 +11,6 @@ export const styles = StyleSheet.create({
     },
     picture: {
         width: '45%',
-        borderTopLeftRadius: 30,
-        borderBottomLeftRadius: 30,
         height: 120
     },
     box: {

@@ -6,10 +6,10 @@ import { Button } from '../core/components/Button';
 import Layer from '../core/layouts/Layout';
 import { item } from '../mock/getStart';
 
-export const GetStarted = ({navigation} : any) => {
+export const GetStarted = ({ navigation }: any) => {
   let scrollX = useRef(new Animated.Value(0)).current;
-  
-  
+
+
   const handleOnScroll = (event: any) => {
     Animated.event(
       [
@@ -21,10 +21,10 @@ export const GetStarted = ({navigation} : any) => {
           },
         },
       ],
-      { 
+      {
         useNativeDriver: false
       },
-      )(event);
+    )(event);
   }
 
   return (
@@ -33,8 +33,8 @@ export const GetStarted = ({navigation} : any) => {
         <SafeAreaView style={styles.center}>
           <View style={styles.content}>
             <FlatList
-              data={item} 
-              renderItem={({item}) => <GetStartedItem item={item} /> }
+              data={item}
+              renderItem={({ item }) => <GetStartedItem item={item} />}
               horizontal
               pagingEnabled
               snapToAlignment='center'
@@ -43,13 +43,16 @@ export const GetStarted = ({navigation} : any) => {
             />
           </View>
 
-          <Panigation data={item} scrollX={scrollX}/>
-          
+          <Panigation data={item} scrollX={scrollX} />
+
           <View style={styles.buttons}>
-            <Button title="Get Started" buttonWidth={100} buttonHeight={15} to="SignUp" navigation={navigation} />
-            <TouchableOpacity onPress={()=>{navigation.navigate('SignIn')}}>
-              <Text style={{color: 'grey', margin: 10}}>Existing user? Sign in</Text>
-            </TouchableOpacity>
+            <Button title="เริ่มใช้งาน" buttonWidth={100} buttonHeight={15} to="SignUp" navigation={navigation} />
+            <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+              <Text>มีบัญชีอยู่แล้ว?</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate('SignIn') }}>
+                <Text style={{ color: 'grey', margin: 10 }}>เข้าสู่ระบบ</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </SafeAreaView>
       </Layer>
@@ -62,15 +65,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  center:{
+  center: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content:{
+  content: {
     flex: 7,
   },
-  buttons:{
+  buttons: {
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',

@@ -58,4 +58,13 @@ export class PostController {
     }
   }
 
+  @Get('getPostByUser/:id')
+  async getAllPost(@Param('id') id: string): Promise<any> {
+    try {
+      return await this.postService.getPostByUser(id);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
