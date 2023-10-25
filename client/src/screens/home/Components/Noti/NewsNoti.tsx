@@ -9,7 +9,7 @@ const NewsNoti: React.FC<NewsNotiProps> = ({ text }) => {
   return (
     <View style={styles.container}>
       <View style={styles.notificationBox}>
-        <Text style={styles.title}>Notifications</Text>
+        <Text style={styles.title}>News Notifications</Text>
         <Text style={styles.notificationText}>{text}</Text>
       </View>
     </View>

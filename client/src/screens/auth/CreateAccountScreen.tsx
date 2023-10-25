@@ -63,6 +63,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
     }
   };
 
+
   return (
     <View style={styles.container}>
       <Layer>
@@ -182,17 +183,16 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                     value={gender}
                     style={pickerSelectStyles}
                   />
-
                 </View>
+
                 <View
                   style={{
                     marginTop: 5,
-                    borderBottomWidth: 1,
-                    borderColor: "#856464",
+  
                     paddingVertical: 10,
                   }}
                 >
-                  <Text style={{ marginBottom: 10, color: "#856464" }}>
+                  <Text style={{ color: "#856464" }}>
                     กรุ๊ปเลือด
                   </Text>
                   <RNPickerSelect
@@ -226,6 +226,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                     }}
                   />
                 </View>
+
                 <Text style={{ marginTop: 10, color: "#856464" }}>อีเมล</Text>
                 <TextInput
                   style={[styles.input]}
