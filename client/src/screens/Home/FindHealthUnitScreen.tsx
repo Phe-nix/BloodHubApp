@@ -11,7 +11,7 @@ interface FindHealthUnitScreenProps {
   // Define any props your component needs here
 }
 
-const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,props}:any) => {
+const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({props}:any) => {
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -19,10 +19,8 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
     longitudeDelta: 0.01,
   });
   const [loadingLocation, setLoadingLocation] = useState(true);
-  const [name, setName] = useState(""); // State to store the name
   const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [locationSet, setLocationSet] = useState<boolean>(false);
-  console.log(locationSet)
+  const [name, setName] = useState(""); // State to store the name
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -52,25 +50,23 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
   
   useEffect(() => {
     getLocation();
-    checkIfLocationIsSet();
+    fetchUserData();
   }, []);
+  const [UserAddress, setUserAddress] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const checkIfLocationIsSet = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    const response = await axios.get(
-      `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
-    );
-    const address = response.data.address.address;
-    if (address) {
-      setLocationSet(true);
-      console.log("update");
+  const fetchUserData = async () => {
+    try {
+      const userId = await AsyncStorage.getItem("userId");
+      const response = await axios.get(
+        `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
+      );
+      const address = response.data.address;
+      console.log(address);
+    } catch (err) {
+      console.log(err);
       
-    } else {
-      setLocationSet(false);
-      console.log("add");
     }
   };
-  
 
   const handleSelectLocation = (data: any, details: any) => {
     const { lat, lng } = details.geometry.location;
@@ -80,8 +76,6 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
       latitudeDelta: 0.01,
       longitudeDelta: 0.01,
     });
-
-    // Update the latest marker when a new location is selected
     setLatestMarker({ latitude: lat, longitude: lng });
     setName(data.description);
   };
@@ -90,14 +84,14 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
     return (
       <View style={styles.container}>
         <View
-          style={{
+          style={[styles.searchBar,{
             backgroundColor: "#E99999",
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             zIndex: 1,
-          }}
+          }]}
         >
           <GooglePlacesAutocomplete
             placeholder="Search Location"
@@ -107,7 +101,7 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
               key: "AIzaSyDzrf9J0CJvAGlHEHaBXTggIGG0hfF96ug",
               language: "en",
             }}
-            styles={{ position: "absolute" }}
+            styles={[{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }]}
           />
         </View>
   
@@ -123,11 +117,11 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({navigation,p
             region={region}
             provider={PROVIDER_GOOGLE}
           >
-            {latestMarker && (
+            {UserAddress && (
               <Marker
                 coordinate={{
-                  latitude: latestMarker.latitude,
-                  longitude: latestMarker.longitude,
+                  latitude: UserAddress.latitude,
+                  longitude: UserAddress.longitude,
                 }}
                 title="Selected Location"
               />
@@ -148,18 +142,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 30,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    width: "90%",
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 12,
-    fontSize: 18,
-    color: "#000000",
+    width: "100%",
   },
   map: {
     flex: 1,
