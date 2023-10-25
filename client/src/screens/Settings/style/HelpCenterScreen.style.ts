@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
       alignItems: "center",
     },
     resourceTitle: {
-      fontSize: 22,
+      fontSize: 15,
       color: "#000000",
       paddingLeft: 20,
     },
