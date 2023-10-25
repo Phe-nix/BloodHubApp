@@ -21,7 +21,7 @@ export const HomeNavigation = ({ navigation }: any) => {
       }}
     >
       <Tab.Screen
-        name="HomePage"
+        name="Home Page"
         component={Home}
         options={{
           headerRight: () => {
@@ -46,7 +46,7 @@ export const HomeNavigation = ({ navigation }: any) => {
         }}
       />
       <Tab.Screen name="Notification" component={NotificationScreen} />
-      <Tab.Screen name="Donate Request" component={DonateRequestScreen} />
+      <Tab.Screen name="Do" component={DonateRequestScreen} />
       <Tab.Screen name="My Appointment" component={MyAppointmentScreen} />
       <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} />
       <Tab.Screen name="PostDetail" component={PostDetailScreen} />

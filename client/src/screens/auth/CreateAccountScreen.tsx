@@ -154,6 +154,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                       mode="date"
                       display="spinner"
                       onChange={handleDateChange}
+
                     />
                   )}
                 </View>

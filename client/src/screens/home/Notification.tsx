@@ -16,14 +16,16 @@ const App: React.FC = () => {
       <View style={styles.postcontainer}>
         <EmergencyNoti text={"b"} />
       </View>
+
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "white",
+    flex:1,
   },
   postcontainer: {
     flex: 1,
