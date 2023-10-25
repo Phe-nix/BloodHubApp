@@ -1,25 +1,21 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, FlatList } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import NewsNoti from "./Components/Noti/NewsNoti"; // Import the component
+import PostNoti from "./Components/Noti/PostNoti"; // Import the component
+import EmergencyNoti from "./Components/Noti/EmergencyNoti";
 
-const Notifications = ({  }) => {
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: "Notification 1" },
-    { id: 2, message: "Notification 2" },
-    { id: 3, message: "Notification 3" },
-    // Add more notifications as needed
-  ]);
-
+const App: React.FC = () => {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={notifications}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.notification}>
-            <Text style={styles.notificationText}>{item.message}</Text>
-          </View>
-        )}
-      />
+      <View style={styles.postcontainer}>
+        <NewsNoti text={"asdadasad"} />
+      </View>
+      <View style={styles.postcontainer}>
+        <PostNoti text={"a"} />
+      </View>
+      <View style={styles.postcontainer}>
+        <EmergencyNoti text={"b"} />
+      </View>
     </View>
   );
 };
@@ -29,20 +25,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  notification: {
-    marginBottom: 10,
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    borderWidth: 1
-  },
-  notificationText: {
-    fontSize: 18,
+  postcontainer: {
+    flex: 1,
+    backgroundColor: "white",
   },
 });
 
-export default Notifications;
+export default App;

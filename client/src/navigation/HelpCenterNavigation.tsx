@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import FeatureOfDonaterScreen from "../screens/Settings/HelpCenter/FeatureOfDonaterScreen";
-import HelpCenterScreen from "../screens/Settings/HelpCenterScreen";
+import FeatureOfDonaterScreen from "../screens/settings/HelpCenter/FeatureOfDonaterScreen";
+import HelpCenterScreen from "../screens/settings/HelpCenterScreen";
 
 const tab = createNativeStackNavigator();
 
