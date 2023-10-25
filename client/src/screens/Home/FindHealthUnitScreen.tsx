@@ -1,26 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TextInput, Button, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Button,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import Constants from "expo-constants";
 
-interface FindHealthUnitScreenProps {
-  // Define any props your component needs here
+interface FindHealthUnitScreenProps {}
+
+interface Hospital {
+    id: string;
+    hospitalName: string;
+    location: string;
+    link: string;
+    createAt: string;
+    image: string;
 }
 
-const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({props}:any) => {
+const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({ props }: any) => {
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.25,
+    longitudeDelta: 0.25,
   });
   const [loadingLocation, setLoadingLocation] = useState(true);
-  const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [name, setName] = useState(""); // State to store the name
+  const [latestMarker, setLatestMarker] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [name, setName] = useState("");
+  const [UserAddress, setUserAddress] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -28,8 +50,6 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({props}:any) 
       setLoadingLocation(false);
       return;
     }
-  
-    // Delay fetching the location by 2 seconds (2000 milliseconds)
     setTimeout(async () => {
       try {
         const location = await Location.getCurrentPositionAsync({});
@@ -37,114 +57,122 @@ const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({props}:any) 
         setRegion({
           latitude,
           longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 1,
+          longitudeDelta: 1,
         });
+        setUserAddress({ latitude, longitude });
         setLoadingLocation(false);
       } catch (error) {
         console.error("Error fetching current location:", error);
         setLoadingLocation(false);
       }
-    }, 2000); // Adjust the delay time as needed
+    }, 2000);
   };
-  
+
   useEffect(() => {
     getLocation();
-    fetchUserData();
+    Hospital();
   }, []);
-  const [UserAddress, setUserAddress] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const fetchUserData = async () => {
+  const Hospital = async () => {
     try {
-      const userId = await AsyncStorage.getItem("userId");
-      const response = await axios.get(
-        `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
-      );
-      const address = response.data.address;
-      console.log(address);
-    } catch (err) {
-      console.log(err);
-      
+      const response = await axios.get(`${Constants.expoConfig?.extra?.API_URL}/hospital`);
+      const hospitalData: Hospital[] = response.data.hospital;
+      setHospitals(hospitalData);
+    } catch (error) {
+      console.error(error);
     }
   };
+
 
   const handleSelectLocation = (data: any, details: any) => {
     const { lat, lng } = details.geometry.location;
     setRegion({
       latitude: lat,
       longitude: lng,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
+      latitudeDelta: 0.25,
+      longitudeDelta: 0.25,
     });
     setLatestMarker({ latitude: lat, longitude: lng });
     setName(data.description);
   };
 
-
-    return (
-      <View style={styles.container}>
-        <View
-          style={[styles.searchBar,{
-            backgroundColor: "#E99999",
+  return (
+    <View style={styles.container}>
+      <View
+        style={[
+          {
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             zIndex: 1,
-          }]}
-        >
-          <GooglePlacesAutocomplete
-            placeholder="Search Location"
-            onPress={handleSelectLocation}
-            fetchDetails={true}
-            query={{
-              key: "AIzaSyDzrf9J0CJvAGlHEHaBXTggIGG0hfF96ug",
-              language: "en",
-            }}
-            styles={[{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }]}
-          />
-        </View>
-  
-  
-        {loadingLocation ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#fff" />
-            <Text>Loading your location...</Text>
-          </View>
-        ) : (
-          <MapView
-            style={styles.map}
-            region={region}
-            provider={PROVIDER_GOOGLE}
-          >
-            {UserAddress && (
-              <Marker
-                coordinate={{
-                  latitude: UserAddress.latitude,
-                  longitude: UserAddress.longitude,
-                }}
-                title="Selected Location"
-              />
-            )}
-          </MapView>
-        )}
-
+            width: "100%",
+          },
+        ]}
+      >
+        <GooglePlacesAutocomplete
+          placeholder="Search Location"
+          onPress={handleSelectLocation}
+          fetchDetails={true}
+          query={{
+            key: "AIzaSyDzrf9J0CJvAGlHEHaBXTggIGG0hfF96ug",
+            language: "en",
+          }}
+          styles={{
+            container: {
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1,
+              alignItems: "center",
+              backgroundColor: "#E99999",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+            },
+          }}
+        />
       </View>
-    );
-  };
+
+      {loadingLocation ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#fff" />
+          <Text>Loading your location...</Text>
+        </View>
+      ) : (
+        <MapView style={styles.map} region={region} provider={PROVIDER_GOOGLE}>
+          {UserAddress && (
+            <Marker
+              coordinate={{
+                latitude: UserAddress.latitude,
+                longitude: UserAddress.longitude,
+              }}
+              title="Your Location"
+            />
+          )}
+
+          {hospitals.length > 0 &&
+            hospitals.map((hospital) => (
+              <Marker
+                key={hospital.id}
+                coordinate={{
+                  latitude: parseFloat(hospital.location.split(",")[0]),
+                  longitude: parseFloat(hospital.location.split(",")[1]),
+                }}
+                title={hospital.hospitalName}
+              />
+            ))}
+        </MapView>
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E99999",
-  },
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    width: "100%",
   },
   map: {
     flex: 1,

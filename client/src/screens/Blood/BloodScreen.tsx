@@ -5,7 +5,6 @@ import {
   View,
   ScrollView,
   Image,
-  ViewStyle,
 } from "react-native";
 import Swiper from "react-native-swiper";
 import { styles } from "./BloodScreen.style";
