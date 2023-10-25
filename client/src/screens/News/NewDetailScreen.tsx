@@ -9,6 +9,7 @@ import Constants from 'expo-constants'
 
 const NewDetailScreen = ({route} : any) => {
   const { news } = route.params
+  
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false)
   const daysAgo = differenceInDays(new Date(), new Date(news.createdAt))
 
@@ -39,7 +40,7 @@ const NewDetailScreen = ({route} : any) => {
                           setIsBookmarked(false)
                         })
                       } else {
-                        await axios.post(`http://localhost:3000/bookmark/news/add`,
+                        await axios.post(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/add`,
                         {
                           newId: news.id,
                           userId: await AsyncStorage.getItem("userId")

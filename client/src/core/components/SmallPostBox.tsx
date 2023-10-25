@@ -12,7 +12,7 @@ interface SmallNewsBoxProps {
 }
 
 const SmallPostBox: React.FC<any> = ({ item, fetch, navigation, source }) => {
-  const post = item.post
+  const post = item
   const daysAgo = differenceInDays(new Date(), new Date(post.createdAt));
 
   return (
