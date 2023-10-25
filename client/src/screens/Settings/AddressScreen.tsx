@@ -12,14 +12,13 @@ import { styles } from "./style/AddressScreen.style";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Constants from "expo-constants";
 
 
 interface LocationScreenProps {
   // Define any props your component needs here
 }
 
-const LocationScreen: React.FC<LocationScreenProps> = ({navigation} : any) => {
+const LocationScreen: React.FC<LocationScreenProps> = () => {
   const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -66,52 +65,43 @@ const LocationScreen: React.FC<LocationScreenProps> = ({navigation} : any) => {
   const checkIfLocationIsSet = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const response = await axios.get(
-      `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
+      `http://localhost:3000/address/${userId}`
     );
     const address = response.data.address.address;
     if (address) {
       setLocationSet(true);
-      console.log("update");
-      
     } else {
       setLocationSet(false);
-      console.log("add");
     }
   };
   
   const handleSave = async () => {
     const userId = await AsyncStorage.getItem("userId");
-    // Use the "update" API if the location has already been set
     if (locationSet) {
       try {
-        await axios.post(
-          `${Constants.expoConfig?.extra?.API_URL}/address/update`,
+        const { data: res } = await axios.post(
+          "http://localhost:3000/address/update",
           {
             userId: userId,
             address: name,
             latitude: latestMarker?.latitude,
             longitude: latestMarker?.longitude,
           }
-        ).then((res) => {
-          navigation.navigate("EditAddress")
-        })
+        );
       } catch (error) {
         console.log(error);
       }
     } else {
-      // Use the "add" API if the location hasn't been set
       try {
-        await axios.post(
-          `${Constants.expoConfig?.extra?.API_URL}/address/add`,
+        const { data: res } = await axios.post(
+          "http://localhost:3000/address/add",
           {
             userId: userId,
             address: name,
             latitude: latestMarker?.latitude,
             longitude: latestMarker?.longitude,
           }
-        ).then((res) => {
-          navigation.navigate("EditAddress")
-        })
+        );
       } catch (error) {
         console.log(error);
       }

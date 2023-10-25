@@ -1,102 +1,137 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TextInput, Button, Text, ActivityIndicator } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 interface FindHealthUnitScreenProps {
   // Define any props your component needs here
 }
 
-const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = (props) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [markerCoordinates, setMarkerCoordinates] = useState({
+const FindHealthUnitScreen: React.FC<FindHealthUnitScreenProps> = ({props}:any) => {
+  const [region, setRegion] = useState({
     latitude: 0,
     longitude: 0,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
   });
-  const [initialRegion, setInitialRegion] = useState({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-  const [loadingLocation, setLoadingLocation] = useState(true); // Added loading state
-
-  useEffect(() => {
-    const getLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permission to access location was denied");
-        setLoadingLocation(false); // Update loading state
-        return;
-      }
-
+  const [loadingLocation, setLoadingLocation] = useState(true);
+  const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [name, setName] = useState(""); // State to store the name
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.error("Permission to access location was denied");
+      setLoadingLocation(false);
+      return;
+    }
+  
+    // Delay fetching the location by 2 seconds (2000 milliseconds)
+    setTimeout(async () => {
       try {
         const location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
-        setMarkerCoordinates({ latitude, longitude });
-        setInitialRegion({
+        setRegion({
           latitude,
           longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
         });
-        setLoadingLocation(false); // Update loading state when location is fetched
+        setLoadingLocation(false);
       } catch (error) {
         console.error("Error fetching current location:", error);
-        setLoadingLocation(false); // Update loading state on error
+        setLoadingLocation(false);
       }
-    };
-
+    }, 2000); // Adjust the delay time as needed
+  };
+  
+  useEffect(() => {
     getLocation();
+    fetchUserData();
   }, []);
+  const [UserAddress, setUserAddress] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  const handleSearch = async () => {
+  const fetchUserData = async () => {
     try {
-      const locations = await Location.geocodeAsync(searchQuery);
-      if (locations.length > 0) {
-        const firstLocation = locations[0];
-        const { latitude, longitude } = firstLocation;
-        setMarkerCoordinates({
-          latitude,
-          longitude,
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching location:", error);
+      const userId = await AsyncStorage.getItem("userId");
+      const response = await axios.get(
+        `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
+      );
+      const address = response.data.address;
+      console.log(address);
+    } catch (err) {
+      console.log(err);
+      
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {/* Search Bar */}
-      <View style={styles.searchBar}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search Location"
-          value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
-        <Button title="Search" onPress={handleSearch} />
-      </View>
+  const handleSelectLocation = (data: any, details: any) => {
+    const { lat, lng } = details.geometry.location;
+    setRegion({
+      latitude: lat,
+      longitude: lng,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    });
+    setLatestMarker({ latitude: lat, longitude: lng });
+    setName(data.description);
+  };
 
-      {/* Display loading indicator if location is still being fetched */}
-      {loadingLocation ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#fff" />
-          <Text>Loading your location...</Text>
-        </View>
-      ) : (
-        // Map view once location is fetched
-        <MapView style={styles.map} initialRegion={initialRegion}>
-          <Marker
-            coordinate={markerCoordinates}
-            title="Your location"
+
+    return (
+      <View style={styles.container}>
+        <View
+          style={[styles.searchBar,{
+            backgroundColor: "#E99999",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 1,
+          }]}
+        >
+          <GooglePlacesAutocomplete
+            placeholder="Search Location"
+            onPress={handleSelectLocation}
+            fetchDetails={true}
+            query={{
+              key: "AIzaSyDzrf9J0CJvAGlHEHaBXTggIGG0hfF96ug",
+              language: "en",
+            }}
+            styles={[{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }]}
           />
-        </MapView>
-      )}
-    </View>
-  );
-};
+        </View>
+  
+  
+        {loadingLocation ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#fff" />
+            <Text>Loading your location...</Text>
+          </View>
+        ) : (
+          <MapView
+            style={styles.map}
+            region={region}
+            provider={PROVIDER_GOOGLE}
+          >
+            {UserAddress && (
+              <Marker
+                coordinate={{
+                  latitude: UserAddress.latitude,
+                  longitude: UserAddress.longitude,
+                }}
+                title="Selected Location"
+              />
+            )}
+          </MapView>
+        )}
+
+      </View>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
@@ -107,18 +142,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    borderRadius: 30,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    width: "90%",
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 12,
-    fontSize: 18,
-    color: "#000000",
+    width: "100%",
   },
   map: {
     flex: 1,
