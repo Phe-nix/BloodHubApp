@@ -58,8 +58,6 @@ const App = ({navigation, route} : any) => {
               <SmallPostBox key={item.id} item={item.post} fetch={fetch} navigation={navigation} source={route.params.source}/>
             )
           }
-          
-          
         })
       }
     </ScrollView>
