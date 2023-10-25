@@ -26,6 +26,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "API_URL": "http://localhost:3000"
+    },
     "plugins": [
       [
         "expo-image-picker",

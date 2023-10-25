@@ -103,8 +103,8 @@ const HomeScreen = ({ navigation }: any) => {
           <Text style={styles.postFeed}>ฟีดโพสต์</Text>
           <View style={{ borderWidth: 1, borderColor: "#D9D9D9" }} />
         </View>
-        <View>
-          { post ?
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 100}}>
+          { post.length !== 0 ?
             (
               post?.map((item: any, index: any, key: any) => {
                 return(

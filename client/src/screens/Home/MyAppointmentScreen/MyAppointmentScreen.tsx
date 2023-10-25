@@ -5,6 +5,7 @@ import { styles } from "./MyAppointmentScreen.style"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import Constants from "expo-constants"
 
 const MyAppointmentScreen = ({navigation}: any) => {
     const [donation, setDonation] = useState<any>([])
@@ -12,7 +13,7 @@ const MyAppointmentScreen = ({navigation}: any) => {
     useEffect(()=>{
         (async ()=> {
             const user = await AsyncStorage.getItem("userId")
-            await axios.get(`http://localhost:3000/donation/getDonation/${{user}}`)
+            await axios.get(`${Constants.expoConfig?.extra?.API_URL}/donation/getDonation/${{user}}`)
                 .then((res) => {
                     setDonation(res.data.donation)
                 })

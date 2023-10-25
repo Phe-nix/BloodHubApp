@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { differenceInDays } from 'date-fns';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 const Post = (props: any, { navigation }: any) => {
     const { item } = props;
@@ -28,7 +29,7 @@ const Post = (props: any, { navigation }: any) => {
                       if(item.isBookmarked){
                         console.log("delete");
                         
-                        await axios.delete(`http://localhost:3000/bookmark/post/delete`, {
+                        await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
                             postId: item.id,
@@ -38,7 +39,7 @@ const Post = (props: any, { navigation }: any) => {
                           props.getPost();
                         })
                       } else {
-                        await axios.post(`http://localhost:3000/bookmark/post/add`,
+                        await axios.post(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/add`,
                         {
                           postId: item.id,
                           userId: await AsyncStorage.getItem("userId")

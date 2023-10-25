@@ -43,7 +43,7 @@ const Request = (props: any) => {
             </View>
             <View style={styles.button}>
                 <TouchableOpacity style={styles.acceptButton} onPress={ async () => {
-                    await axios.put(`http://localhost:3000/donation/update`,
+                    await axios.put(`${Constants.expoConfig?.extra?.API_URL}/donation/update`,
                     {
                         userId: item.user.id,
                         donationId: item.donationId,
@@ -60,7 +60,7 @@ const Request = (props: any) => {
                     <Text style={styles.acceptButtonText}>อนุมัติ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.declineButton}onPress={ async () => {
-                    await axios.put(`http://localhost:3000/donation/update`,
+                    await axios.put(`${Constants.expoConfig?.extra?.API_URL}/donation/update`,
                     {
                         userId: item.user.id,
                         donationId: item.donationId,

@@ -4,6 +4,7 @@ import User from './components/User';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import Constants from 'expo-constants';
 
 const PostDetailScreen = ({route, navigation}: any) => {
   const { post } = route.params;
@@ -28,7 +29,7 @@ const PostDetailScreen = ({route, navigation}: any) => {
         <Text>Post Name</Text>
         <TouchableOpacity onPress={ async ()=>{
           if(isBookmarked){
-            await axios.delete(`http://localhost:3000/bookmark/post/delete`, {
+            await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
               params: {
                 userId: await AsyncStorage.getItem("userId"),
                 postId: post.id,
@@ -38,7 +39,7 @@ const PostDetailScreen = ({route, navigation}: any) => {
               setIsBookmarked(false)
             })
           } else {
-            await axios.post(`http://localhost:3000/bookmark/post/add`,
+            await axios.post(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/add`,
             {
               postId: post.id,
               userId: await AsyncStorage.getItem("userId")
@@ -78,7 +79,7 @@ const PostDetailScreen = ({route, navigation}: any) => {
                 route.params.source !== "appointment" ? 
                 (
                   <TouchableOpacity onPress={async ()=>{
-                    await axios.post(`http://localhost:3000/donation/create`,
+                    await axios.post(`${Constants.expoConfig?.extra?.API_URL}/donation/create`,
                     {
                       status: "PENDING",
                       userId: await AsyncStorage.getItem("userId"),

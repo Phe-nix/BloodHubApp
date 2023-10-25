@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios"; // Import Axios for making HTTP requests.
 import { set } from "date-fns";
+import Constants from "expo-constants";
 
 interface ProfileEditScreenProps {
   navigation: any;
@@ -41,7 +42,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       try {
         const userId = await AsyncStorage.getItem("userId");
         const response = await axios.get(
-          `http://localhost:3000/user/${userId}`
+          `${Constants.expoConfig?.extra?.API_URL}/user/${userId}`
         );
         const userData = response.data;
 		    setImage(userData.profileImage);
@@ -94,7 +95,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
   const handleSave = async() => {
     try {
         const { data: res } = await axios.post(
-        "http://localhost:3000/user/update",
+        `${Constants.expoConfig?.extra?.API_URL}/user/update`,
         {
 		  id: await AsyncStorage.getItem("userId"),
 		  image: image,

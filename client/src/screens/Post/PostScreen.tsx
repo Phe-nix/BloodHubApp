@@ -5,10 +5,28 @@ import * as ImagePicker from 'expo-image-picker';
 import { Button } from '../../core/components/Button';
 import { styles } from './PostScreen.style';
 import axios from 'axios';
+import RNPickerSelect from "react-native-picker-select";
+import { set } from 'date-fns';
+import Constants from 'expo-constants';
+
+const pickerSelectStyles = {
+  inputIOS: {
+    color: '#505050',
+  },
+  placeholder: {
+    color: '#505050',
+  },
+};
 
 const PostScreen = ({navigation} : any) => {
   const [image, setImage] = useState<string[]>([]);
   const [showImagePicker, setShowImagePicker] = useState(true);
+
+  const [description, setDescription] = useState<string>('');
+  const [contact, setContact] = useState<string>('');
+  const [bloodType, setBloodType] = useState<string>('');
+  const [cases, setCases] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
   
   useEffect(() => {
     console.log(image);
@@ -24,7 +42,7 @@ const PostScreen = ({navigation} : any) => {
 
     if (!result.canceled) {
       setImage([...image, ...result.assets?.map((asset) => asset.uri) || []]);
-      setShowImagePicker(false); // Hide the image picker button after selecting an image
+      setShowImagePicker(false);
     }
   };
 
@@ -32,7 +50,7 @@ const PostScreen = ({navigation} : any) => {
     const newImages = image.filter((_, index) => index !== indexToRemove);
     setImage(newImages);
     if (newImages.length === 0) {
-      setShowImagePicker(true); // Show the image picker button again if there are no selected images
+      setShowImagePicker(true);
     }
   };
 
@@ -50,15 +68,22 @@ const PostScreen = ({navigation} : any) => {
         });
       });
 
-      const response = await axios.post(`http://localhost:3000/posts/create`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      formData.append('description', description);
+      formData.append('contact', contact);
+      formData.append('bloodType', bloodType);
+      formData.append('cases', cases);
+      formData.append('address', location);
 
-      console.log('Upload response:', response.data);
+      console.log(formData);
+      
 
-      // navigation.navigate('Home');
+      // const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //   },
+      // });
+
+      // console.log('Upload response:', response.data);
     } catch (error) {
       console.error('Error uploading images:', error);
     }
@@ -104,26 +129,60 @@ const PostScreen = ({navigation} : any) => {
             style={styles.input}
             placeholder='คำบรรยาย'
             placeholderTextColor={'#505050'}
+            value={description}
+            onChangeText={setDescription}
           />
           <TextInput
             style={styles.input}
             placeholder='เบอร์ติดต่อ'
             placeholderTextColor={'#505050'}
+            value={contact}
+            onChangeText={setContact}
           />
-          <TextInput
-            style={styles.input}
-            placeholder='กลุ่มเลือด'
-            placeholderTextColor={'#505050'}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder='ความต้องการ'
-            placeholderTextColor={'#505050'}
-          />
+          <View style={styles.input}>
+            <RNPickerSelect
+              placeholder={{ label: "-- กรุ๊ปเลือด --", value: "กรุ๊ปเลือด"}}
+              onValueChange={(value) => {
+                if (value !== "กรุ๊ปเลือด") {
+                  setBloodType(value);
+                }
+              }}
+              items={[
+                { label: "A+", value: "A_POSITIVE" },
+                { label: "B+", value: "B_POSITIVE" },
+                { label: "AB+", value: "AB_POSITIVE" },
+                { label: "O+", value: "O_POSITIVE" },
+                { label: "A-", value: "A_NEGATIVE" },
+                { label: "B-", value: "B_NEGATIVE" },
+                { label: "AB-", value: "AB_NEGATIVE" },
+                { label: "O-", value: "O_NEGATIVE" },
+              ]}
+              value={bloodType}
+              style={pickerSelectStyles}
+            />    
+          </View>
+          <View style={styles.input}>
+            <RNPickerSelect
+              placeholder={{ label: "-- ความต้องการ --"}}
+              onValueChange={(value) => {
+                if (value) {
+                  setCases(value);
+                }
+              }}
+              items={[
+                { label: "ทั่วไป", value: "NORMAL" },
+                { label: "ฉุกเฉิน", value: "EMERGENCY" },
+              ]}
+              value={bloodType}
+              style={pickerSelectStyles}
+            />    
+          </View>
           <TextInput
             style={styles.input}
             placeholder='สถานที่'
             placeholderTextColor={'#505050'}
+            value={location}
+            onChangeText={setLocation}
           />
         </View>
 

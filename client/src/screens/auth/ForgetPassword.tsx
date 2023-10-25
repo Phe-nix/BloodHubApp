@@ -5,6 +5,7 @@ import { Button } from "../../core/components/Button";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
+import Constants from "expo-constants";
 
 interface ForgetPasswordProps {
   navigation: any;
@@ -15,7 +16,7 @@ const ForgetPassword: React.FC<ForgetPasswordProps> = ({ navigation }) => {
 
   const forget = async () => {
     try {
-      const { data: res } = await axios.post("http://localhost:3000/auth/forgotPassword", {
+      const { data: res } = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/auth/forgotPassword`, {
         email: email,
       });
 

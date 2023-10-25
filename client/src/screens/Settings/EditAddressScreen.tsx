@@ -5,6 +5,7 @@ import { styles } from "./style/EditAddressScreen.style";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { add } from "date-fns";
+import Constants from "expo-constants";
 
 const EditAddressScreen = ({ navigation }: any) => {
   const [address, setAddress] = useState<any>([]);
@@ -18,7 +19,7 @@ const EditAddressScreen = ({ navigation }: any) => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const response = await axios.get(
-        `http://localhost:3000/address/${userId}`
+        `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
       );
       const address = response.data.address;
       setAddress(address);

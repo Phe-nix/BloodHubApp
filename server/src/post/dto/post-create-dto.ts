@@ -25,7 +25,7 @@ export class PostCreateDto {
   description: string;
 
   @ApiProperty({ type: 'string', description: 'Phone Number', example: '123-456-7890' })
-  phone_number: string;
+  phoneNumber: string;
 
   @ApiProperty({ type: 'string', description: 'Blood type', enum: BloodType, example: BloodType.AB_NEGATIVE })
   @IsEnum(BloodType)
@@ -34,6 +34,9 @@ export class PostCreateDto {
   @ApiProperty({ type: 'string', description: 'Case type', enum: CaseType, example: CaseType.EMERGENCY })
   @IsEnum(CaseType)
   case: CaseType;
+
+  @ApiProperty({type: 'string', description: 'Address', example: '1234 Main St, City, State, Zip'})
+  address: string;
 
   @ApiProperty({ type: 'string', description: 'User ID', example: 'clnizwqdl0000i5j5az3d6b6j'})
   userId: string;

@@ -197,12 +197,13 @@ export class DonationService {
         post: {
           select: {
             id: true,
-            description: true,
-            bloodType: true,
             image: true,
-            createdAt: true,
+            description: true,
+            phoneNumber: true,
             case: true,
-            phone_number: true,
+            bloodType: true,
+            address: true,
+            createdAt: true,
             user: {
               select: {
                 id: true,

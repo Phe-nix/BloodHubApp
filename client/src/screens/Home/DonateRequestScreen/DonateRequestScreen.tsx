@@ -5,6 +5,7 @@ import Profile from "../../../../assets/picture/kitten.png"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 
 
@@ -17,7 +18,7 @@ const DonateRequestScreen = () => {
 
     const fetch = async () => {
         const user = await AsyncStorage.getItem("userId")
-        await axios.get(`http://localhost:3000/donation/getReservation/${user}`)
+        await axios.get(`${Constants.expoConfig?.extra?.API_URL}/donation/getReservation/${user}`)
             .then((res) => {
                 setReservation(res.data.reservation)
             })

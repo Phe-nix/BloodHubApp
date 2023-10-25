@@ -18,6 +18,7 @@ import oType from "../../../assets/hospital/Blood_O.png";
 import abType from "../../../assets/hospital/Blood_AB.png";
 import Card from "./components/Card";
 import Label from "./components/Label";
+import Constants from "expo-constants";
 
 interface Hospital {
   image: any; // Update the type accordingly
@@ -55,7 +56,7 @@ const BloodScreen = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/blood");
+        const response = await axios.get(`${Constants.expoConfig?.extra?.API_URL}/blood`);
         const bloodData = response.data.blood; // Access the "blood" array
         if (Array.isArray(bloodData) && bloodData.length > 0) {
           const firstBloodEntry = bloodData[0]; // Access the first entry in the array

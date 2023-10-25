@@ -11,6 +11,7 @@ import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 const SignInScreen = ({ navigation }: any) => {
   const header = "เข้าสู่ระบบ";
@@ -21,12 +22,21 @@ const SignInScreen = ({ navigation }: any) => {
   const [password, setPassword] = React.useState("");
 
   const login = async () => {
+    console.log(`${Constants.expoConfig?.extra?.API_URL}/auth/login`);
+    
+    
     try {
       const { data: res } = await axios.post(
-        "http://localhost:3000/auth/login",
+        `${Constants.expoConfig?.extra?.API_URL}/auth/login`,
         {
           citizenId: citizenId,
           password: password,
+        },
+        {
+          headers: {
+            Accept: 'application/json',
+           'Content-Type': 'application/x-www-form-urlencoded',
+          },
         }
       );
       await AsyncStorage.setItem("token", res.access_token);
@@ -55,14 +65,15 @@ const SignInScreen = ({ navigation }: any) => {
                 value={citizenId}
               />
               <TextInput
-                style={[styles.input,{marginBottom: 10}]}
+                style={[styles.input, { marginBottom: 10 }]}
                 placeholder="รหัสผ่าน"
                 placeholderTextColor="#856464"
                 secureTextEntry={true}
                 onChangeText={setPassword}
                 value={password}
-                autoCapitalize="none" // Add this line to disable auto-capitalization
+                autoCapitalize="none"
               />
+
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ForgetPassword");

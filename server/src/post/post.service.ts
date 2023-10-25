@@ -23,9 +23,10 @@ export class PostService {
         data: {
           image: imagedto.originalname,
           description: postDto.description,
-          phone_number: postDto.phone_number,
+          phoneNumber: postDto.phoneNumber,
           bloodType: postDto.bloodType, 
           case: postDto.case,
+          address: JSON.parse(postDto.address),
           userId: postDto.userId
         },
       });

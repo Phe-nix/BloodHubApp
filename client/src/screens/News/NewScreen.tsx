@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { differenceInDays } from "date-fns";
+import Constants from "expo-constants";
 
 const NewScreen = ({ navigation }: any) => {
   const [news, setNews] = useState<any>([]);
@@ -19,7 +20,7 @@ const NewScreen = ({ navigation }: any) => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const { data: res } = await axios.get(
-        `http://localhost:3000/news/getAllNews/${userId}`,
+        `${Constants.expoConfig?.extra?.API_URL}news/getAllNews/${userId}`,
       )
       setNews(res.news);
       setRefreshing(false);
@@ -73,7 +74,7 @@ const NewScreen = ({ navigation }: any) => {
                     </Text>
                     <TouchableOpacity onPress={ async ()=>{
                       if(item.isBookmarked){
-                        await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
+                        await axios.delete(`${Constants.expoConfig?.extra?.API_URL}bookmark/news/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
                             newId: item.id,
@@ -83,7 +84,7 @@ const NewScreen = ({ navigation }: any) => {
                           getNews();
                         })
                       } else {
-                        await axios.post(`http://localhost:3000/bookmark/news/add`,
+                        await axios.post(`${Constants.expoConfig?.extra?.API_URL}bookmark/news/add`,
                         {
                           newId: item.id,
                           userId: await AsyncStorage.getItem("userId")

@@ -5,6 +5,7 @@ import OTPInputField from "../../core/components/OTPInputField";
 import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
+import Constants from "expo-constants";
 
 interface VerificationScreenProps {
   navigation: any;
@@ -30,9 +31,9 @@ const VerificationScreen: React.FC<VerificationScreenProps> = ({ navigation, rou
       const id = route.params.id;
       (async () => {
         try {
-          let apiEndpoint = "http://localhost:3000/otp/validate";
+          let apiEndpoint = `${Constants.expoConfig?.extra?.API_URL}/otp/validate`;
           if (route.params.source === "forgetPassword") {
-            apiEndpoint = "http://localhost:3000/otp/validate";
+            apiEndpoint = `${Constants.expoConfig?.extra?.API_URL}/otp/validate`;
             const { data: res } = await axios.post(apiEndpoint, {
               userId: id,
               otp: otp,

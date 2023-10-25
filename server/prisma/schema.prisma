@@ -77,9 +77,10 @@ model Post {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
   image         String?
   description   String
-  phone_number  String
+  phoneNumber   String
   bloodType     BloodType
   case          CaseType
+  address       String
   userId        String      @db.ObjectId
   createdAt     DateTime    @default(now())
   user          User        @relation(fields: [userId], references: [id])

@@ -9,6 +9,8 @@ import axios from "axios";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNPickerSelect from "react-native-picker-select";
 import { format } from "date-fns"; // Import date-fns for date formatting
+import Constants from 'expo-constants';
+
 
 const CreateAccountScreen = ({ navigation, route }: any) => {
   const header = "ลงทะเบียน";
@@ -29,7 +31,7 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
     try {
         const dobFormatted = format(dob, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"); // Format the date
         const { data: res } = await axios.post(
-        "http://localhost:3000/auth/register",
+        `${Constants.expoConfig?.extra?.API_URL}/auth/register`,
         {
           prefix: prefix,
           bloodType: bloodType,
@@ -211,7 +213,17 @@ const CreateAccountScreen = ({ navigation, route }: any) => {
                       { label: "O-", value: "O_NEGATIVE" },
                     ]}
                     value={bloodType}
-                    style={pickerSelectStyles}
+                    style={{
+                      inputIOS: {
+                        color: '#856464',
+                        fontSize: 16,
+                        paddingVertical: 10,
+                        paddingHorizontal: 5,
+                        borderBottomWidth: 1,
+                        borderColor: '#856464',
+                        marginBottom: 10,
+                      },
+                    }}
                   />
                 </View>
                 <Text style={{ marginTop: 10, color: "#856464" }}>อีเมล</Text>

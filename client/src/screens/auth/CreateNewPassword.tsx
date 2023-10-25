@@ -5,6 +5,7 @@ import Layer from "../../core/layouts/Layout";
 import { styles } from "./auth.styles";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Constants from "expo-constants";
 
 interface CreateNewPasswordProps {
   navigation: any;
@@ -20,7 +21,7 @@ const CreateNewPassword: React.FC<CreateNewPasswordProps> = ({ navigation, route
     const id = route.params.id;
     try {
         const { data: res } = await axios.post(
-        "http://localhost:3000/auth/resetPassword",
+        `${Constants.expoConfig?.extra?.API_URL}/auth/resetPassword`,
         {
           userId: id,
           password: password,

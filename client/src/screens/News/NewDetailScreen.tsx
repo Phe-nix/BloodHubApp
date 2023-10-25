@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { set, differenceInDays } from 'date-fns'
+import Constants from 'expo-constants'
 
 const NewDetailScreen = ({route} : any) => {
   const { post } = route.params
@@ -28,7 +29,7 @@ const NewDetailScreen = ({route} : any) => {
                     </Text>
                     <TouchableOpacity onPress={ async ()=>{
                       if(isBookmarked){
-                        await axios.delete(`http://localhost:3000/bookmark/news/delete`, {
+                        await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/news/delete`, {
                           params: {
                             userId: await AsyncStorage.getItem("userId"),
                             newId: post.id,
