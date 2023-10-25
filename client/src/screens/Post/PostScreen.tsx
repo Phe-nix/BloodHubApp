@@ -8,6 +8,7 @@ import axios from 'axios';
 import RNPickerSelect from "react-native-picker-select";
 import { set } from 'date-fns';
 import Constants from 'expo-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const pickerSelectStyles = {
   inputIOS: {
@@ -69,21 +70,22 @@ const PostScreen = ({navigation} : any) => {
       });
 
       formData.append('description', description);
-      formData.append('contact', contact);
+      formData.append('phoneNumber', contact);
       formData.append('bloodType', bloodType);
-      formData.append('cases', cases);
+      formData.append('case', cases);
       formData.append('address', location);
+      formData.append('userId', await AsyncStorage.getItem('userId'));
 
       console.log(formData);
       
 
-      // const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
+      const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/posts/create`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-      // console.log('Upload response:', response.data);
+      console.log('Upload response:', response.data);
     } catch (error) {
       console.error('Error uploading images:', error);
     }

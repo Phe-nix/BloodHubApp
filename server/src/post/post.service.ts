@@ -26,7 +26,7 @@ export class PostService {
           phoneNumber: postDto.phoneNumber,
           bloodType: postDto.bloodType, 
           case: postDto.case,
-          address: JSON.parse(postDto.address),
+          address: postDto.address,
           userId: postDto.userId
         },
       });
@@ -110,7 +110,10 @@ export class PostService {
     }
   }
 
-  async getAllPost(userId: any): Promise<any> {
+  async getAllPost(userId: string): Promise<any> {
+    console.log(userId);
+    
+
     const posts = await this.prisma.post.findMany(
       {
         include: {

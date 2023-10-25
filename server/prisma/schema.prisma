@@ -35,6 +35,11 @@ model User {
   weight        String?
   height        String?
   disease       String?
+
+  newsNoti Boolean   @default(false)
+  emergencyNoti Boolean   @default(false)
+  generalNoti Boolean   @default(false)
+
   verified      Boolean   @default(false)
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt

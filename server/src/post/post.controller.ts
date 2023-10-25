@@ -19,9 +19,7 @@ export class PostController {
   @ApiBody({type: PostCreateDto})
   async createPost(@UploadedFile() image: Express.Multer.File, @Body() postDto: PostCreateDto): Promise<any> {
     try {
-      console.log(image);
-      
-      // return await this.postService.createPost(image, postDto);
+      return await this.postService.createPost(image, JSON.parse(JSON.stringify(postDto)));
     } catch (error) {
       console.error(error);
       throw error;
@@ -51,7 +49,7 @@ export class PostController {
 
 
   @Get('getAllPosts/:userId')
-  async getAllPosts(@Param('userId') userId: PostGetAllDto): Promise<any> {
+  async getAllPosts(@Param('userId') userId: string): Promise<any> {
     try {
       return await this.postService.getAllPost(userId);
     } catch (error) {
