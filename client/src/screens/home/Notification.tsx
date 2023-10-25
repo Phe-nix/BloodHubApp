@@ -16,8 +16,6 @@ const App: React.FC = () => {
       <View style={styles.postcontainer}>
         <EmergencyNoti text={"b"} />
       </View>
-
-
     </View>
   );
 };
