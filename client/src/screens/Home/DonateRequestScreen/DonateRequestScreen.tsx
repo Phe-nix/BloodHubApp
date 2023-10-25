@@ -1,14 +1,10 @@
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import {styles} from "./DonateRequestScreen.style"
 import Request from "../Components/Request/Request"
-import Profile from "../../../../assets/picture/kitten.png"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
-import { set } from "date-fns";
-
-
 
 const DonateRequestScreen = () => {
     const [reservation, setReservation] = useState<any>([])

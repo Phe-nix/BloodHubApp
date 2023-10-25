@@ -5,7 +5,7 @@ import Post from "../screens/settings/tabs/Post";
 
 const Tab = createMaterialTopTabNavigator();
 
-const BookMarkNavigation = () => {
+const BookMarkNavigation = ({route}: any) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -14,7 +14,11 @@ const BookMarkNavigation = () => {
         tabBarIndicatorStyle: { backgroundColor: 'pink' },
       }}
     >
-      <Tab.Screen name="Post" component={Post} />
+      <Tab.Screen
+        name="Post"
+        component={Post}
+        initialParams={{ source: route.params.source }}
+      />
       <Tab.Screen name="News" component={News} />
     </Tab.Navigator>
   );

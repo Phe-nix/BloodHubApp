@@ -6,7 +6,7 @@ import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SmallNewsBox from "../../../core/components/SmallNewsBox";
 
-const App = ({navigation} : any) => {
+const App = ({navigation, route} : any) => {
   const [posts, setPosts] = useState<any>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
@@ -28,7 +28,6 @@ const App = ({navigation} : any) => {
     fetch();
   }
 
-
   return (
     <ScrollView 
       style={styles.bgcolor}
@@ -42,7 +41,7 @@ const App = ({navigation} : any) => {
       {
         posts.map((item: any) => {
           return (
-            <SmallPostBox key={item.id} item={item} fetch={fetch} navigation={navigation}/>
+            <SmallPostBox key={item.id} item={item} fetch={fetch} navigation={navigation} source={route.params.source}/>
           )
         })
       }

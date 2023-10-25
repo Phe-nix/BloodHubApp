@@ -5,7 +5,8 @@ import Post from "../screens/settings/tabs/Post";
 
 const Tab = createMaterialTopTabNavigator();
 
-const HistoryNavigation = () => {
+const HistoryNavigation = ({route}: any) => {
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -14,7 +15,11 @@ const HistoryNavigation = () => {
         tabBarIndicatorStyle: { backgroundColor: 'pink' },
       }}
     >
-      <Tab.Screen name="Post" component={Post} />
+      <Tab.Screen
+        name="Post"
+        component={Post}
+        initialParams={{ source: route.params.source }}
+      />
       <Tab.Screen name="Appointment" component={Appointment} />
     </Tab.Navigator>
   );

@@ -268,6 +268,29 @@ export class DonationService {
     const donationHistory = await this.prismaSerivce.donationHistory.findMany({
       where:{
         userId: id
+      },
+      include: {
+        post: {
+          select: {
+            id: true,
+            title: true,
+            image: true,
+            description: true,
+            phoneNumber: true,
+            case: true,
+            bloodType: true,
+            address: true,
+            createdAt: true,
+            user: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                profileImage: true,
+              }
+            }
+          }
+        }
       }
     })
 
@@ -281,9 +304,74 @@ export class DonationService {
       )
     }
 
+    const donationHistoryFireStore = await Promise.all(donationHistory.map(async (item) => {
+      const firestoreImage = await this.imageService.getImage(item.post.image);
+      const firestoreImageUser = await this.imageService.getImage(item.post.user.profileImage);
+
+      return {
+        ...item,
+        post: {
+          ...item.post,
+          image: firestoreImage,
+          user: {
+            ...item.post.user,
+            profileImage: firestoreImageUser,
+          }
+        }
+      }
+    }))
+
     return {
       message: "DonationHistory found successfully",
-      donation: donationHistory
+      donation: donationHistoryFireStore
+    }
+  }
+
+  async getPostDonator(id: string): Promise<any>{
+    const donator = await this.prismaSerivce.donation.findMany({
+      where: {
+        postId: id,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            profileImage: true,
+            bloodType: true,
+            phoneNumber: true,
+            dob: true,
+            disease: true,
+          }
+        },
+      }
+    })
+
+    if(!donator) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'DONATOR NOT FOUND'
+        },
+        HttpStatus.NOT_FOUND
+      )
+    }
+
+    const donatorFireStore = await Promise.all(donator.map(async (item) => {
+      const firestoreImage = await this.imageService.getImage(item.user.profileImage);
+      return {
+        ...item,
+        user: {
+          ...item.user,
+          profileImage: firestoreImage,
+        }
+      }
+    }))
+
+    return {
+      message: "Donator found successfully",
+      donator: donatorFireStore
     }
   }
 }

@@ -11,7 +11,7 @@ interface SmallNewsBoxProps {
   onBookmarkPress: () => void;
 }
 
-const SmallPostBox: React.FC<any> = ({ item, fetch, navigation }) => {
+const SmallPostBox: React.FC<any> = ({ item, fetch, navigation, source }) => {
   const post = item.post
   const daysAgo = differenceInDays(new Date(), new Date(post.createdAt));
 
@@ -19,7 +19,7 @@ const SmallPostBox: React.FC<any> = ({ item, fetch, navigation }) => {
     <TouchableOpacity style={styles.bgcolor} onPress={() => {
       navigation.navigate('Home', {
         screen: 'PostDetail',
-        params: { post: post },
+        params: { post: post, source: source },
       });
     }}>
         <View style={styles.container}>

@@ -1,18 +1,52 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import SmallPostBox from "../../../core/components/SmallPostBox";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import AppointmentBox from "../../home/Components/Appointment/Appointment";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
+import axios from "axios";
 
-const Post = () => {
-  const handleDeletePost = () => {
-    // Implement your logic for deleting the post here
-    // This function can be passed as the onDelete prop to the Post component
-    console.log("Post deleted!");
-  };
+const Appointment = ({navigation} : any) => {
+    const [appointment, setAppointment] = useState<any>([])
+    const [refreshing, setRefreshing] = useState<boolean>(false);
+
+    const source  = "AppointmentHistory"
+
+    useEffect(()=>{
+        fetch();
+    }, [])
+
+    const fetch = async () => {
+        const user = await AsyncStorage.getItem("userId")
+            await axios.get(`${Constants.expoConfig?.extra?.API_URL}/donation/getDonationHistory/${user}`)
+                .then((res) => {
+                    setAppointment(res.data.donation)
+                    setRefreshing(false);
+                })
+    }
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetch();
+      }
 
   return (
-    <View style={styles.bgcolor}>
-      <SmallPostBox onDelete={handleDeletePost} />
-    </View>
+    <ScrollView 
+      style={styles.bgcolor}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+    >
+      {
+        appointment.map((item: any) => {
+          return (
+              <AppointmentBox key={item.id} item={item} navigation={navigation} source={source} />
+          )
+        })
+      }
+    </ScrollView>
   );
 };
 
@@ -22,4 +56,4 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
-export default Post;
+export default Appointment;
