@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import AboutScreen from "../screens/settings/AboutScreen";
-import AddressScreen from "../screens/settings/AddressScreen";
-import EditAddressScreen from "../screens/settings/EditAddressScreen";
-import EditNotificationScreen from "../screens/settings/EditNotificationScreen";
+import AboutScreen from "../screens/Settings/AboutScreen";
+import AddressScreen from "../screens/Settings/AddressScreen";
+import EditAddressScreen from "../screens/Settings/EditAddressScreen";
+import EditNotificationScreen from "../screens/Settings/EditNotificationScreen";
 import HelpCenterScreen from "../screens/settings/HelpCenterScreen";
-import MyProfileScreen from "../screens/settings/MyProfileScreen";
-import SettingScreen from "../screens/settings/SettingScreen";
+import MyProfileScreen from "../screens/Settings/MyProfileScreen";
+import SettingScreen from "../screens/Settings/SettingScreen";
 import BookMarkNavigation from "./BookMarkNavigation";
 import HistoryNavigation from "./HistoryNavigation";
 import HelpCenterNavigation from "./HelpCenterNavigation";
@@ -30,13 +30,7 @@ export const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="EditNotification" component={EditNotificationScreen} />
       <tab.Screen name="History" component={HistoryNavigation} />
       <tab.Screen name="Bookmark" component={BookMarkNavigation} />
-<<<<<<< Updated upstream
-      <tab.Screen name="HelpCenter" component={HelpCenterScreen} />
-=======
-
-      
       <tab.Screen name="HelpCenter" component={HelpCenterNavigation} />
->>>>>>> Stashed changes
       <tab.Screen name="About" component={AboutScreen} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
     </tab.Navigator>

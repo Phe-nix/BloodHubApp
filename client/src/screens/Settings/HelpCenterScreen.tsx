@@ -5,19 +5,16 @@ import { styles } from "./style/HelpCenterScreen.style";
 
 // Sample data for help resources
 const helpResources = [
-<<<<<<< Updated upstream
-  { id: "1", title: "คุณสมบัติการบริจาคเลือด" },
 
-=======
-  { id: "1", title: "คุณสมบัติของผู้บริจาคโลหิต", page: "Feature of donater"},
+  { id: "1", title: "คุณสมบัติของผู้บริจาคโลหิต", page: "Feature of donater" },
   { id: "2", title: "ควรเตรียมตัวอย่างไรก่อนไปบริจาคเลือด", page: "How to prepare before donate" },
-  { id: "3", title: "ฉันจะขอรับบริจาคเลือดได้อย่างไร", page : "How to make request"},
-  { id: "4", title: "ฉันจะขอรับบริจาคเลือดแบบฉุกเฉินได้อย่างไร", page : "How to make emergency request" },
-  { id: "5", title: "ฉันจะเปลี่ยนรหัสของฉันได้อย่างไร", page:"How to change password"},
->>>>>>> Stashed changes
+  { id: "3", title: "ฉันจะขอรับบริจาคเลือดได้อย่างไร", page: "How to make request" },
+  { id: "4", title: "ฉันจะขอรับบริจาคเลือดแบบฉุกเฉินได้อย่างไร", page: "How to make emergency request" },
+  { id: "5", title: "ฉันจะเปลี่ยนรหัสของฉันได้อย่างไร", page: "How to change password" },
+
 ];
 
-const HelpCenterScreen = ({navigation} : any) => {
+const HelpCenterScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       {/* Search Bar */}
@@ -54,7 +51,7 @@ const HelpCenterScreen = ({navigation} : any) => {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.resourceTitle}>ติดต่อเรา</Text>
-            <Text style={{ color: "#7A7A7A", marginLeft:10 }}>บอกพวกเรา แล้วเราจะช่วยคุณเอง</Text>
+            <Text style={{ color: "#7A7A7A", marginLeft: 10 }}>บอกพวกเรา แล้วเราจะช่วยคุณเอง</Text>
           </View>
         </View>
 
