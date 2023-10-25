@@ -27,7 +27,7 @@ const Notifications = ({  }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E99999",
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,

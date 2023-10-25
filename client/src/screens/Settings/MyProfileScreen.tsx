@@ -107,12 +107,13 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
   };
 
   const removeImage = (index: number) => {
-    const newImages = image.filter((_, index) => index !== index);
+    const newImages = image.filter((_, i) => i !== index);
     setImage(newImages);
     if (newImages.length === 0) {
       setShowImagePicker(true);
     }
   };
+
 
   useEffect(() => {
     console.log(image);
@@ -167,9 +168,11 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           )}
         </View>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={{position: 'absolute', zIndex: 1, top: -10, right: -10, backgroundColor: '#E99999', width: 20, height: 20, borderRadius: 100, justifyContent: 'center', alignItems: 'center'}} onPress={() => removeImage(index)}>
-              <Text style={{color: 'white'}}>X</Text>
-            </TouchableOpacity> */}
+      <TouchableOpacity style={{borderWidth: 1,
+ position: 'absolute', zIndex: 1, top: 20, right: 170, backgroundColor: '#E99999', width: 20, height: 20, borderRadius: 100, justifyContent: 'center', alignItems: 'center'}} //onPress={() => removeImage(index)}
+      >
+              <Text style={{color: 'black'}}>X</Text>
+            </TouchableOpacity>
       <TextInputWithLabel
         label="คำนำหน้า"
         value={prefix}
