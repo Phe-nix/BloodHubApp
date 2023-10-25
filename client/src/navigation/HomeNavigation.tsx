@@ -24,6 +24,7 @@ export const HomeNavigation = ({ navigation }: any) => {
         name="Home Page"
         component={Home}
         options={{
+          headerTitle: "หน้าหลัก",
           headerRight: () => {
             return (
               <TouchableOpacity
@@ -32,7 +33,7 @@ export const HomeNavigation = ({ navigation }: any) => {
                 }}
               >
                 <View
-                  style={[{ backgroundColor: "#E99999", borderRadius: 50 }]}
+                  style={[{ backgroundColor: "#E99999" }]}
                 >
                   <Ionicons
                     name="notifications-outline"
@@ -45,11 +46,11 @@ export const HomeNavigation = ({ navigation }: any) => {
           },
         }}
       />
-      <Tab.Screen name="Notification" component={NotificationScreen} />
-      <Tab.Screen name="Do" component={DonateRequestScreen} />
-      <Tab.Screen name="My Appointment" component={MyAppointmentScreen} />
-      <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} />
-      <Tab.Screen name="PostDetail" component={PostDetailScreen} />
+      <Tab.Screen name="Notification" component={NotificationScreen} options={{ headerTitle: "การแจ้งเตือน" }} />
+      <Tab.Screen name="Donate Request" component={DonateRequestScreen} options={{ headerTitle: "คำขอบริจาค" }} />
+      <Tab.Screen name="My Appointment" component={MyAppointmentScreen} options={{ headerTitle: "การนัดหมายของฉัน" }} />
+      <Tab.Screen name="Find Health Units" component={FindHealthUnitScreen} options={{ headerTitle: "ค้นหาสถานพยาบาล" }} />
+      <Tab.Screen name="PostDetail" component={PostDetailScreen} options={{ headerTitle: "รายละเอียดโพสต์" }} />
     </Tab.Navigator>
   );
 };

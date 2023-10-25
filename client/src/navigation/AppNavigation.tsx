@@ -36,17 +36,12 @@ const AppNavigation = ({ route }: any) => {
       screenOptions={({ route }) => ({
         headerStyle: {
           backgroundColor: '#E99999',
-          borderBottomWidth: 5,
         },
         tabBarActiveTintColor: 'orange',
         tabBarLabelStyle: {
           fontWeight: 'bold',
           fontSize: 12,
           marginBottom: -10,
-        },
-        headerBackgroundContainerStyle: {
-          borderBottomWidth: 5,
-          borderBottomColor: '#D9D9D9',
         },
         tabBarIcon: ({ focused }) => {
           const tabName = route.name;
@@ -75,7 +70,7 @@ const AppNavigation = ({ route }: any) => {
       
           return (
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Image source={iconSource} style={{ tintColor }} />
+              <Image source={iconSource} style={{ tintColor, height: 27, width: 27 }} />
             </View>
           );
         },
