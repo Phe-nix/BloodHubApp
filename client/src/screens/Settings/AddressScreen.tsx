@@ -28,16 +28,18 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const [loadingLocation, setLoadingLocation] = useState(true);
   const [name, setName] = useState(""); // State to store the name
   const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
-
-  useEffect(() => {
-    const getLocation = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.error("Permission to access location was denied");
-        setLoadingLocation(false);
-        return;
-      }
-
+  const [locationSet, setLocationSet] = useState<boolean>(false);
+  console.log(locationSet)
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.error("Permission to access location was denied");
+      setLoadingLocation(false);
+      return;
+    }
+  
+    // Delay fetching the location by 2 seconds (2000 milliseconds)
+    setTimeout(async () => {
       try {
         const location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
@@ -52,27 +54,61 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
         console.error("Error fetching current location:", error);
         setLoadingLocation(false);
       }
-    };
+    }, 2000); // Adjust the delay time as needed
+  };
+  
+  useEffect(() => {
     getLocation();
+    checkIfLocationIsSet();
   }, []);
 
-  const handleSave = async() => {
+  const checkIfLocationIsSet = async () => {
     const userId = await AsyncStorage.getItem("userId");
-    try {
-      const { data: res } = await axios.post(
-      "http://localhost:3000/address/add",
-      {
-        userId: userId,
-        address: name,
-        latitude: latestMarker?.latitude,
-        longitude: latestMarker?.longitude,
-      }
+    const response = await axios.get(
+      `http://localhost:3000/address/${userId}`
     );
-  } catch (error) {
-    console.log(error);
-  }
+    const address = response.data.address.address;
+    if (address) {
+      setLocationSet(true);
+    } else {
+      setLocationSet(false);
+    }
   };
-
+  
+  const handleSave = async () => {
+    const userId = await AsyncStorage.getItem("userId");
+    // Use the "update" API if the location has already been set
+    if (locationSet) {
+      try {
+        const { data: res } = await axios.post(
+          "http://localhost:3000/address/update",
+          {
+            userId: userId,
+            address: name,
+            latitude: latestMarker?.latitude,
+            longitude: latestMarker?.longitude,
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // Use the "add" API if the location hasn't been set
+      try {
+        const { data: res } = await axios.post(
+          "http://localhost:3000/address/add",
+          {
+            userId: userId,
+            address: name,
+            latitude: latestMarker?.latitude,
+            longitude: latestMarker?.longitude,
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const handleSelectLocation = (data: any, details: any) => {
     const { lat, lng } = details.geometry.location;
@@ -87,8 +123,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
     setLatestMarker({ latitude: lat, longitude: lng });
     setName(data.description);
   };
-  console.log(name);
-  console.log(latestMarker);
+
   
     const handleMapPress = async (event: any) => {
       const { latitude, longitude } = event.nativeEvent.coordinate;

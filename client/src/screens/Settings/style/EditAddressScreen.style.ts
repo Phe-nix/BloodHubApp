@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: "#FFF", // Background color of the screen
       paddingTop: 40, // Margin from the top of the screen
-      alignItems: "center",
     },
     border: {
       borderWidth: 3, // Border width

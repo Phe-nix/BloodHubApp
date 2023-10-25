@@ -15,7 +15,6 @@ export const styles = StyleSheet.create({
       height: 100,
       borderRadius: 50,
       borderWidth: 1,
-      blackgroundColor: "#ED8085",
     },
     genderTitleContainer: {
       marginBottom: 10,
