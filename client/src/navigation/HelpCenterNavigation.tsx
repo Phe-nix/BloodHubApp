@@ -6,6 +6,7 @@ import HowToChangePassword from "../screens/Settings/HelpCenter/HowToChangePassw
 import HowToMakeEmergencyRequest from "../screens/Settings/HelpCenter/HowToMakeEmergencyRequestScreen";
 import HowToMakeRequest from "../screens/Settings/HelpCenter/HowToMakeRequestScreen";
 import HowToPrepareBeforeDonate from "../screens/Settings/HelpCenter/HowToPrepareBeforeDonateScreen";
+import ContactUsScreen from "../screens/Settings/HelpCenter/ContactUsScreen";
 
 const tab = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const HelpCenterNavigation = ({ navigation }: any) => {
             <tab.Screen name="How to make emergency request" component={HowToMakeEmergencyRequest}/>
             <tab.Screen name="How to make request" component={HowToMakeRequest}/>
             <tab.Screen name="How to prepare before donate" component={HowToPrepareBeforeDonate}/>
+            <tab.Screen name="ContactUs" component={ContactUsScreen}/>
         </tab.Navigator>
     )
 }

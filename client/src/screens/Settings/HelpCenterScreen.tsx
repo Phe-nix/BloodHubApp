@@ -11,16 +11,17 @@ const helpResources = [
   { id: "3", title: "ฉันจะขอรับบริจาคเลือดได้อย่างไร", page: "How to make request" },
   { id: "4", title: "ฉันจะขอรับบริจาคเลือดแบบฉุกเฉินได้อย่างไร", page: "How to make emergency request" },
   { id: "5", title: "ฉันจะเปลี่ยนรหัสของฉันได้อย่างไร", page: "How to change password" },
-  
 ];
 
 const HelpCenterScreen = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState('');
 
+  const test = "ContactUs"
+
   const filteredResources = helpResources.filter((item) => {
     return item.title.toLowerCase().includes(searchText.toLowerCase());
   });
-  
+
   return (
     <View style={styles.container}>
       {/* Search Bar */}
@@ -57,10 +58,10 @@ const HelpCenterScreen = ({ navigation }: any) => {
               <FontAwesome name="phone" size={20} color="#fff" />
             </View>
           </View>
-          <View style={{ flex: 1 }}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate("ContactUs")}>
             <Text style={styles.resourceTitle}>ติดต่อเรา</Text>
             <Text style={{ color: "#7A7A7A", marginLeft: 10 }}>บอกพวกเรา แล้วเราจะช่วยคุณเอง</Text>
-          </View>
+          </TouchableOpacity>
         </View>
 
       </View>

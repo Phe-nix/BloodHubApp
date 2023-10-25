@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
-import AppointmentBox from "../../home/Components/Appointment/Appointment";
+import AppointmentBox from "../../Home/Components/Appointment/Appointment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import axios from "axios";

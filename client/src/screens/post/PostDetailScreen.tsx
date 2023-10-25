@@ -1,6 +1,6 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './PostDetailScreen.style';
-import { styles as stylesRequest } from "../home/Components/Request/Request.style"
+import { styles as stylesRequest } from "../Home/Components/Request/Request.style"
 
 import User from './components/User';
 import axios from 'axios';
