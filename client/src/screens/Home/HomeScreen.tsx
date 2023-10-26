@@ -72,11 +72,6 @@ const HomeScreen = ({ navigation }: any) => {
     getUser();
   };
 
-  useEffect(() => {
-    console.log(user);
-  }, [user])
-  
-
   return post.length === 0 && user === null ? (
     <View style={{flex: 1, justifyContent: 'center'}}>
       <ActivityIndicator size="small" color="#E99999" />

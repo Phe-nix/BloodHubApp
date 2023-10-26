@@ -51,9 +51,9 @@ const BloodScreen = () => {
       const supported = await Linking.canOpenURL(item.link);
 
     if (supported) {
-      await Linking.openURL(item.hospitalName);
+      await Linking.openURL(item.link);
     } else {
-      Alert.alert(`Don't know how to open this URL: ${item.hospitalName}`);
+      Alert.alert(`Don't know how to open this URL: ${item.link}`);
     }
 
     }}>
