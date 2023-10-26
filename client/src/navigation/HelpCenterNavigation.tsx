@@ -1,12 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import FeatureOfDonaterScreen from "../screens/Settings/HelpCenter/FeatureOfDonaterScreen";
-import HelpCenterScreen from "../screens/Settings/HelpCenterScreen";
-import HowToChangePassword from "../screens/Settings/HelpCenter/HowToChangePasswordScreen";
-import HowToMakeEmergencyRequest from "../screens/Settings/HelpCenter/HowToMakeEmergencyRequestScreen";
-import HowToMakeRequest from "../screens/Settings/HelpCenter/HowToMakeRequestScreen";
-import HowToPrepareBeforeDonate from "../screens/Settings/HelpCenter/HowToPrepareBeforeDonateScreen";
-import ContactUsScreen from "../screens/Settings/HelpCenter/ContactUsScreen";
+import FeatureOfDonaterScreen from "../screens/settings/HelpCenter/FeatureOfDonaterScreen";
+import HelpCenterScreen from "../screens/settings/HelpCenterScreen";
+import HowToChangePassword from "../screens/settings/HelpCenter/HowToChangePasswordScreen";
+import HowToMakeEmergencyRequest from "../screens/settings/HelpCenter/HowToMakeEmergencyRequestScreen";
+import HowToMakeRequest from "../screens/settings/HelpCenter/HowToMakeRequestScreen";
+import HowToPrepareBeforeDonate from "../screens/settings/HelpCenter/HowToPrepareBeforeDonateScreen";
+import ContactUsScreen from "../screens/settings/HelpCenter/ContactUsScreen";
 
 const tab = createNativeStackNavigator();
 
