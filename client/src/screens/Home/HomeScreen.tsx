@@ -1,4 +1,11 @@
-import { Text, View, ScrollView, TouchableOpacity, RefreshControl } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  RefreshControl,
+  Image,
+} from "react-native";
 import { styles } from "./HomeScreen.style";
 import Button from "./Components/Button";
 import appointment from "../../../assets/button/Appointment.png";
@@ -56,78 +63,104 @@ const HomeScreen = ({ navigation }: any) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const onRefresh = () => {
     setRefreshing(true);
     getPost();
     getUser();
-  }
+  };
 
   return (
     <ScrollView
+      style={{ backgroundColor: "#F1F1F1" }}
       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View>
-        <View style={{ padding: 20 }}>
-          <Text style={styles.welcome}>ยินดีต้อนรับ,</Text>
-          <Text style={styles.userName}>{user?.firstName} {user?.lastName}</Text>
-        </View>
-        <View style={styles.underLine_0} />
+      <View style={{ flexDirection: "column", marginTop: 20 }}>
         <View style={styles.button}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("My Appointment");
+          <View
+            style={{
+              paddingHorizontal: 30,
+              paddingVertical: 10,
+              flexDirection: "row",
+              gap: 15,
             }}
           >
-            <Button image={appointment} text={"การนัดหมาย"} text_0={"ของฉัน"} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Donate Request");
-            }}
-          >
-            <Button image={Request} text={"คำขอบริจาค"} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("Find Health Units");
-            }}
-          >
-            <Button image={Location} text={"ค้นหา"} text_0={"สถานพยาบาล"} />
-          </TouchableOpacity>
+            <Image
+              style={{ width: 60, height: 60, borderRadius: 30 }}
+              source={{ uri: user?.profileImage }}
+            />
+            <View>
+              <Text style={styles.welcome}>ยินดีต้อนรับ,</Text>
+              <Text style={styles.userName}>
+                {user?.firstName} {user?.lastName}
+              </Text>
+            </View>
+          </View>
         </View>
-        <View style={{borderWidth: 2, borderBottomWidth: 0, borderTopRightRadius: 20, borderTopLeftRadius: 20, borderColor: '#FF6D6E'}}>
+        <View style={styles.button}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingHorizontal: 25,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("My Appointment");
+              }}
+            >
+              <Button
+                image={appointment}
+                text={"การนัดหมาย"}
+                text_0={"ของฉัน"}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Donate Request");
+              }}
+            >
+              <Button image={Request} text={"คำขอบริจาค"} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Find Health Units");
+              }}
+            >
+              <Button image={Location} text={"ค้นหา"} text_0={"สถานพยาบาล"} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View>
           <Text style={styles.postFeed}>ฟีดโพสต์</Text>
-          <View style={{ borderWidth: 1, borderColor: "#D9D9D9" }} />
         </View>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          { post.length !== 0 ?
-            (
-              post?.map((item: any, index: any, key: any) => {
-                return(
-                  <TouchableOpacity key={item.id} onPress={()=>{
-                    navigation.navigate("PostDetail", { post: item, source: source})
-                  }}>
-                    <Post
-                      key={item.id}
-                      item={item}
-                      getPost={getPost}
-                    />
-                  </TouchableOpacity>
-                );
-              })
-            )
-            :
-            (
-              <Text>ไม่มีโพสต์</Text>
-            )
-          }
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          {post.length !== 0 ? (
+            post?.map((item: any, index: any, key: any) => {
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  onPress={() => {
+                    navigation.navigate("PostDetail", {
+                      post: item,
+                      source: source,
+                    });
+                  }}
+                >
+                  <Post key={item.id} item={item} getPost={getPost} />
+                </TouchableOpacity>
+              );
+            })
+          ) : (
+            <Text>ไม่มีโพสต์</Text>
+          )}
         </View>
       </View>
     </ScrollView>

@@ -18,8 +18,9 @@ const BookMarkNavigation = ({route}: any) => {
         name="Post"
         component={Post}
         initialParams={{ source: route.params.source }}
+        options={{title: "โพสต์"}}
       />
-      <Tab.Screen name="News" component={News} />
+      <Tab.Screen name="News" component={News} options={{title: "ข่าวสาร"}}/>
     </Tab.Navigator>
   );
 };

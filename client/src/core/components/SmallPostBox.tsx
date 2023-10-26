@@ -4,7 +4,14 @@ import axios from "axios";
 import { differenceInDays } from "date-fns";
 import Constants from "expo-constants";
 import React from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface SmallNewsBoxProps {
   isVisible: boolean;
@@ -12,50 +19,67 @@ interface SmallNewsBoxProps {
 }
 
 const SmallPostBox: React.FC<any> = ({ item, fetch, navigation, source }) => {
-  const post = item
+  const post = item;
   const daysAgo = differenceInDays(new Date(), new Date(post.createdAt));
 
   return (
-    <TouchableOpacity style={styles.bgcolor} onPress={() => {
-      navigation.navigate('Home', {
-        screen: 'PostDetail',
-        params: { post: post, source: source },
-      });
-    }}>
-        <View style={styles.container}>
-          <View style={styles.leftContainer}>
-            {/* Image */}
-            <Image
-              source={{uri: post.image}}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
-          <View style={styles.rightContainer}>
-            <View style={styles.textRight}>
-              <Text style={styles.name}>{post.title.slice(0,40) + "..."}</Text>
-              <TouchableOpacity onPress={ async ()=>{
-                await axios.delete(`${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`, {
-                  params: {
-                    userId: await AsyncStorage.getItem("userId"),
-                    postId: item.id,
-                  }
-                })
-                .then((res)=>{
-                  fetch();
-                })
-              
-            }}>
-              <Image style={{width: 18, height:20, position: 'absolute', top: 0, right: 20}} source={post.isBookmark ? require('../../../assets/icon/icon_bookmarked.png') : require('../../../assets/icon/icon_bookmark.png')} />
-            </TouchableOpacity>
-            </View>
-            <Text style={styles.date}>
-              {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}
-            </Text>
-            <Text style={styles.description}>{post.description.slice(0,60) + "..."}</Text>
-          </View>
+    <TouchableOpacity
+      style={styles.bgcolor}
+      onPress={() => {
+        navigation.navigate("Home", {
+          screen: "PostDetail",
+          params: { post: post, source: source },
+        });
+      }}
+    >
+      <View style={styles.container}>
+        <View style={styles.leftContainer}>
+          {/* Image */}
+          <Image
+            source={{ uri: post.image }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
-      </TouchableOpacity>
+        <View style={styles.rightContainer}>
+          <View style={styles.textRight}>
+            <Text style={styles.name}>{post.title.slice(0, 40) + "..."}</Text>
+            <TouchableOpacity
+              onPress={async () => {
+                await axios
+                  .delete(
+                    `${Constants.expoConfig?.extra?.API_URL}/bookmark/post/delete`,
+                    {
+                      params: {
+                        userId: await AsyncStorage.getItem("userId"),
+                        postId: item.id,
+                      },
+                    }
+                  )
+                  .then((res) => {
+                    fetch();
+                  });
+              }}
+            >
+                <Image
+                  style={{ width: 18, height: 20 }}
+                  source={
+                    post.isBookmark
+                      ? require("../../../assets/icon/icon_bookmarked.png")
+                      : require("../../../assets/icon/icon_bookmark.png")
+                  }
+                />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.date}>
+            {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}
+          </Text>
+          <Text style={styles.description}>
+            {post.description.slice(0, 60) + "..."}
+          </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

@@ -19,7 +19,8 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
   userName: {
-    fontSize: 16
+    fontSize: 16,
+    fontWeight: '600',
   },
   subHeader: {
     fontSize: 12,
