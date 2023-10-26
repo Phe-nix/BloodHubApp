@@ -5,6 +5,10 @@ import {
   View,
   ScrollView,
   Image,
+  Touchable,
+  TouchableOpacity,
+  Linking,
+  Alert,
 } from "react-native";
 import Swiper from "react-native-swiper";
 import { styles } from "./BloodScreen.style";
@@ -43,10 +47,19 @@ const BloodScreen = () => {
   const [ab_positiveReceive, setab_positiveReceive] = useState("");
 
   const _renderItem = (item: Hospital, index: number) => (
-    <View style={{ alignItems: "center" }} key={index}>
+    <TouchableOpacity style={{ alignItems: "center" }} key={index} onPress={async () => {
+      const supported = await Linking.canOpenURL(item.link);
+
+    if (supported) {
+      await Linking.openURL(item.hospitalName);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${item.hospitalName}`);
+    }
+
+    }}>
       <Image source={{uri: item.image}} style={{ width: 300, height: 200 }} />
       <Text style={styles.hospitalName}>{item.hospitalName}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   useEffect(() => {
