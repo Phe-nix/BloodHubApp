@@ -12,21 +12,21 @@ import RNPickerSelect from "react-native-picker-select";
 import { Button } from "../../core/components/Button";
 import TextInputWithLabel from "../../core/components/TextInputWithLabel";
 import { styles } from "./style/MyProfileScreen.style";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios"; // Import Axios for making HTTP requests.
 import Constants from "expo-constants";
- 
+
 interface ProfileEditScreenProps {
   navigation: any;
 }
 
 const pickerSelectStyles = {
   inputIOS: {
-    color: '#505050',
+    color: "#505050",
   },
   placeholder: {
-    color: '#505050',
+    color: "#505050",
   },
 };
 
@@ -55,7 +55,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           `${Constants.expoConfig?.extra?.API_URL}/user/${userId}`
         );
         const userData = response.data;
-		    setImage([userData.profileImage]);
+        setImage([userData.profileImage]);
         setPrefix(userData.prefix);
         setFirstName(userData.firstName);
         setLastName(userData.lastName);
@@ -99,7 +99,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
     });
 
     console.log();
-    
+
     if (!result.canceled) {
       setImage(result.assets?.map((asset) => asset.uri) || []);
       setShowImagePicker(false);
@@ -114,47 +114,49 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
     }
   };
 
-
   useEffect(() => {
     console.log(image);
-  }, [image])
-  
-  const handleSave = async() => {
+  }, [image]);
+
+  const handleSave = async () => {
     try {
       const formData = new FormData();
 
       image.forEach((uri, index) => {
-        const uriParts = uri.split('.');
+        const uriParts = uri.split(".");
         const fileType = uriParts[uriParts.length - 1];
-        formData.append('profileImage', {
+        formData.append("profileImage", {
           uri,
           name: `image_${index}.${fileType}`,
           type: `image/${fileType}`,
         });
       });
 
-      formData.append('id', await AsyncStorage.getItem('userId'));
-      formData.append('phoneNumber', phoneNumber);
-      formData.append('weight', weight);
-      formData.append('height', height);
-      formData.append('disease', disease);
+      formData.append("id", await AsyncStorage.getItem("userId"));
+      formData.append("phoneNumber", phoneNumber);
+      formData.append("weight", weight);
+      formData.append("height", height);
+      formData.append("disease", disease);
       console.log(formData);
-    
-      const response = await axios.post(`${Constants.expoConfig?.extra?.API_URL}/user/update`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
 
-      console.log('Upload response:', response.data);
+      const response = await axios.post(
+        `${Constants.expoConfig?.extra?.API_URL}/user/update`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Upload response:", response.data);
     } catch (error) {
-      console.error('Error uploading images:', error);
+      console.error("Error uploading images:", error);
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      
       <TouchableOpacity onPress={pickImage}>
         <View style={styles.profileImageContainer}>
           {image ? (
@@ -168,17 +170,29 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           )}
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={{borderWidth: 1,
- position: 'absolute', zIndex: 1, top: 20, right: 170, backgroundColor: '#E99999', width: 20, height: 20, borderRadius: 100, justifyContent: 'center', alignItems: 'center'}} //onPress={() => removeImage(index)}
+      <TouchableOpacity
+        style={{
+          borderWidth: 1,
+          position: "absolute",
+          zIndex: 1,
+          top: 20,
+          right: 170,
+          backgroundColor: "#E99999",
+          width: 20,
+          height: 20,
+          borderRadius: 100,
+          justifyContent: "center",
+          alignItems: "center",
+        }} //onPress={() => removeImage(index)}
       >
-              <Text style={{color: 'black'}}>X</Text>
-            </TouchableOpacity>
+        <Text style={{ color: "black" }}>X</Text>
+      </TouchableOpacity>
       <TextInputWithLabel
         label="คำนำหน้า"
         value={prefix}
         onChangeText={(text) => setPrefix(text)}
         placeholder={"Enter prefix"}
-		editable={false}
+        editable={false}
       />
 
       <TextInputWithLabel
@@ -186,7 +200,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={firstName}
         onChangeText={(text) => setFirstName(text)}
         placeholder="Enter first name"
-		editable={false}
+        editable={false}
       />
 
       <TextInputWithLabel
@@ -194,7 +208,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={lastName}
         onChangeText={(text) => setLastName(text)}
         placeholder="Enter last name"
-		editable={false}
+        editable={false}
       />
 
       <TextInputWithLabel
@@ -202,7 +216,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={email}
         onChangeText={(text) => setEmail(text)}
         placeholder="Enter email"
-		editable={false}
+        editable={false}
       />
 
       <TextInputWithLabel
@@ -217,10 +231,23 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={bloodType}
         onChangeText={(text) => setBloodType(text)}
         placeholder="Enter Blood Type"
-		editable={false}
+        editable={false}
       />
-	  
-	  <Text style={[{ fontWeight: "bold",fontSize: 16,flex:1, marginTop: 10, marginBottom:10, textAlign:"center"}]}>เพศ</Text>
+
+      <Text
+        style={[
+          {
+            fontWeight: "bold",
+            fontSize: 16,
+            flex: 1,
+            marginTop: 10,
+            marginBottom: 10,
+            textAlign: "center",
+          },
+        ]}
+      >
+        เพศ
+      </Text>
 
       <View style={[styles.genderContainer, { marginBottom: 16 }]}>
         <TouchableOpacity
@@ -229,8 +256,17 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
             gender === "ชาย" ? styles.selectedGender : null,
           ]}
         >
-        <FontAwesome name="mars" size={18} color={gender === "ชาย" ? "white" : "#ED8085"}/>
-          <Text style={[styles.genderText, gender === "ชาย" ? { color: "white" } : null,]}>
+          <FontAwesome
+            name="mars"
+            size={18}
+            color={gender === "ชาย" ? "white" : "#ED8085"}
+          />
+          <Text
+            style={[
+              styles.genderText,
+              gender === "ชาย" ? { color: "white" } : null,
+            ]}
+          >
             ชาย
           </Text>
         </TouchableOpacity>
@@ -241,8 +277,17 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
             gender === "หญิง" ? styles.selectedGender : null,
           ]}
         >
-        <FontAwesome name="venus" size={18} color={gender === "หญิง" ? "white" : "#ED8085"}/>
-          <Text style={[styles.genderText, gender === "หญิง" ? { color: "white" } : null,]}>
+          <FontAwesome
+            name="venus"
+            size={18}
+            color={gender === "หญิง" ? "white" : "#ED8085"}
+          />
+          <Text
+            style={[
+              styles.genderText,
+              gender === "หญิง" ? { color: "white" } : null,
+            ]}
+          >
             หญิง
           </Text>
         </TouchableOpacity>
@@ -253,7 +298,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         value={dob}
         onChangeText={(text) => setDob(text)}
         placeholder="YYYY-MM-DD" // Display the desired date format
-		editable={false}
+        editable={false}
       />
 
       <View style={styles.fieldContainer}>

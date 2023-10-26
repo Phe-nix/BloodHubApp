@@ -31,7 +31,7 @@ export const SettingNavigation = ({ navigation }: any) => {
       <tab.Screen name="EditNotification" component={EditNotificationScreen} options={{ headerTitle: "การแจ้งเตือน" }} />
       <tab.Screen name="History" component={HistoryNavigation} options={{ headerTitle: "ประวัติ" }} />
       <tab.Screen name="Bookmark" component={BookMarkNavigation} options={{ headerTitle: "บุ๊คมาร์ค" }} />
-      <tab.Screen name="HelpCenter" component={HelpCenterNavigation} options={{ headerTitle: "ศูนย์ช่วยเหลือ" }} />
+      <tab.Screen name="HelpCenter" component={HelpCenterNavigation} options={{ headerTitle: "ศูนย์ช่วยเหลือ", headerShown:false }} />
       <tab.Screen name="About" component={AboutScreen} options={{ headerTitle: "เกี่ยวกับพวกเรา" }} />
       <tab.Screen name="Edit My Address" component={AddressScreen} />
     </tab.Navigator>

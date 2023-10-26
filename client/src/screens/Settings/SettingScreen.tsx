@@ -33,7 +33,7 @@ const SettingScreen: React.FC = ({ navigation }: any) => {
         <View style={styles.groupContainer}>
           <SettingOption title="โปรไฟล์" icon="user" navigation={navigation} to="MyProfile" source="profile" />
           <SettingOption title="ที่อยู่" icon="home" navigation={navigation} to="EditAddress" source="address" />
-          <SettingOption title="แจ้งเตือน" icon="bell" navigation={navigation} to="EditNotification" source="noti" />
+          {/* <SettingOption title="แจ้งเตือน" icon="bell" navigation={navigation} to="EditNotification" source="noti" /> */}
         </View>
       </View>
       <SectionHeader title="ข้อมูลเพิ่มเติม" />

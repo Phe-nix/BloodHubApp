@@ -12,6 +12,7 @@ import { styles } from "./style/AddressScreen.style";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 
 interface LocationScreenProps {
@@ -29,6 +30,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const [name, setName] = useState(""); // State to store the name
   const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationSet, setLocationSet] = useState<boolean>(false);
+
   console.log(locationSet)
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -65,7 +67,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const checkIfLocationIsSet = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const response = await axios.get(
-      `http://localhost:3000/address/${userId}`
+      `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
     );
     const address = response.data.address.address;
     if (address) {
@@ -80,7 +82,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
     if (locationSet) {
       try {
         const { data: res } = await axios.post(
-          "http://localhost:3000/address/update",
+          `${Constants.expoConfig?.extra?.API_URL}/address/update`,
           {
             userId: userId,
             address: name,
@@ -94,7 +96,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
     } else {
       try {
         const { data: res } = await axios.post(
-          "http://localhost:3000/address/add",
+          `${Constants.expoConfig?.extra?.API_URL}/address/add`,
           {
             userId: userId,
             address: name,
