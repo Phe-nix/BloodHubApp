@@ -30,7 +30,6 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const [name, setName] = useState(""); // State to store the name
   const [latestMarker, setLatestMarker] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationSet, setLocationSet] = useState<boolean>(false);
-
   console.log(locationSet)
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -67,7 +66,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const checkIfLocationIsSet = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const response = await axios.get(
-      `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
+      `${Constants.expoConfig?.extra?.API_URL}address/${userId}`
     );
     const address = response.data.address.address;
     if (address) {
