@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import RNPickerSelect from "react-native-picker-select";
@@ -33,7 +34,10 @@ const pickerSelectStyles = {
 const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
   navigation,
 }) => {
+  const [isLoading, setIsLoading] = useState(true); // State variable for loading screen
+  const [databaseImage, setDatabaseImage] = useState("");
   const [showImagePicker, setShowImagePicker] = useState(true);
+  const [newImage, setNewImage] = useState<string[]>([]); // State variable for storing the image URI
   const [image, setImage] = useState<string[]>([]);
   const [prefix, setPrefix] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -50,11 +54,15 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Show the loading screen while data is being fetched
+        setIsLoading(true);
+
         const userId = await AsyncStorage.getItem("userId");
         const response = await axios.get(
           `${Constants.expoConfig?.extra?.API_URL}/user/${userId}`
         );
         const userData = response.data;
+        setDatabaseImage(userData.profileImage);
         setImage([userData.profileImage]);
         setPrefix(userData.prefix);
         setFirstName(userData.firstName);
@@ -63,12 +71,14 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
         setPhoneNumber(userData.phoneNumber);
         setBloodType(userData.bloodType);
         setGender(userData.gender);
-        setDob(formatDob(userData.dob)); // Format DoB
+        setDob(formatDob(userData.dob));
         setWeight(userData.weight);
         setHeight(userData.height);
         setDisease(userData.disease);
+        setIsLoading(false); // Hide the loading screen after data fetch
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setIsLoading(false); // Hide the loading screen in case of an error
       }
     };
     fetchUserData();
@@ -80,16 +90,6 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
     return date.toISOString().split("T")[0];
   };
 
-  const logout = () => {
-    try {
-      AsyncStorage.removeItem("token");
-      AsyncStorage.removeItem("userId");
-      navigation.navigate("Auth");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -97,26 +97,20 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log();
-
     if (!result.canceled) {
-      setImage(result.assets?.map((asset) => asset.uri) || []);
+      setNewImage(result.assets?.map((asset) => asset.uri) || []);
       setShowImagePicker(false);
     }
   };
 
-  const removeImage = (index: number) => {
-    const newImages = image.filter((_, i) => i !== index);
-    setImage(newImages);
-    if (newImages.length === 0) {
-      setShowImagePicker(true);
-    }
+  const removeImage = () => {
+    setNewImage([]);
+    setShowImagePicker(false);
   };
 
   useEffect(() => {
-    console.log(image);
-  }, [image]);
+    console.log(newImage);
+  }, [newImage]);
 
   const handleSave = async () => {
     try {
@@ -130,7 +124,7 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
           name: `image_${index}.${fileType}`,
           type: `image/${fileType}`,
         });
-      });
+      }); // <-- Add closing parenthesis here
 
       formData.append("id", await AsyncStorage.getItem("userId"));
       formData.append("phoneNumber", phoneNumber);
@@ -157,196 +151,214 @@ const ProfileEditScreen: React.FC<ProfileEditScreenProps> = ({
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity onPress={pickImage}>
-        <View style={styles.profileImageContainer}>
-          {image ? (
-            <Image
-              source={{ uri: image[0] }}
-              style={styles.profileImage}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={styles.profileImage}></View>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator size="large" color="#ED8085" />
+        </View>
+      ) : (
+        <View>
+          <TouchableOpacity onPress={pickImage}>
+            <View style={styles.profileImageContainer}>
+              {image.length != 0? (
+                newImage.length !== 0? (
+                  <Image
+                    source={{ uri: newImage[0] }}
+                    style={styles.profileImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: image[0] }}
+                    style={styles.profileImage}
+                    resizeMode="cover"
+                  />
+                )
+              ) : (
+                <View style={styles.profileImage}></View>
+              )}
+            </View>
+          </TouchableOpacity>
+          {newImage.length !== 0 && (
+            <TouchableOpacity
+              style={{
+                borderWidth: 1,
+                position: "absolute",
+                zIndex: 1,
+                top: 10,
+                right: 150,
+                backgroundColor: "#E99999",
+                width: 20,
+                height: 20,
+                borderRadius: 100,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => removeImage()}
+            >
+              <Text style={{ color: "black" }}>X</Text>
+            </TouchableOpacity>
           )}
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          position: "absolute",
-          zIndex: 1,
-          top: 20,
-          right: 170,
-          backgroundColor: "#E99999",
-          width: 20,
-          height: 20,
-          borderRadius: 100,
-          justifyContent: "center",
-          alignItems: "center",
-        }} //onPress={() => removeImage(index)}
-      >
-        <Text style={{ color: "black" }}>X</Text>
-      </TouchableOpacity>
-      <TextInputWithLabel
-        label="คำนำหน้า"
-        value={prefix}
-        onChangeText={(text) => setPrefix(text)}
-        placeholder={"Enter prefix"}
-        editable={false}
-      />
-
-      <TextInputWithLabel
-        label="ชื่อจริง"
-        value={firstName}
-        onChangeText={(text) => setFirstName(text)}
-        placeholder="Enter first name"
-        editable={false}
-      />
-
-      <TextInputWithLabel
-        label="นามสกุล"
-        value={lastName}
-        onChangeText={(text) => setLastName(text)}
-        placeholder="Enter last name"
-        editable={false}
-      />
-
-      <TextInputWithLabel
-        label="อีเมล"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        placeholder="Enter email"
-        editable={false}
-      />
-
-      <TextInputWithLabel
-        label="เบอร์โทรศัพท์"
-        value={phoneNumber}
-        onChangeText={(text) => setPhoneNumber(text)}
-        placeholder="Enter phone number"
-      />
-
-      <TextInputWithLabel
-        label="กรุ๊ปเลือด"
-        value={bloodType}
-        onChangeText={(text) => setBloodType(text)}
-        placeholder="Enter Blood Type"
-        editable={false}
-      />
-
-      <Text
-        style={[
-          {
-            fontWeight: "bold",
-            fontSize: 16,
-            flex: 1,
-            marginTop: 10,
-            marginBottom: 10,
-            textAlign: "center",
-          },
-        ]}
-      >
-        เพศ
-      </Text>
-
-      <View style={[styles.genderContainer, { marginBottom: 16 }]}>
-        <TouchableOpacity
-          style={[
-            styles.genderButton,
-            gender === "ชาย" ? styles.selectedGender : null,
-          ]}
-        >
-          <FontAwesome
-            name="mars"
-            size={18}
-            color={gender === "ชาย" ? "white" : "#ED8085"}
+          <TextInputWithLabel
+            label="คำนำหน้า"
+            value={prefix}
+            onChangeText={(text) => setPrefix(text)}
+            placeholder={"Enter prefix"}
+            editable={false}
           />
+
+          <TextInputWithLabel
+            label="ชื่อจริง"
+            value={firstName}
+            onChangeText={(text) => setFirstName(text)}
+            placeholder="Enter first name"
+            editable={false}
+          />
+
+          <TextInputWithLabel
+            label="นามสกุล"
+            value={lastName}
+            onChangeText={(text) => setLastName(text)}
+            placeholder="Enter last name"
+            editable={false}
+          />
+
+          <TextInputWithLabel
+            label="อีเมล"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            placeholder="Enter email"
+            editable={false}
+          />
+
+          <TextInputWithLabel
+            label="เบอร์โทรศัพท์"
+            value={phoneNumber}
+            onChangeText={(text) => setPhoneNumber(text)}
+            placeholder="Enter phone number"
+          />
+
+          <TextInputWithLabel
+            label="กรุ๊ปเลือด"
+            value={bloodType}
+            onChangeText={(text) => setBloodType(text)}
+            placeholder="Enter Blood Type"
+            editable={false}
+          />
+
           <Text
             style={[
-              styles.genderText,
-              gender === "ชาย" ? { color: "white" } : null,
+              {
+                fontWeight: "bold",
+                fontSize: 16,
+                textAlign: "center",
+                marginBottom: 10,
+              },
             ]}
           >
-            ชาย
+            เพศ
           </Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.genderButton,
-            gender === "หญิง" ? styles.selectedGender : null,
-          ]}
-        >
-          <FontAwesome
-            name="venus"
-            size={18}
-            color={gender === "หญิง" ? "white" : "#ED8085"}
+          <View style={[styles.genderContainer, { marginBottom: 16 }]}>
+            <TouchableOpacity
+              style={[
+                styles.genderButton,
+                gender === "ชาย" ? styles.selectedGender : null,
+              ]}
+            >
+              <FontAwesome
+                name="mars"
+                size={18}
+                color={gender === "ชาย" ? "white" : "#ED8085"}
+              />
+              <Text
+                style={[
+                  styles.genderText,
+                  gender === "ชาย" ? { color: "white" } : null,
+                ]}
+              >
+                ชาย
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.genderButton,
+                gender === "หญิง" ? styles.selectedGender : null,
+              ]}
+            >
+              <FontAwesome
+                name="venus"
+                size={18}
+                color={gender === "หญิง" ? "white" : "#ED8085"}
+              />
+              <Text
+                style={[
+                  styles.genderText,
+                  gender === "หญิง" ? { color: "white" } : null,
+                ]}
+              >
+                หญิง
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <TextInputWithLabel
+            label="วันเดือนปีเกิด"
+            value={dob}
+            onChangeText={(text) => setDob(text)}
+            placeholder="YYYY-MM-DD" // Display the desired date format
+            editable={false}
           />
-          <Text
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.fieldTitle}>น้ำหนัก</Text>
+            <View style={styles.inputWithUnit}>
+              <TextInput
+                style={styles.fieldValue}
+                value={weight}
+                onChangeText={(text) => setWeight(text)}
+                placeholder="Enter weight"
+              />
+              <Text style={styles.unitText}>กก.</Text>
+            </View>
+          </View>
+
+          <View
+            style={[styles.fieldContainer, { marginTop: 10, marginBottom: 10 }]}
+          >
+            <Text style={styles.fieldTitle}>ส่วนสูง</Text>
+            <View style={styles.inputWithUnit}>
+              <TextInput
+                style={styles.fieldValue}
+                value={height}
+                onChangeText={(text) => setHeight(text)}
+                placeholder="Enter height"
+              />
+              <Text style={styles.unitText}>ซม.</Text>
+            </View>
+          </View>
+
+          <TextInputWithLabel
+            label="โรคประจำตัว"
+            value={disease}
+            onChangeText={(text) => setDisease(text)}
+            placeholder="Enter congenital disease"
+          />
+
+          <View
             style={[
-              styles.genderText,
-              gender === "หญิง" ? { color: "white" } : null,
+              styles.buttonContainer,
+              { alignItems: "center", justifyContent: "center" },
             ]}
           >
-            หญิง
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <TextInputWithLabel
-        label="วันเดือนปีเกิด"
-        value={dob}
-        onChangeText={(text) => setDob(text)}
-        placeholder="YYYY-MM-DD" // Display the desired date format
-        editable={false}
-      />
-
-      <View style={styles.fieldContainer}>
-        <Text style={styles.fieldTitle}>น้ำหนัก</Text>
-        <View style={styles.inputWithUnit}>
-          <TextInput
-            style={styles.fieldValue}
-            value={weight}
-            onChangeText={(text) => setWeight(text)}
-            placeholder="Enter weight"
-          />
-          <Text style={styles.unitText}>กก.</Text>
+            <TouchableOpacity style={[styles.saveButton]} onPress={handleSave}>
+              <Text style={styles.saveButtonText}>บันทึก</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
-      <View
-        style={[styles.fieldContainer, { marginTop: 10, marginBottom: 10 }]}
-      >
-        <Text style={styles.fieldTitle}>ส่วนสูง</Text>
-        <View style={styles.inputWithUnit}>
-          <TextInput
-            style={styles.fieldValue}
-            value={height}
-            onChangeText={(text) => setHeight(text)}
-            placeholder="Enter height"
-          />
-          <Text style={styles.unitText}>ซม.</Text>
-        </View>
-      </View>
-
-      <TextInputWithLabel
-        label="โรคประจำตัว"
-        value={disease}
-        onChangeText={(text) => setDisease(text)}
-        placeholder="Enter congenital disease"
-      />
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>บันทึก</Text>
-        </TouchableOpacity>
-        <Button
-          title="ออกจากระบบ"
-          buttonWidth={30}
-          buttonHeight={15}
-          onPress={() => logout()}
-        />
-      </View>
+      )}
     </ScrollView>
   );
 };
