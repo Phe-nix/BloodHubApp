@@ -123,6 +123,15 @@ export class HospitalService {
     async getAllHospitals(): Promise<any> {
         try {
             const hospital = await this.prismaService.hospital.findMany()
+
+            const hospitalFirebase = await Promise.all(hospital.map(async (item) => {
+                const image = await this.imageService.getImage(item.image)
+                return {
+                    ...item,
+                    image: image
+                }
+            }))
+
             if(!hospital) {
                 throw new HttpException(
                     {
@@ -135,7 +144,7 @@ export class HospitalService {
             
             return {
                 message: "Hospital Found",
-                hospital: hospital
+                hospital: hospitalFirebase
             }
         } catch (error) {
             console.error(error)

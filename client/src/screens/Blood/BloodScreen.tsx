@@ -20,18 +20,15 @@ import Label from "./components/Label";
 import Constants from "expo-constants";
 
 interface Hospital {
-  image: any; // Update the type accordingly
-  name: string;
+  hospitalName: string;
+  image: any;
+  location: string;
+  link: string;
 }
 
 const BloodScreen = () => {
-  const hospitals: Hospital[] = [
-    { image: Siriraj, name: "โรงพยาบาลศิริราช" },
-    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
-    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
-    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
-    { image: Siriraj, name: "โรงพยาบาลกรุงเทพ" },
-  ];
+  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+
   const [a_positiveneed, seta_positive] = useState("");
   const [b_positiveneed, setb_positive] = useState("");
   const [o_positiveneed, seto_positive] = useState("");
@@ -47,12 +44,28 @@ const BloodScreen = () => {
 
   const _renderItem = (item: Hospital, index: number) => (
     <View style={{ alignItems: "center" }} key={index}>
-      <Image source={item.image} style={{ width: 300, height: 200 }} />
-      <Text style={styles.hospitalName}>{item.name}</Text>
+      <Image source={{uri: item.image}} style={{ width: 300, height: 200 }} />
+      <Text style={styles.hospitalName}>{item.hospitalName}</Text>
     </View>
   );
 
   useEffect(() => {
+    const fetchHospitals = async () => {
+      try {
+        const response = await axios.get(
+          `${Constants.expoConfig?.extra?.API_URL}/hospital`
+        );
+        const hospitalData = response.data.hospital;
+        if (Array.isArray(hospitalData) && hospitalData.length > 0) {
+          setHospitals(hospitalData);
+        } else {
+          console.error("Received empty or malformed hospital data.");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+    
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${Constants.expoConfig?.extra?.API_URL}/blood`);
@@ -79,6 +92,7 @@ const BloodScreen = () => {
       }
     };
     fetchUserData();
+    fetchHospitals();
   }, []);
 
   return (
