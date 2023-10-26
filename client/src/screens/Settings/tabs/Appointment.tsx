@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { View, StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from "react-native";
 import AppointmentBox from "../../home/Components/Appointment/Appointment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
@@ -29,7 +29,11 @@ const Appointment = ({navigation} : any) => {
         fetch();
       }
 
-  return (
+  return appointment.length === 0 ? (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="small" color="#E99999" />
+    </View>
+  ) : (
     <ScrollView 
       style={styles.bgcolor}
       refreshControl={

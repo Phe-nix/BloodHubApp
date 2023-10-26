@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   Text,
@@ -123,9 +124,13 @@ const PostScreen = ({ navigation }: any) => {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <ScrollView>
+  return user === null ? (
+    <View style={{flex: 1, justifyContent: 'center',}}>
+      <ActivityIndicator size="small" color="#E99999"/>
+    </View>
+  ) : (
+    <ScrollView>
+      <View style={styles.container}>
         <View style={styles.profile}>
           <Image
             style={{ width: 55, height: 55, borderRadius: 30 }}
@@ -271,8 +276,8 @@ const PostScreen = ({ navigation }: any) => {
           navigation={navigation}
           onPress={uploadImages}
         />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 

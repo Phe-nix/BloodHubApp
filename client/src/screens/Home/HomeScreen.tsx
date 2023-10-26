@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { styles } from "./HomeScreen.style";
 import Button from "./Components/Button";
@@ -71,7 +72,16 @@ const HomeScreen = ({ navigation }: any) => {
     getUser();
   };
 
-  return (
+  useEffect(() => {
+    console.log(user);
+  }, [user])
+  
+
+  return post.length === 0 && user === null ? (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="small" color="#E99999" />
+    </View>
+  ) : (
     <ScrollView
       style={{ backgroundColor: "#F1F1F1" }}
       refreshControl={
@@ -83,7 +93,7 @@ const HomeScreen = ({ navigation }: any) => {
           <View
             style={{
               paddingHorizontal: 30,
-              paddingVertical: 10,
+              paddingVertical: 5,
               flexDirection: "row",
               gap: 15,
             }}

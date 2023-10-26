@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Touchable, RefreshControl } from "react-native";
+import { View, StyleSheet, ScrollView, Touchable, RefreshControl, ActivityIndicator } from "react-native";
 import SmallPostBox from "../../../core/components/SmallPostBox";
 import axios from "axios";
 import Constants from "expo-constants";
@@ -37,7 +37,11 @@ const App = ({navigation, route} : any) => {
     fetch();
   }
 
-  return (
+  return posts.length === 0 ? (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="small" color="#E99999" />
+    </View>
+  ) : (
     <ScrollView 
       style={styles.bgcolor}
       refreshControl={

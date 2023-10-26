@@ -50,7 +50,6 @@ const SmallNewsBox: React.FC<any> = ({ item, fetch, navigation }) => {
             <Text style={styles.date}>
               {daysAgo === 0 ? `Today` : `${daysAgo} Days Ago`}
             </Text>
-            <Text style={styles.description}>{news.description.slice(0,60) + "..."}</Text>
           </View>
         </View>
       </TouchableOpacity>

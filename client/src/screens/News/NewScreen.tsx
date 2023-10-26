@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, ScrollView, RefreshControl } from "react-native";
+import { Text, View, Image, TouchableOpacity, ScrollView, RefreshControl, ActivityIndicator } from "react-native";
 import { styles } from "./NewScreen.style"
 import New from "./Components/New"
 import { useEffect, useState } from "react";
@@ -14,10 +14,13 @@ const NewScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => {
       getNews();
-    }, 1000)
   }, []);
+
+  useEffect(() => {
+    console.log();
+    
+  }, [news])
 
   const getNews = async () => {
     try {
@@ -59,8 +62,14 @@ const NewScreen = ({ navigation }: any) => {
     setRefreshing(true);
     getNews();
   }
+  
+  return news.length === 0 ? (
+    <View style={{flex: 1, justifyContent: 'center',}}>
+      <ActivityIndicator size="small" color="#E99999" />
+    </View>
+  ) :
 
-  return (
+  (
     <ScrollView
       style={styles.background}
       refreshControl={

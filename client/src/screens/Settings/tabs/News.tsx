@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator } from "react-native";
 import SmallNewsBox from "../../../core/components/SmallNewsBox";
 import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +27,11 @@ const News: React.FC = ({navigation} : any) => {
     fetch();
   }
 
-  return (
+  return news.length === 0 ? (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="small" color="#E99999" />
+    </View>
+  ) : (
     <ScrollView 
       style={styles.bgcolor}
       refreshControl={

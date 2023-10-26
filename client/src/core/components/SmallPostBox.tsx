@@ -43,8 +43,9 @@ const SmallPostBox: React.FC<any> = ({ item, fetch, navigation, source }) => {
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.textRight}>
-            <Text style={styles.name}>{post.title.slice(0, 40) + "..."}</Text>
+            <Text style={{...styles.name, ...{flex: 1}}}>{post.title.slice(0, 40) + "..."}</Text>
             <TouchableOpacity
+              style={{position: 'absolute', top: 0, right: 17}}
               onPress={async () => {
                 await axios
                   .delete(
