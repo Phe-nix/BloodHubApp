@@ -50,5 +50,19 @@ export const styles = StyleSheet.create({
         marginLeft: 20,
         color: 'your_color_here', // Add the color property with your desired text color
     },
+    dot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      },
+      activeDot: {
+        width: 30,
+        height: 12,
+        borderRadius: 6,
+        marginHorizontal: 5,
+        backgroundColor: '#F0888C',
+      },
 
 })
