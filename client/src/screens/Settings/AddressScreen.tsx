@@ -66,7 +66,7 @@ const LocationScreen: React.FC<LocationScreenProps> = () => {
   const checkIfLocationIsSet = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const response = await axios.get(
-      `${Constants.expoConfig?.extra?.API_URL}address/${userId}`
+      `${Constants.expoConfig?.extra?.API_URL}/address/${userId}`
     );
     const address = response.data.address.address;
     if (address) {
