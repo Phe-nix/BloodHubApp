@@ -23,7 +23,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         secure: false,
         auth: {
           user: '64070054@kmitl.ac.th',
-          pass: '@SDK47b3k!'
+          pass: 'imok puhq dpqv pbsp'
         }
       }
     }),

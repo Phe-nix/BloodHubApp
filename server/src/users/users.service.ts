@@ -19,8 +19,6 @@ export class UsersService {
     const existingUser = await this.prisma.user.findFirst({
       where: {
         OR: [
-          { phoneNumber: data.phoneNumber },
-          { email: data.email },
           { citizenId: data.citizenId },
           { citizenBack: data.citizenBack },
         ],
